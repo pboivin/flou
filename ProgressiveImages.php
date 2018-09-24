@@ -12,17 +12,14 @@ class ProgressiveImages
     /**
      * Initialize class configuration
      */
-    public static function init() {
-        self::$config = [
-            'blur_path' => "uploads/blur",
-            'blur_url' => "/uploads/blur",
-            'base_path' => "uploads",
-            'base_url' => "/uploads",
+    public static function init($config=[]) {
+        $tmp_config = [
+            "blur_path" => "",
+            "blur_url" => "",
+            "base_path" => "",
+            "base_url" => "",
         ];
-
-        if (! file_exists(self::$config['blur_path']) ) {
-            mkdir(self::$config['blur_path']);
-        }
+        self::$config = array_merge($tmp_config, $config);
     }
 
     /**
@@ -33,14 +30,12 @@ class ProgressiveImages
 
         $output = $url;
         $is_gif = preg_match('#\.gif$#', $url);
-        $is_match = preg_match('#/uploads/(.*)#', $url, $matches);
-        $do_generate = !$is_gif && $is_match && isset($matches[1]);
+        $url_parts = explode("/", $url);
+        $filename = array_pop($url_parts);
+        $do_generate = !$is_gif && $filename;
 
         if ($do_generate) {
-            $path = $matches[1];
-            $filename = basename($path);
-
-            $src_file = self::$config['base_path'] . '/' . $path;
+            $src_file = self::$config['base_path'] . '/' . $filename;
             $dest_file = self::$config['blur_path'] . '/' . $filename;
             $dest_url = self::$config['blur_url'] . '/' . $filename;
 
@@ -106,5 +101,3 @@ class ProgressiveImages
         return "<script> function $func_name(){ var img = document.getElementById(\"$id\"); img.className = img.className + \" is-loaded\"; } </script>";
     }
 }
-
-#ProgressiveImages::init();
