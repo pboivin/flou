@@ -1,6 +1,7 @@
 <?php
+namespace Flou;
 
-class Flou {
+class Image {
     private $base_path;
     private $base_url;
     private $original_file;
@@ -19,6 +20,8 @@ class Flou {
     }
 
     public function setBasePath($base_path) {
+        $this->base_path = $base_path;
+        echo "Got base_path = " . $base_path . "\n";
     }
 
     public function setBaseUrl($base_url) {
