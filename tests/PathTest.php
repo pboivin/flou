@@ -1,10 +1,9 @@
 <?php
 
-require_once "Flou.php";
-use Flou\Path;
-use Flou\InvalidFile;
-use Flou\InvalidDirectory;
 use PHPUnit\Framework\TestCase;
+use Flou\Path;
+use Flou\Exception\InvalidFile;
+use Flou\Exception\InvalidDirectory;
 
 class PathTest extends TestCase {
     public static $base_path;

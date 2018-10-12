@@ -1,9 +1,8 @@
 <?php
 
-require_once "Flou.php";
+use PHPUnit\Framework\TestCase;
 use Flou\Path;
 use Flou\Image;
-use PHPUnit\Framework\TestCase;
 
 class ImageTest extends TestCase {
     public static $base_path;

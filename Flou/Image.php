@@ -1,32 +1,7 @@
 <?php
 namespace Flou;
 
-class InvalidFile extends \Exception {}
-class InvalidDirectory extends \Exception {}
-
-class Path {
-    public static function join(...$parts) {
-        return implode(DIRECTORY_SEPARATOR, $parts);
-    }
-
-    public static function checkFile($path) {
-        if (!file_exists($path)) {
-            throw new InvalidFile("path does not exist: $path");
-        }
-        if (!is_file($path)) {
-            throw new InvalidFile("path is not a file: $path");
-        }
-    }
-
-    public static function checkDirectory($path) {
-        if (!file_exists($path)) {
-            throw new InvalidDirectory("path does not exist: $path");
-        }
-        if (!is_dir($path)) {
-            throw new InvalidDirectory("path is not a directory: $path");
-        }
-    }
-}
+use Flou\Path;
 
 class Image {
     private $base_path;
