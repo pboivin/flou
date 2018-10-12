@@ -5,6 +5,24 @@ class Path {
     public static function join(...$parts) {
         return implode(DIRECTORY_SEPARATOR, $parts);
     }
+
+    public static function checkFile($path) {
+        if (!file_exists($path)) {
+            throw new \Exception("path does not exist: $path");
+        }
+        if (!is_file($path)) {
+            throw new \Exception("path is not a file: $path");
+        }
+    }
+
+    public static function checkDirectory($path) {
+        if (!file_exists($path)) {
+            throw new \Exception("path does not exist: $path");
+        }
+        if (!is_dir($path)) {
+            throw new \Exception("path is not a directory: $path");
+        }
+    }
 }
 
 class Image {
@@ -18,33 +36,30 @@ class Image {
 
     public function load($original_file) {
         $file_path = Path::join($this->base_path, $original_file);
-
-        if (!file_exists($file_path)) {
-            throw new \Exception("File does not exist: $file_path");
-        }
+        Path::checkFile($file_path);
         $this->original_file = $original_file;
+        return $this;
     }
 
     public function process($processed_file=null) {
+        return $this;
     }
 
     public function isProcessed() {
     }
 
     public function setBasePath($base_path) {
-        if (!file_exists($base_path)) {
-            throw new \Exception("Base path does not exist: $base_path");
-        }
-        if (!is_dir($base_path)) {
-            throw new \Exception("Base path is not a directory: $base_path");
-        }
+        Path::checkDirectory($base_path);
         $this->base_path = $base_path;
+        return $this;
     }
 
     public function setBaseUrl($base_url) {
+        return $this;
     }
 
     public function getHTML($original_url=null, $processed_url=null) {
+        return $this;
     }
 
     public function getOriginalFilePath() {
