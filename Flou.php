@@ -1,6 +1,12 @@
 <?php
 namespace Flou;
 
+class Path {
+    public static function join(...$parts) {
+        return implode(DIRECTORY_SEPARATOR, $parts);
+    }
+}
+
 class Image {
     private $base_path;
     private $base_url;
@@ -11,6 +17,12 @@ class Image {
     }
 
     public function load($original_file) {
+        $file_path = Path::join($this->base_path, $original_file);
+
+        if (!file_exists($file_path)) {
+            throw new \Exception("File does not exist: $file_path");
+        }
+        $this->original_file = $original_file;
     }
 
     public function process($processed_file=null) {
@@ -20,8 +32,13 @@ class Image {
     }
 
     public function setBasePath($base_path) {
+        if (!file_exists($base_path)) {
+            throw new \Exception("Base path does not exist: $base_path");
+        }
+        if (!is_dir($base_path)) {
+            throw new \Exception("Base path is not a directory: $base_path");
+        }
         $this->base_path = $base_path;
-        echo "Got base_path = " . $base_path . "\n";
     }
 
     public function setBaseUrl($base_url) {
@@ -30,10 +47,14 @@ class Image {
     public function getHTML($original_url=null, $processed_url=null) {
     }
 
-    public function getOriginalFile() {
+    public function getOriginalFilePath() {
+        if ($this->base_path && $this->original_file) {
+            return Path::join($this->base_path, $this->original_file);
+        }
+        return null;
     }
 
-    public function getProcessedFile() {
+    public function getProcessedFilePath() {
     }
 
     public function getOriginalURL() {
