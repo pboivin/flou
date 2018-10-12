@@ -2,6 +2,8 @@
 
 require_once "Flou.php";
 use Flou\Path;
+use Flou\InvalidFile;
+use Flou\InvalidDirectory;
 use PHPUnit\Framework\TestCase;
 
 class PathTest extends TestCase {
@@ -18,7 +20,7 @@ class PathTest extends TestCase {
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
             Path::checkDirectory($path);
-        } catch(\Exception $e) {
+        } catch(InvalidDirectory $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path does not exist/", $message);
@@ -30,7 +32,7 @@ class PathTest extends TestCase {
         $caught = false;
             $path = Path::join(self::$base_path, "image1.jpg");
             Path::checkDirectory($path);
-        } catch(\Exception $e) {
+        } catch(InvalidDirectory $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path is not a directory/", $message);
@@ -44,7 +46,7 @@ class PathTest extends TestCase {
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
             Path::checkFile($path);
-        } catch(\Exception $e) {
+        } catch(InvalidFile $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path does not exist/", $message);
@@ -56,7 +58,7 @@ class PathTest extends TestCase {
         try {
             $path = self::$base_path;
             Path::checkFile($path);
-        } catch(\Exception $e) {
+        } catch(InvalidFile $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path is not a file/", $message);

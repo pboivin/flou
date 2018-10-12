@@ -1,6 +1,9 @@
 <?php
 namespace Flou;
 
+class InvalidFile extends \Exception {}
+class InvalidDirectory extends \Exception {}
+
 class Path {
     public static function join(...$parts) {
         return implode(DIRECTORY_SEPARATOR, $parts);
@@ -8,19 +11,19 @@ class Path {
 
     public static function checkFile($path) {
         if (!file_exists($path)) {
-            throw new \Exception("path does not exist: $path");
+            throw new InvalidFile("path does not exist: $path");
         }
         if (!is_file($path)) {
-            throw new \Exception("path is not a file: $path");
+            throw new InvalidFile("path is not a file: $path");
         }
     }
 
     public static function checkDirectory($path) {
         if (!file_exists($path)) {
-            throw new \Exception("path does not exist: $path");
+            throw new InvalidDirectory("path does not exist: $path");
         }
         if (!is_dir($path)) {
-            throw new \Exception("path is not a directory: $path");
+            throw new InvalidDirectory("path is not a directory: $path");
         }
     }
 }
