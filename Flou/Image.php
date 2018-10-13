@@ -65,11 +65,23 @@ class Image {
     }
 
     public function getProcessedFilePath() {
+        if ($this->base_path && $this->default_processed_basename) {
+            return Path::join($this->base_path, $this->default_processed_basename);
+        }
+        return null;
     }
 
     public function getOriginalURL() {
+        if ($this->base_url && $this->original_file) {
+            return "{$base_url}/{$this->original_file}";
+        }
+        return null;
     }
 
     public function getProcessedURL() {
+        if ($this->base_url && $this->default_processed_basename) {
+            return "{$base_url}/{$this->default_processed_basename}";
+        }
+        return null;
     }
 }
