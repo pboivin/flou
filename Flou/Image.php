@@ -7,7 +7,7 @@ class Image {
     private $base_path;
     private $base_url;
     private $original_file;
-    private $processed_file;
+    private $default_processed_file;
 
     public function __constructor() {
     }
@@ -25,7 +25,14 @@ class Image {
             $this->base_path = dirname($file_path);
             $this->original_file = basename($file_path);
         }
+        $this->_setDefaultProcessedFile();
         return $this;
+    }
+
+    private function _setDefaultProcessedFile() {
+        $filename = Path::filename($this->original_file);
+        $extension = Path::extension($this->original_file);
+        $this->default_processed_file = "{$filename}.flou.{$extension}";
     }
 
     public function process($processed_file=null) {
