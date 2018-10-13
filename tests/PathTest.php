@@ -64,4 +64,32 @@ class PathTest extends TestCase {
         }
         $this->assertTrue($caught);
     }
+
+    public function testFilename() {
+        $filename = Path::filename("hello.php");
+        $this->assertEquals("hello", $filename);
+
+        $filename = Path::filename("noextension");
+        $this->assertEquals("noextension", $filename);
+
+        $filename = Path::filename(".hidden.php");
+        $this->assertEquals(".hidden", $filename);
+
+        $filename = Path::filename(".hidden_no_extension");
+        $this->assertEquals("", $filename);
+    }
+
+    public function testExtension() {
+        $extension = Path::extension("hello.php");
+        $this->assertEquals("php", $extension);
+
+        $extension = Path::extension("noextension");
+        $this->assertEquals("", $extension);
+
+        $extension = Path::extension(".hidden.php");
+        $this->assertEquals("php", $extension);
+
+        $extension = Path::extension(".hidden_no_extension");
+        $this->assertEquals("hidden_no_extension", $extension);
+    }
 }

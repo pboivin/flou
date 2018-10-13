@@ -26,4 +26,18 @@ class Path {
             throw new InvalidDirectory("path is not a directory: $path");
         }
     }
+
+    public static function filename($path) {
+        $info = pathinfo($path);
+        if (isset($info["filename"]))
+            return $info["filename"];
+        return "";
+    }
+
+    public static function extension($path) {
+        $info = pathinfo($path);
+        if (isset($info["extension"]))
+            return $info["extension"];
+        return "";
+    }
 }
