@@ -35,11 +35,52 @@ class Image {
         $this->default_processed_file = "{$filename}.flou.{$extension}";
     }
 
-    public function process($processed_file=null) {
+    public function process() {
+        // TODO add support for custom output path...
+
+        if (!$this->isProcessed()) {
+            $input_file = $this->getOriginalFilePath();
+            $output_file = $this->getProcessedFilePath();
+            // throw if not input_path && not output_path
+
+            $this->_processFile($input_file, $output_file);
+            $this->is_processed = true;
+        }
         return $this;
     }
 
+    private function _processFile($input_file, $output_file) {
+        // TODO add config for resize width and blur radius
+
+        $image = new \Imagick($input_file);
+        $geometry = $image->getImageGeometry();
+        $width = 40;
+        $height = $width * $geometry["height"] / $geometry["width"];
+
+        $resize = $image ? $image->adaptiveResizeImage($width, $height, true) : null;
+        $blur = $resize ? $image->adaptiveBlurImage(10, 10) : null;
+        $write = $blur ? $image->writeImage($output_file) : null;
+
+        if (!$resize) {
+            throw new \Exception("Resize failed: $input_file");
+        }
+        if (!$blur) {
+            throw new \Exception("Blur failed: $input_file");
+        }
+        if (!$resize) {
+            throw new \Exception("Write failed: $input_file");
+        }
+    }
+
     public function isProcessed() {
+        if ($this->is_processed) {
+            return true;
+        }
+        $file_path = $this->getProcessedFilePath();
+        if (file_exists($file_path)) {
+            return true;
+        }
+        return false;
     }
 
     public function setBasePath($base_path) {
