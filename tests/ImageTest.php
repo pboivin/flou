@@ -6,17 +6,31 @@ use Flou\Image;
 
 class ImageTest extends TestCase {
     public static $base_path;
+    public static $processed_path;
 
     public static function setUpBeforeClass() {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
+        self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
+        self::_cleanup();
+    }
+
+    public static function setUpAfterClass() {
+        self::_cleanup();
+    }
+
+    public static function _cleanup() {
+        if (file_exists(self::$processed_path)) {
+            unlink(self::$processed_path);
+        }
     }
 
     public function testLoadWithBasePath() {
+        $path = Path::join(self::$base_path, "image1.jpg");
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->load("image1.jpg");
-        $this->assertNotNull($image->getOriginalFilePath());
+        $this->assertEquals($path, $image->getOriginalFilePath());
     }
 
     public function testLoadFullPath() {
