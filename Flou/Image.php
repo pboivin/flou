@@ -9,9 +9,6 @@ class Image {
     private $original_file;
     private $default_processed_file;
 
-    public function __constructor() {
-    }
-
     public function load($original_file) {
         if ($this->base_path) {
             // original_file is to be found in base_path
@@ -26,6 +23,7 @@ class Image {
             $this->original_file = basename($file_path);
         }
         $this->_setDefaultProcessedFile();
+        $this->is_processed = false;
         return $this;
     }
 
@@ -106,8 +104,8 @@ class Image {
     }
 
     public function getProcessedFilePath() {
-        if ($this->base_path && $this->default_processed_basename) {
-            return Path::join($this->base_path, $this->default_processed_basename);
+        if ($this->base_path && $this->default_processed_file) {
+            return Path::join($this->base_path, $this->default_processed_file);
         }
         return null;
     }
@@ -120,8 +118,8 @@ class Image {
     }
 
     public function getProcessedURL() {
-        if ($this->base_url && $this->default_processed_basename) {
-            return "{$base_url}/{$this->default_processed_basename}";
+        if ($this->base_url && $this->default_processed_file) {
+            return "{$base_url}/{$this->default_processed_file}";
         }
         return null;
     }
