@@ -52,7 +52,26 @@ class ImageTest extends TestCase {
         $image->process();
         $this->assertTrue($image->isProcessed());
         $this->assertTrue(file_exists($processed_path));
+    }
 
-        unlink($processed_path);
+    public function testGetHTML() {
+        $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg")
+            ->process();
+        $this->assertTrue($image->isProcessed());
+
+        // Cannot generate HTML without a base_url
+        $html = $image->getHTML();
+        $this->assertNull($html);
+
+        $html = $image->setBaseUrl("/img")->getHTML("Image Description");
+        $container = new SimpleXMLElement($html);
+        $this->assertEquals("flou-container", $container['class']);
+        $this->assertEquals(2, count($container->img));
+        $this->assertEquals("flou-processed-image", $container->img[0]['class']);
+        $this->assertEquals("", $container->img[0]['alt']);
+        $this->assertEquals("flou-original-image", $container->img[1]['class']);
+        $this->assertEquals("Image Description", $container->img[1]['alt']);
     }
 }

@@ -92,8 +92,25 @@ class Image {
         return $this;
     }
 
-    public function getHTML($original_url=null, $processed_url=null) {
-        return $this;
+    public function getHTML($alt="") {
+        // TODO add support for custom output path...
+
+        $original_url = $this->getOriginalURL();
+        $processed_url = $this->getProcessedURL();
+        $template = ( 
+            '<div class="flou-container">' .
+                sprintf('<img class="flou-processed-image" src="%s" alt="" />',
+                    $processed_url) .
+                sprintf('<img class="flou-original-image" src="%s" alt="%s" />',
+                    $original_url, $alt) .
+            '</div>'
+        );
+        if ($original_url && $processed_url) {
+            return $template;
+        }
+
+        // TODO throw NotConfigured exception?
+        return null;
     }
 
     public function getOriginalFilePath() {
