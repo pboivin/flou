@@ -39,7 +39,7 @@ class Image {
         if (!$this->isProcessed()) {
             $input_file = $this->getOriginalFilePath();
             $output_file = $this->getProcessedFilePath();
-            // throw if not input_path && not output_path
+            // TODO throw NotConfigured exception if no file is loaded?
 
             $this->_processFile($input_file, $output_file);
             $this->is_processed = true;
@@ -112,14 +112,14 @@ class Image {
 
     public function getOriginalURL() {
         if ($this->base_url && $this->original_file) {
-            return "{$base_url}/{$this->original_file}";
+            return "{$this->base_url}/{$this->original_file}";
         }
         return null;
     }
 
     public function getProcessedURL() {
         if ($this->base_url && $this->default_processed_file) {
-            return "{$base_url}/{$this->default_processed_file}";
+            return "{$this->base_url}/{$this->default_processed_file}";
         }
         return null;
     }
