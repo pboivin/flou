@@ -15,7 +15,7 @@ class ImageTest extends TestCase {
         self::_cleanup();
     }
 
-    public static function setUpAfterClass() {
+    public static function tearDownAfterClass() {
         self::_cleanup();
     }
 
