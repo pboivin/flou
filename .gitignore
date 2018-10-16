@@ -1,2 +1,4 @@
 *.swp
 vendor/
+tests/**/*.flou.jpg
+demo/**/*.flou.jpg
