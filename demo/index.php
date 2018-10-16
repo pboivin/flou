@@ -18,12 +18,8 @@ $image1 = (new Flou\Image())
 <head>
     <meta charset="utf-8">
     <title>Demo</title>
-    <link rel="stylesheet" href="main.css">
-    <script>
-        window.handleFlouImageLoaded = function(image) {
-            image.parentElement.classList.add("is-loaded");
-        }
-    </script>
+    <link rel="stylesheet" href="demo.css">
+    <script src="demo.js"></script>
 </head>
 <body>
     <div class="container">
