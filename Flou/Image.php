@@ -2,6 +2,7 @@
 namespace Flou;
 
 use Flou\Path;
+use Flou\Exception\ProcessError;
 
 class Image {
     private $base_path;
@@ -55,18 +56,17 @@ class Image {
         $width = 40;
         $height = $width * $geometry["height"] / $geometry["width"];
 
-        $resize = $image ? $image->adaptiveResizeImage($width, $height, true) : null;
-        $blur = $resize ? $image->adaptiveBlurImage(10, 10) : null;
-        $write = $blur ? $image->writeImage($output_file) : null;
-
+        $resize = $image->adaptiveResizeImage($width, $height, true);
         if (!$resize) {
-            throw new \Exception("Resize failed: $input_file");
+            throw new ProcessError("Resize failed: $input_file");
         }
+        $blur = $image->adaptiveBlurImage(10, 10);
         if (!$blur) {
-            throw new \Exception("Blur failed: $input_file");
+            throw new ProcessError("Blur failed: $input_file");
         }
+        $write = $image->writeImage($output_file);
         if (!$resize) {
-            throw new \Exception("Write failed: $input_file");
+            throw new ProcessError("Write failed: $input_file");
         }
     }
 
