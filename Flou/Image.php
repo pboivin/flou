@@ -9,6 +9,7 @@ class Image {
     private $base_url;
     private $original_file;
     private $default_processed_file;
+    private $original_geometry;
 
     public function load($original_file) {
         if ($this->base_path) {
@@ -37,35 +38,37 @@ class Image {
     public function process() {
         // TODO add support for custom output path...
 
-        if (!$this->isProcessed()) {
-            $input_file = $this->getOriginalFilePath();
-            $output_file = $this->getProcessedFilePath();
-            // TODO throw NotConfigured exception if no file is loaded?
+        $input_file = $this->getOriginalFilePath();
+        $imagick_image = new \Imagick($input_file);
+        $this->original_geometry = $imagick_image->getImageGeometry();
 
-            $this->_processFile($input_file, $output_file);
+        if (!$this->isProcessed()) {
+            $this->_processImage($imagick_image);
             $this->is_processed = true;
         }
         return $this;
     }
 
-    private function _processFile($input_file, $output_file) {
+    private function _processImage($imagick_image) {
+        $input_file = $this->getOriginalFilePath();
+        $output_file = $this->getProcessedFilePath();
+        // TODO throw NotConfigured exception if no file is loaded?
+
+        $geometry = $this->original_geometry;
+        $resize_width = 40;
+        $resize_height = $resize_width * $geometry["height"] / $geometry["width"];
         // TODO add config for resize width and blur radius
 
-        $image = new \Imagick($input_file);
-        $geometry = $image->getImageGeometry();
-        $width = 40;
-        $height = $width * $geometry["height"] / $geometry["width"];
-
-        $resize = $image->adaptiveResizeImage($width, $height, true);
-        if (!$resize) {
+        $resized = $imagick_image->adaptiveResizeImage($resize_width, $resize_height, true);
+        if (!$resized) {
             throw new ProcessError("Resize failed: $input_file");
         }
-        $blur = $image->adaptiveBlurImage(10, 10);
-        if (!$blur) {
+        $blurred = $imagick_image->adaptiveBlurImage(10, 10);
+        if (!$blurred) {
             throw new ProcessError("Blur failed: $input_file");
         }
-        $write = $image->writeImage($output_file);
-        if (!$resize) {
+        $written = $imagick_image->writeImage($output_file);
+        if (!$written) {
             throw new ProcessError("Write failed: $input_file");
         }
     }
