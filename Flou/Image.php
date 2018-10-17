@@ -95,27 +95,6 @@ class Image {
         return $this;
     }
 
-    public function getHTML($alt="") {
-        // TODO add support for custom output path...
-
-        $original_url = $this->getOriginalURL();
-        $processed_url = $this->getProcessedURL();
-        $template = ( 
-            '<div class="flou-container">' .
-                sprintf('<img class="flou-processed-image" src="%s" alt="" />',
-                    $processed_url) .
-                sprintf('<img class="flou-original-image" src="%s" alt="%s" />',
-                    $original_url, $alt) .
-            '</div>'
-        );
-        if ($original_url && $processed_url) {
-            return $template;
-        }
-
-        // TODO throw NotConfigured exception?
-        return null;
-    }
-
     public function getOriginalFilePath() {
         if ($this->base_path && $this->original_file) {
             return Path::join($this->base_path, $this->original_file);
@@ -141,6 +120,43 @@ class Image {
         if ($this->base_url && $this->default_processed_file) {
             return "{$this->base_url}/{$this->default_processed_file}";
         }
+        return null;
+    }
+
+    public function getOriginalWidth() {
+        if ($this->original_geometry) {
+            return $this->original_geometry["width"];
+        }
+        return null;
+    }
+
+    public function getOriginalHeight() {
+        if ($this->original_geometry) {
+            return $this->original_geometry["height"];
+        }
+        return null;
+    }
+
+    public function getHTML($alt="") {
+        // TODO add support for custom output path...
+
+        $container_class = "flou-container";
+        $img_class = "flou-image";
+        $width = $this->getOriginalWidth();
+        $height = $this->getOriginalHeight();
+        $processed_url = $this->getProcessedURL();
+        $original_url = $this->getOriginalURL();
+        $template = sprintf(
+            '<div class="%s">' .
+                '<img class="%s" width="%s" height="%s" src="%s" data-original="%s" alt="%s" />' .
+            '</div>',
+            $container_class, $img_class, $width, $height, $processed_url, $original_url, $alt
+        );
+        if ($original_url && $processed_url) {
+            return $template;
+        }
+
+        // TODO throw NotConfigured exception?
         return null;
     }
 }
