@@ -78,6 +78,14 @@ php -S 0.0.0.0:8080 -t demos
 Then, visit `http://localhost:8080`.
 
 
+### Running the tests
+
+```
+composer install
+./vendor/bin/phpunit -v tests
+```
+
+
 ### Disclaimer
 
 This is a work in progress :)
