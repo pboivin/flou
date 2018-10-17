@@ -1,0 +1,11 @@
+.flou-container {
+    overflow: hidden;
+}
+.flou-image {
+    max-width: 100%;
+    height: auto;
+    filter: blur(50px);
+}
+.flou-image-loaded {
+    filter: none;
+}
