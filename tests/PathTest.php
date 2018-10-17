@@ -27,8 +27,8 @@ class PathTest extends TestCase {
         $this->assertTrue($caught);
 
         // Must be a directory
-        try {
         $caught = false;
+        try {
             $path = Path::join(self::$base_path, "image1.jpg");
             Path::checkDirectory($path);
         } catch(InvalidDirectory $e) {
