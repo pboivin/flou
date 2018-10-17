@@ -68,10 +68,8 @@ class ImageTest extends TestCase {
         $html = $image->setBaseUrl("/img")->getHTML("Image Description");
         $container = new SimpleXMLElement($html);
         $this->assertEquals("flou-container", $container['class']);
-        $this->assertEquals(2, count($container->img));
-        $this->assertEquals("flou-processed-image", $container->img[0]['class']);
-        $this->assertEquals("", $container->img[0]['alt']);
-        $this->assertEquals("flou-original-image", $container->img[1]['class']);
-        $this->assertEquals("Image Description", $container->img[1]['alt']);
+        $this->assertEquals(1, count($container->img));
+        $this->assertEquals("flou-image", $container->img['class']);
+        $this->assertEquals("Image Description", $container->img['alt']);
     }
 }
