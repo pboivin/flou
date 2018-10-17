@@ -4,11 +4,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../../vendor/autoload.php";
 
-$image1 = (new Flou\Image())
-    ->setBasePath(__DIR__ . "/img")
-    ->setBaseURL("./img")
+use Flou\Image;
+
+$image1 = (new Image())
+    ->setBasePath(__DIR__ . "/../img")
+    ->setBaseURL("/img")
     ->load("image1.jpg")
     ->process();
 
@@ -17,14 +19,14 @@ $image1 = (new Flou\Image())
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Demo</title>
+    <title>Custom Assets Demo</title>
+    <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="demo.css">
     <script src="demo.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Demo</h1>
-
+        <h1>Custom Assets Demo</h1>
         <div class="flou-container">
             <img
                 class="flou-processed-image"
