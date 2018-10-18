@@ -52,8 +52,6 @@ class Image {
     private function _processImage($imagick_image) {
         $input_file = $this->getOriginalFilePath();
         $output_file = $this->getProcessedFilePath();
-        // TODO throw NotConfigured exception if no file is loaded?
-
         $geometry = $this->original_geometry;
         $resize_width = 40;
         $resize_height = $resize_width * $geometry["height"] / $geometry["width"];
@@ -155,8 +153,6 @@ class Image {
         if ($original_url && $processed_url) {
             return $template;
         }
-
-        // TODO throw NotConfigured exception?
         return null;
     }
 }
