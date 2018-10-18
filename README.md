@@ -20,6 +20,7 @@ starting point to integrate with external lazy-loading libraries.
 ### Requirements
 
 - PHP >= 7.0
+- `imagick` PHP extension (ImageMagick)
 - Composer
 
 
