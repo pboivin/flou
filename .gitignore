@@ -1,4 +1,9 @@
+# Vim
 *.swp
+
+# Composer
 vendor/
+composer.lock
+
+# Project related
 tests/**/*.flou.jpg
-demo/**/*.flou.jpg
