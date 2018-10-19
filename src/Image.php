@@ -35,17 +35,34 @@ class Image {
         $this->default_processed_file = "{$filename}.flou.{$extension}";
     }
 
-    public function process() {
+    private function _internalProcess($force_process=false) {
         // TODO add support for custom output path...
 
         $input_file = $this->getOriginalFilePath();
         $imagick_image = new \Imagick($input_file);
         $this->original_geometry = $imagick_image->getImageGeometry();
 
-        if (!$this->isProcessed()) {
+        if ($force_process or !$this->isProcessed()) {
             $this->_processImage($imagick_image);
             $this->is_processed = true;
         }
+    }
+
+    public function process() {
+        // TODO add support for custom output path...
+
+        $this->_internalProcess();
+        return $this;
+    }
+
+    public function forceProcess() {
+        // TODO add support for custom output path...
+
+        $output_file = $this->getProcessedFilePath();
+        if (file_exists($output_file)) {
+            unlink($output_file);
+        }
+        $this->_internalProcess(true);
         return $this;
     }
 
