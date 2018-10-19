@@ -79,7 +79,7 @@ php -S 0.0.0.0:8080 -t demos
 Then, visit `http://localhost:8080`.
 
 
-### Running the tests
+#### Running the tests
 
 ```
 composer install
