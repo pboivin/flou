@@ -7,11 +7,13 @@ use Flou\Image;
 class ImageTest extends TestCase {
     public static $base_path;
     public static $processed_path;
+    public static $custom_processed_path;
 
     public static function setUpBeforeClass() {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
         self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
+        self::$custom_processed_path = Path::join(self::$base_path, "processed_image.jpg");
         self::_cleanup();
     }
 
@@ -22,6 +24,9 @@ class ImageTest extends TestCase {
     public static function _cleanup() {
         if (file_exists(self::$processed_path)) {
             unlink(self::$processed_path);
+        }
+        if (file_exists(self::$custom_processed_path)) {
+            unlink(self::$custom_processed_path);
         }
     }
 
@@ -52,6 +57,23 @@ class ImageTest extends TestCase {
         $image->process();
         $this->assertTrue($image->isProcessed());
         $this->assertTrue(file_exists($processed_path));
+    }
+
+    public function testCustomProcessedFile() {
+        $initial_processed_path = self::$processed_path;
+        $custom_processed_path = self::$custom_processed_path;
+        $this->assertFalse(file_exists($custom_processed_path));
+
+        $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg");
+        $this->assertEquals($initial_processed_path, $image->getProcessedFilePath());
+
+        $image->setProcessedFile("processed_image.jpg");
+        $image->process();
+        $this->assertTrue($image->isProcessed());
+        $this->assertEquals($custom_processed_path, $image->getProcessedFilePath());
+        $this->assertTrue(file_exists($custom_processed_path));
     }
 
     public function testForceProcess() {
