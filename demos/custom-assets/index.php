@@ -25,7 +25,7 @@ $image1 = (new Image())
     <script src="demo.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="demo-container">
         <h1>Custom Assets Demo</h1>
         <div class="flou-container">
             <img

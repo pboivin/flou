@@ -1,7 +1,3 @@
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
 .flou-container {
     position: relative;
     overflow: hidden;
