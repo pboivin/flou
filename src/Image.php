@@ -191,8 +191,6 @@ class Image {
     }
 
     public function getHTML($alt="") {
-        // TODO add support for custom output path...
-
         $container_class = "flou-container";
         $img_class = "flou-image";
         $width = $this->getOriginalWidth();
