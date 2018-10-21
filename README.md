@@ -1,6 +1,5 @@
 # flou
 
-
 <p align='center'>
 <img src='./demos/img/basic-demo.gif' width="500" alt='Animation of the provided basic demo'>
 </p>
@@ -26,7 +25,7 @@ starting point to integrate with external lazy-loading libraries.
 
 ### Getting started
 
-#### Installing from the Github repository
+#### Installing via Composer
 
 Add the following to your `composer.json`:
 
@@ -62,17 +61,27 @@ This generates the placeholder image at `/path/to/project/static/images/image1.f
 when the page is loaded for the first time. Any subsequent page load will not
 attempt to regenerate the placeholder; the existing image will be used instead.
 
-Have a look at the `demos/` folder for complete examples.
+
+#### Integrating to your project
+
+Have a look at the `demos/basic/` folder for an example of a complete integration
+using the built-in front-end helper.
 
 
-#### Running the demos
+### Development
 
-Clone the repository and run PHP's built-in web server:
+#### Cloning the repository and setting up
 
 ```
 git clone https://github.com/pboi20/flou.git
 cd flou
-composer dumpautoload
+composer install
+```
+
+
+#### Running the demos
+
+```
 php -S 0.0.0.0:8080 -t demos
 ```
 
@@ -82,7 +91,6 @@ Then, visit `http://localhost:8080`.
 #### Running the tests
 
 ```
-composer install
 ./vendor/bin/phpunit -v tests
 ```
 
