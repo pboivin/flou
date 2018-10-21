@@ -10,6 +10,7 @@ class Image {
     private $original_file;
     private $default_processed_file;
     private $original_geometry;
+    private $is_processed;
 
     public function load($original_file) {
         if ($this->base_path) {
