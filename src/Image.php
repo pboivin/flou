@@ -157,8 +157,13 @@ class Image {
     public function getProcessedURL() {
         $base_url = $this->base_url;
 
-        if ($this->custom_processed_url) {
-            $base_url = $this->custom_processed_url;
+        if ($this->custom_processed_path) {
+            if ($this->custom_processed_url) {
+                $base_url = $this->custom_processed_url;
+            } else {
+                // custom_processed_url is required when using custom_processed_path
+                return null;
+            }
         }
         if ($base_url) {
             $processed_file = $this->default_processed_file;
@@ -194,12 +199,14 @@ class Image {
         $height = $this->getOriginalHeight();
         $processed_url = $this->getProcessedURL();
         $original_url = $this->getOriginalURL();
+
         $template = sprintf(
             '<div class="%s">' .
                 '<img class="%s" width="%s" height="%s" src="%s" data-original="%s" alt="%s" />' .
             '</div>',
             $container_class, $img_class, $width, $height, $processed_url, $original_url, $alt
         );
+
         if ($original_url && $processed_url) {
             return $template;
         }

@@ -8,19 +8,21 @@ class ImageTest extends TestCase {
     public static $base_path;
     public static $processed_path;
     public static $custom_processed_path1;
-    public static $custom_processed_basepath2;
+    public static $custom_processed_basepath;
     public static $custom_processed_path2;
+    public static $custom_processed_path3;
 
     public static function setUpBeforeClass() {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
         self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
         self::$custom_processed_path1 = Path::join(self::$base_path, "processed_image.jpg");
-        self::$custom_processed_basepath2 = Path::join($current_dir, "fixtures", "tmp");
-        self::$custom_processed_path2 = Path::join(self::$custom_processed_basepath2, "image1.flou.jpg");
+        self::$custom_processed_basepath = Path::join($current_dir, "fixtures", "tmp");
+        self::$custom_processed_path2 = Path::join(self::$custom_processed_basepath, "image1.flou.jpg");
+        self::$custom_processed_path3 = Path::join(self::$custom_processed_basepath, "image1.custom.jpg");
 
         self::_cleanup();
-        mkdir(self::$custom_processed_basepath2);
+        mkdir(self::$custom_processed_basepath);
     }
 
     public static function tearDownAfterClass() {
@@ -32,9 +34,10 @@ class ImageTest extends TestCase {
             self::$processed_path,
             self::$custom_processed_path1,
             self::$custom_processed_path2,
+            self::$custom_processed_path3,
         ];
         $dirs = [
-            self::$custom_processed_basepath2,
+            self::$custom_processed_basepath,
         ];
         foreach ($files as $file) {
             if (file_exists($file)) {
@@ -124,7 +127,7 @@ class ImageTest extends TestCase {
      */
     public function testCustomProcessedPath() {
         $initial_processed_path = self::$processed_path;
-        $custom_processed_basepath = self::$custom_processed_basepath2;
+        $custom_processed_basepath = self::$custom_processed_basepath;
         $custom_processed_path = self::$custom_processed_path2;
         $this->assertFalse(file_exists($custom_processed_path));
 
@@ -171,7 +174,7 @@ class ImageTest extends TestCase {
     }
 
     /**
-     * Generate the HTML markup for an image (default output settings)
+     * Generate the HTML markup for an image using default output settings
      */
     public function testGetHTML() {
         $image = (new Flou\Image())
@@ -187,8 +190,46 @@ class ImageTest extends TestCase {
         $html = $image
             ->setBaseUrl("/img")
             ->getHTML("Image Description");
-
         $expected_src = "/img/image1.flou.jpg";
+        $expected_data_original = "/img/image1.jpg";
+
+        // The HTML is as expected
+        $container = new SimpleXMLElement($html);
+        $this->assertEquals("flou-container", $container['class']);
+        $this->assertEquals(1, count($container->img));
+        $this->assertEquals("flou-image", $container->img['class']);
+        $this->assertEquals($expected_src, $container->img['src']);
+        $this->assertEquals($expected_data_original, $container->img['data-original']);
+        $this->assertEquals("Image Description", $container->img['alt']);
+    }
+
+    /**
+     * Generate the HTML markup for an image **using custom output settings**
+     */
+    public function testGetHTMLCustomOutput() {
+        $custom_processed_basepath = self::$custom_processed_basepath;
+        $custom_processed_path = self::$custom_processed_path3;
+
+        $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg")
+            ->setProcessedPath($custom_processed_basepath)
+            ->setProcessedFile("image1.custom.jpg")
+            ->process();
+        $this->assertTrue($image->isProcessed());
+        $this->assertTrue(file_exists($custom_processed_path));
+
+        // Cannot generate HTML without a processed_url when using a custom
+        // output path
+        $html = $image
+            ->setBaseUrl("/img")
+            ->getHTML("Image Description");
+        $this->assertNull($html);
+
+        $html = $image
+            ->setProcessedUrl("/custom")
+            ->getHTML("Image Description");
+        $expected_src = "/custom/image1.custom.jpg";
         $expected_data_original = "/img/image1.jpg";
 
         // The HTML is as expected
