@@ -181,14 +181,23 @@ class ImageTest extends TestCase {
         $this->assertTrue($image->isProcessed());
 
         // Cannot generate HTML without a base_url
-        $html = $image->getHTML();
+        $html = $image->getHTML("Image Description");
         $this->assertNull($html);
 
-        $html = $image->setBaseUrl("/img")->getHTML("Image Description");
+        $html = $image
+            ->setBaseUrl("/img")
+            ->getHTML("Image Description");
+
+        $expected_src = "/img/image1.flou.jpg";
+        $expected_data_original = "/img/image1.jpg";
+
+        // The HTML is as expected
         $container = new SimpleXMLElement($html);
         $this->assertEquals("flou-container", $container['class']);
         $this->assertEquals(1, count($container->img));
         $this->assertEquals("flou-image", $container->img['class']);
+        $this->assertEquals($expected_src, $container->img['src']);
+        $this->assertEquals($expected_data_original, $container->img['data-original']);
         $this->assertEquals("Image Description", $container->img['alt']);
     }
 }
