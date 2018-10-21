@@ -18,6 +18,7 @@ class ImageTest extends TestCase {
         self::$custom_processed_path1 = Path::join(self::$base_path, "processed_image.jpg");
         self::$custom_processed_basepath2 = Path::join($current_dir, "fixtures", "tmp");
         self::$custom_processed_path2 = Path::join(self::$custom_processed_basepath2, "image1.flou.jpg");
+
         self::_cleanup();
         mkdir(self::$custom_processed_basepath2);
     }
@@ -47,20 +48,34 @@ class ImageTest extends TestCase {
         }
     }
 
+    /**
+     * Call `setBasePath` and load an image relative to that path
+     */
     public function testLoadWithBasePath() {
         $path = Path::join(self::$base_path, "image1.jpg");
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->load("image1.jpg");
+
+        // `getOriginalFilePath` returns the full path to the original file
         $this->assertEquals($path, $image->getOriginalFilePath());
     }
 
+    /**
+     * Load an image using it's full path
+     */
     public function testLoadFullPath() {
         $path = Path::join(self::$base_path, "image1.jpg");
         $image = (new Flou\Image())->load($path);
+
+        // `getOriginalFilePath` returns the full path to the original file;
+        // the base path was extracted from the full path provided to `load`
         $this->assertEquals($path, $image->getOriginalFilePath());
     }
 
+    /**
+     * Process an image using the default output path and default output filename
+     */
     public function testProcess() {
         $processed_path = self::$processed_path;
         $this->assertFalse(file_exists($processed_path));
@@ -68,14 +83,21 @@ class ImageTest extends TestCase {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->load("image1.jpg");
+
+        // `getProcessedFilePath` returns the expected full path to the processed
+        // image (not yet processed)
         $this->assertEquals($processed_path, $image->getProcessedFilePath());
         $this->assertFalse($image->isProcessed());
 
+        // Process and save the image
         $image->process();
         $this->assertTrue($image->isProcessed());
         $this->assertTrue(file_exists($processed_path));
     }
 
+    /**
+     * Process an image using the default output path and **a custom output filename**
+     */
     public function testCustomProcessedFile() {
         $initial_processed_path = self::$processed_path;
         $custom_processed_path = self::$custom_processed_path1;
@@ -84,15 +106,22 @@ class ImageTest extends TestCase {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->load("image1.jpg");
+
+        // `getProcessedFilePath` returns the expected default path
         $this->assertEquals($initial_processed_path, $image->getProcessedFilePath());
 
         $image->setProcessedFile("processed_image.jpg");
         $image->process();
         $this->assertTrue($image->isProcessed());
+
+        // `getProcessedFilePath` return the custom path
         $this->assertEquals($custom_processed_path, $image->getProcessedFilePath());
         $this->assertTrue(file_exists($custom_processed_path));
     }
 
+    /**
+     * Process an image using **a custom output path** and the default output filename
+     */
     public function testCustomProcessedPath() {
         $initial_processed_path = self::$processed_path;
         $custom_processed_basepath = self::$custom_processed_basepath2;
@@ -111,6 +140,9 @@ class ImageTest extends TestCase {
         $this->assertTrue(file_exists($custom_processed_path));
     }
 
+    /**
+     * Force-process an image that has already been processed
+     */
     public function testForceProcess() {
         $processed_path = self::$processed_path;
 
@@ -138,6 +170,9 @@ class ImageTest extends TestCase {
         $this->assertNotEquals($mtime2, $mtime3);
     }
 
+    /**
+     * Generate the HTML markup for an image (default output settings)
+     */
     public function testGetHTML() {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
