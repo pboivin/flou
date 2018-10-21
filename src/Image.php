@@ -39,8 +39,6 @@ class Image {
     }
 
     private function _internalProcess($force_process=false) {
-        // TODO add support for custom output path...
-
         $input_file = $this->getOriginalFilePath();
         $imagick_image = new \Imagick($input_file);
         $this->original_geometry = $imagick_image->getImageGeometry();
@@ -52,15 +50,11 @@ class Image {
     }
 
     public function process() {
-        // TODO add support for custom output path...
-
         $this->_internalProcess();
         return $this;
     }
 
     public function forceProcess() {
-        // TODO add support for custom output path...
-
         $output_file = $this->getProcessedFilePath();
         if (file_exists($output_file)) {
             unlink($output_file);
