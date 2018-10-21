@@ -10,6 +10,7 @@ class Image {
     private $original_file;
     private $default_processed_file;
     private $custom_processed_file;
+    private $custom_processed_path;
     private $original_geometry;
     private $is_processed;
 
@@ -107,6 +108,11 @@ class Image {
         return $this;
     }
 
+    public function setProcessedPath($processed_path) {
+        $this->custom_processed_path = $processed_path;
+        return $this;
+    }
+
     public function setProcessedFile($processed_file) {
         $this->custom_processed_file = $processed_file;
         return $this;
@@ -125,15 +131,18 @@ class Image {
     }
 
     public function getProcessedFilePath() {
-        if ($this->base_path) {
+        $base_path = $this->base_path;
+
+        if ($this->custom_processed_path) {
+            $base_path = $this->custom_processed_path;
+        }
+        if ($base_path) {
+            $processed_file = $this->default_processed_file;
+
             if ($this->custom_processed_file) {
-                return Path::join(
-                    $this->base_path, $this->custom_processed_file);
+                $processed_file = $this->custom_processed_file;
             }
-            elseif ($this->default_processed_file) {
-                return Path::join(
-                    $this->base_path, $this->default_processed_file);
-            }
+            return Path::join($base_path, $processed_file);
         }
         return null;
     }

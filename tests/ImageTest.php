@@ -7,14 +7,19 @@ use Flou\Image;
 class ImageTest extends TestCase {
     public static $base_path;
     public static $processed_path;
-    public static $custom_processed_path;
+    public static $custom_processed_path1;
+    public static $custom_processed_basepath2;
+    public static $custom_processed_path2;
 
     public static function setUpBeforeClass() {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
         self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
-        self::$custom_processed_path = Path::join(self::$base_path, "processed_image.jpg");
+        self::$custom_processed_path1 = Path::join(self::$base_path, "processed_image.jpg");
+        self::$custom_processed_basepath2 = Path::join($current_dir, "fixtures", "tmp");
+        self::$custom_processed_path2 = Path::join(self::$custom_processed_basepath2, "image1.flou.jpg");
         self::_cleanup();
+        mkdir(self::$custom_processed_basepath2);
     }
 
     public static function tearDownAfterClass() {
@@ -22,11 +27,23 @@ class ImageTest extends TestCase {
     }
 
     public static function _cleanup() {
-        if (file_exists(self::$processed_path)) {
-            unlink(self::$processed_path);
+        $files = [
+            self::$processed_path,
+            self::$custom_processed_path1,
+            self::$custom_processed_path2,
+        ];
+        $dirs = [
+            self::$custom_processed_basepath2,
+        ];
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
         }
-        if (file_exists(self::$custom_processed_path)) {
-            unlink(self::$custom_processed_path);
+        foreach ($dirs as $dir) {
+            if (file_exists($dir)) {
+                rmdir($dir);
+            }
         }
     }
 
@@ -61,7 +78,7 @@ class ImageTest extends TestCase {
 
     public function testCustomProcessedFile() {
         $initial_processed_path = self::$processed_path;
-        $custom_processed_path = self::$custom_processed_path;
+        $custom_processed_path = self::$custom_processed_path1;
         $this->assertFalse(file_exists($custom_processed_path));
 
         $image = (new Flou\Image())
@@ -70,6 +87,24 @@ class ImageTest extends TestCase {
         $this->assertEquals($initial_processed_path, $image->getProcessedFilePath());
 
         $image->setProcessedFile("processed_image.jpg");
+        $image->process();
+        $this->assertTrue($image->isProcessed());
+        $this->assertEquals($custom_processed_path, $image->getProcessedFilePath());
+        $this->assertTrue(file_exists($custom_processed_path));
+    }
+
+    public function testCustomProcessedPath() {
+        $initial_processed_path = self::$processed_path;
+        $custom_processed_basepath = self::$custom_processed_basepath2;
+        $custom_processed_path = self::$custom_processed_path2;
+        $this->assertFalse(file_exists($custom_processed_path));
+
+        $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg");
+        $this->assertEquals($initial_processed_path, $image->getProcessedFilePath());
+
+        $image->setProcessedPath($custom_processed_basepath);
         $image->process();
         $this->assertTrue($image->isProcessed());
         $this->assertEquals($custom_processed_path, $image->getProcessedFilePath());
