@@ -158,14 +158,12 @@ class ImageTest extends TestCase {
         // The image was processed and saved
         $this->assertTrue($image->isProcessed());
 
-        sleep(1);
         $image->process();
         $mtime2 = filemtime($processed_path);
 
         // The processed image already existed, it was not regenerated
         $this->assertEquals($mtime1, $mtime2);
 
-        sleep(1);
         $image->forceProcess();
         $mtime3 = filemtime($processed_path);
 
