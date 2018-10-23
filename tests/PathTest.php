@@ -5,21 +5,24 @@ use Flou\Path;
 use Flou\Exception\InvalidFile;
 use Flou\Exception\InvalidDirectory;
 
-class PathTest extends TestCase {
+class PathTest extends TestCase
+{
     public static $base_path;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
     }
 
-    public function testCheckDirectory() {
+    public function testCheckDirectory()
+    {
         // Must exist
         $caught = false;
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
             Path::checkDirectory($path);
-        } catch(InvalidDirectory $e) {
+        } catch (InvalidDirectory $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path does not exist/", $message);
@@ -31,7 +34,7 @@ class PathTest extends TestCase {
         try {
             $path = Path::join(self::$base_path, "image1.jpg");
             Path::checkDirectory($path);
-        } catch(InvalidDirectory $e) {
+        } catch (InvalidDirectory $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path is not a directory/", $message);
@@ -39,13 +42,14 @@ class PathTest extends TestCase {
         $this->assertTrue($caught);
     }
 
-    public function testCheckFile() {
+    public function testCheckFile()
+    {
         // Must exist
         $caught = false;
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
             Path::checkFile($path);
-        } catch(InvalidFile $e) {
+        } catch (InvalidFile $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path does not exist/", $message);
@@ -57,7 +61,7 @@ class PathTest extends TestCase {
         try {
             $path = self::$base_path;
             Path::checkFile($path);
-        } catch(InvalidFile $e) {
+        } catch (InvalidFile $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path is not a file/", $message);
@@ -65,7 +69,8 @@ class PathTest extends TestCase {
         $this->assertTrue($caught);
     }
 
-    public function testFilename() {
+    public function testFilename()
+    {
         $filename = Path::filename("hello.php");
         $this->assertEquals("hello", $filename);
 
@@ -79,7 +84,8 @@ class PathTest extends TestCase {
         $this->assertEquals("", $filename);
     }
 
-    public function testExtension() {
+    public function testExtension()
+    {
         $extension = Path::extension("hello.php");
         $this->assertEquals("php", $extension);
 

@@ -4,7 +4,8 @@ use PHPUnit\Framework\TestCase;
 use Flou\Path;
 use Flou\Image;
 
-class ImageTest extends TestCase {
+class ImageTest extends TestCase
+{
     public static $base_path;
     public static $processed_path;
     public static $custom_processed_path1;
@@ -12,7 +13,8 @@ class ImageTest extends TestCase {
     public static $custom_processed_path2;
     public static $custom_processed_path3;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
         self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
@@ -25,11 +27,13 @@ class ImageTest extends TestCase {
         mkdir(self::$custom_processed_basepath);
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass()
+    {
         self::_cleanup();
     }
 
-    public static function _cleanup() {
+    public static function _cleanup()
+    {
         $files = [
             self::$processed_path,
             self::$custom_processed_path1,
@@ -54,7 +58,8 @@ class ImageTest extends TestCase {
     /**
      * Call `setBasePath` and load an image relative to that path
      */
-    public function testLoadWithBasePath() {
+    public function testLoadWithBasePath()
+    {
         $path = Path::join(self::$base_path, "image1.jpg");
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
@@ -67,7 +72,8 @@ class ImageTest extends TestCase {
     /**
      * Load an image using it's full path
      */
-    public function testLoadFullPath() {
+    public function testLoadFullPath()
+    {
         $path = Path::join(self::$base_path, "image1.jpg");
         $image = (new Flou\Image())->load($path);
 
@@ -79,7 +85,8 @@ class ImageTest extends TestCase {
     /**
      * Process an image using the default output path and default output filename
      */
-    public function testProcess() {
+    public function testProcess()
+    {
         $processed_path = self::$processed_path;
         $this->assertFalse(file_exists($processed_path));
 
@@ -101,7 +108,8 @@ class ImageTest extends TestCase {
     /**
      * Process an image using the default output path and **a custom output filename**
      */
-    public function testCustomProcessedFile() {
+    public function testCustomProcessedFile()
+    {
         $initial_processed_path = self::$processed_path;
         $custom_processed_path = self::$custom_processed_path1;
         $this->assertFalse(file_exists($custom_processed_path));
@@ -125,7 +133,8 @@ class ImageTest extends TestCase {
     /**
      * Process an image using **a custom output path** and the default output filename
      */
-    public function testCustomProcessedPath() {
+    public function testCustomProcessedPath()
+    {
         $initial_processed_path = self::$processed_path;
         $custom_processed_basepath = self::$custom_processed_basepath;
         $custom_processed_path = self::$custom_processed_path2;
@@ -146,7 +155,8 @@ class ImageTest extends TestCase {
     /**
      * Force-process an image that has already been processed
      */
-    public function testForceProcess() {
+    public function testForceProcess()
+    {
         $processed_path = self::$processed_path;
 
         $image = (new Flou\Image())
@@ -174,7 +184,8 @@ class ImageTest extends TestCase {
     /**
      * Generate the HTML markup for an image using default output settings
      */
-    public function testGetHTML() {
+    public function testGetHTML()
+    {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->load("image1.jpg")
@@ -204,7 +215,8 @@ class ImageTest extends TestCase {
     /**
      * Generate the HTML markup for an image **using custom output settings**
      */
-    public function testGetHTMLCustomOutput() {
+    public function testGetHTMLCustomOutput()
+    {
         $custom_processed_basepath = self::$custom_processed_basepath;
         $custom_processed_path = self::$custom_processed_path3;
 
