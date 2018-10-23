@@ -4,7 +4,8 @@ namespace Flou;
 use Flou\Path;
 use Flou\Exception\ProcessError;
 
-class Image {
+class Image
+{
     private $base_path;
     private $base_url;
     private $original_file;
@@ -15,7 +16,8 @@ class Image {
     private $original_geometry;
     private $is_processed;
 
-    public function load($original_file) {
+    public function load($original_file)
+    {
         if ($this->base_path) {
             // original_file is to be found in base_path
             $file_path = Path::join($this->base_path, $original_file);
@@ -33,13 +35,15 @@ class Image {
         return $this;
     }
 
-    private function _setDefaultProcessedFile() {
+    private function _setDefaultProcessedFile()
+    {
         $filename = Path::filename($this->original_file);
         $extension = Path::extension($this->original_file);
         $this->default_processed_file = "{$filename}.flou.{$extension}";
     }
 
-    private function _internalProcess($force_process=false) {
+    private function _internalProcess($force_process=false)
+    {
         $input_file = $this->getOriginalFilePath();
         $imagick_image = new \Imagick($input_file);
         $this->original_geometry = $imagick_image->getImageGeometry();
@@ -50,12 +54,14 @@ class Image {
         }
     }
 
-    public function process() {
+    public function process()
+    {
         $this->_internalProcess();
         return $this;
     }
 
-    public function forceProcess() {
+    public function forceProcess()
+    {
         $output_file = $this->getProcessedFilePath();
         if (file_exists($output_file)) {
             unlink($output_file);
@@ -64,7 +70,8 @@ class Image {
         return $this;
     }
 
-    private function _processImage($imagick_image) {
+    private function _processImage($imagick_image)
+    {
         $input_file = $this->getOriginalFilePath();
         $output_file = $this->getProcessedFilePath();
         $geometry = $this->original_geometry;
@@ -86,7 +93,8 @@ class Image {
         }
     }
 
-    public function isProcessed() {
+    public function isProcessed()
+    {
         if ($this->is_processed) {
             return true;
         }
@@ -97,40 +105,47 @@ class Image {
         return false;
     }
 
-    public function setBasePath($base_path) {
+    public function setBasePath($base_path)
+    {
         Path::checkDirectory($base_path);
         $this->base_path = $base_path;
         return $this;
     }
 
-    public function setProcessedPath($processed_path) {
+    public function setProcessedPath($processed_path)
+    {
         $this->custom_processed_path = $processed_path;
         return $this;
     }
 
-    public function setProcessedFile($processed_file) {
+    public function setProcessedFile($processed_file)
+    {
         $this->custom_processed_file = $processed_file;
         return $this;
     }
 
-    public function setBaseUrl($base_url) {
+    public function setBaseUrl($base_url)
+    {
         $this->base_url = $base_url;
         return $this;
     }
 
-    public function setProcessedUrl($processed_url) {
+    public function setProcessedUrl($processed_url)
+    {
         $this->custom_processed_url = $processed_url;
         return $this;
     }
 
-    public function getOriginalFilePath() {
+    public function getOriginalFilePath()
+    {
         if ($this->base_path && $this->original_file) {
             return Path::join($this->base_path, $this->original_file);
         }
         return null;
     }
 
-    public function getProcessedFilePath() {
+    public function getProcessedFilePath()
+    {
         $base_path = $this->base_path;
 
         if ($this->custom_processed_path) {
@@ -147,14 +162,16 @@ class Image {
         return null;
     }
 
-    public function getOriginalURL() {
+    public function getOriginalURL()
+    {
         if ($this->base_url && $this->original_file) {
             return "{$this->base_url}/{$this->original_file}";
         }
         return null;
     }
 
-    public function getProcessedURL() {
+    public function getProcessedURL()
+    {
         $base_url = $this->base_url;
 
         if ($this->custom_processed_path) {
@@ -176,21 +193,24 @@ class Image {
         return null;
     }
 
-    public function getOriginalWidth() {
+    public function getOriginalWidth()
+    {
         if ($this->original_geometry) {
             return $this->original_geometry["width"];
         }
         return null;
     }
 
-    public function getOriginalHeight() {
+    public function getOriginalHeight()
+    {
         if ($this->original_geometry) {
             return $this->original_geometry["height"];
         }
         return null;
     }
 
-    public function getHTML($alt="") {
+    public function getHTML($alt="")
+    {
         $container_class = "flou-container";
         $img_class = "flou-image";
         $width = $this->getOriginalWidth();

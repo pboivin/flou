@@ -1,4 +1,6 @@
 <?php
 namespace Flou\Exception;
 
-class InvalidDirectory extends \Exception {}
+class InvalidDirectory extends \Exception
+{
+}

@@ -1,4 +1,6 @@
 <?php
 namespace Flou\Exception;
 
-class ProcessError extends \Exception {}
+class ProcessError extends \Exception
+{
+}
