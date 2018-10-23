@@ -5,5 +5,8 @@
 vendor/
 composer.lock
 
+# PHP-CS-Fixer
+.php_cs.cache
+
 # Project related
 tests/**/*.flou.jpg

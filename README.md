@@ -95,6 +95,18 @@ Then, visit `http://localhost:8080`.
 ```
 
 
+#### Running PHP-CS-Fixer (PHP Coding Standards Fixer)
+
+```
+# Dry run (see what needs to be changed)
+./vendor/bin/php-cs-fixer -vvv fix --dry-run --diff
+
+# Fix
+./vendor/bin/php-cs-fixer fix
+
+```
+
+
 ### Disclaimer
 
 This is a work in progress :)
