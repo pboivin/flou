@@ -33,33 +33,33 @@ class Image
             $this->base_path = dirname($file_path);
             $this->original_file = basename($file_path);
         }
-        $this->_setDefaultProcessedFile();
+        $this->setDefaultProcessedFile();
         $this->is_processed = false;
         return $this;
     }
 
-    private function _setDefaultProcessedFile()
+    private function setDefaultProcessedFile()
     {
         $filename = Path::filename($this->original_file);
         $extension = Path::extension($this->original_file);
         $this->default_processed_file = "{$filename}.flou.{$extension}";
     }
 
-    private function _internalProcess($force_process=false)
+    private function internalProcess($force_process=false)
     {
         $input_file = $this->getOriginalFilePath();
         $imagick_image = new \Imagick($input_file);
         $this->original_geometry = $imagick_image->getImageGeometry();
 
         if ($force_process or !$this->isProcessed()) {
-            $this->_processImage($imagick_image);
+            $this->processImage($imagick_image);
             $this->is_processed = true;
         }
     }
 
     public function process()
     {
-        $this->_internalProcess();
+        $this->internalProcess();
         return $this;
     }
 
@@ -69,11 +69,11 @@ class Image
         if (file_exists($output_file)) {
             unlink($output_file);
         }
-        $this->_internalProcess(true);
+        $this->internalProcess(true);
         return $this;
     }
 
-    private function _processImage($imagick_image)
+    private function processImage($imagick_image)
     {
         $input_file = $this->getOriginalFilePath();
         $output_file = $this->getProcessedFilePath();
