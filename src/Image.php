@@ -15,6 +15,9 @@ class Image
     private $custom_processed_url;
     private $original_geometry;
     private $is_processed;
+    private $resize_width = 40;
+    private $blur_radius = 10;
+    private $blur_sigma = 10;
 
     public function load($original_file)
     {
@@ -75,18 +78,21 @@ class Image
         $input_file = $this->getOriginalFilePath();
         $output_file = $this->getProcessedFilePath();
         $geometry = $this->original_geometry;
-        $resize_width = 40;
-        $resize_height = $resize_width * $geometry["height"] / $geometry["width"];
-        // TODO add config for resize width and blur radius
 
+        $resize_width = $this->resize_width;
+        $resize_height = $resize_width * $geometry["height"] / $geometry["width"];
         $resized = $imagick_image->adaptiveResizeImage($resize_width, $resize_height, true);
         if (!$resized) {
             throw new ProcessError("Resize failed: $input_file");
         }
-        $blurred = $imagick_image->adaptiveBlurImage(10, 10);
+
+        $radius = $this->blur_radius;
+        $sigma = $this->blur_sigma;;
+        $blurred = $imagick_image->adaptiveBlurImage($radius, $sigma);
         if (!$blurred) {
             throw new ProcessError("Blur failed: $input_file");
         }
+
         $written = $imagick_image->writeImage($output_file);
         if (!$written) {
             throw new ProcessError("Write failed: $input_file");
@@ -133,6 +139,24 @@ class Image
     public function setProcessedUrl($processed_url)
     {
         $this->custom_processed_url = $processed_url;
+        return $this;
+    }
+
+    public function setBlurRadius($value)
+    {
+        $this->blur_radius = $value;
+        return $this;
+    }
+
+    public function setBlurSigma($value)
+    {
+        $this->blur_sigma = $value;
+        return $this;
+    }
+
+    public function setResizeWidth($value)
+    {
+        $this->resize_width = $value;
         return $this;
     }
 
