@@ -2,7 +2,7 @@
 namespace Flou;
 
 use Flou\Path;
-use Flou\Exception\ProcessError;
+use Flou\Exception\ImageProcessException;
 
 class Image
 {
@@ -83,19 +83,19 @@ class Image
         $resize_height = $resize_width * $geometry["height"] / $geometry["width"];
         $resized = $imagick_image->adaptiveResizeImage($resize_width, $resize_height, true);
         if (!$resized) {
-            throw new ProcessError("Resize failed: $input_file");
+            throw new ImageProcessException("Resize failed: $input_file");
         }
 
         $radius = $this->blur_radius;
         $sigma = $this->blur_sigma;;
         $blurred = $imagick_image->adaptiveBlurImage($radius, $sigma);
         if (!$blurred) {
-            throw new ProcessError("Blur failed: $input_file");
+            throw new ImageProcessException("Blur failed: $input_file");
         }
 
         $written = $imagick_image->writeImage($output_file);
         if (!$written) {
-            throw new ProcessError("Write failed: $input_file");
+            throw new ImageProcessException("Write failed: $input_file");
         }
     }
 

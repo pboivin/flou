@@ -1,8 +1,8 @@
 <?php
 namespace Flou;
 
-use Flou\Exception\InvalidFile;
-use Flou\Exception\InvalidDirectory;
+use Flou\Exception\InvalidFileException;
+use Flou\Exception\InvalidDirectoryException;
 
 class Path
 {
@@ -14,20 +14,20 @@ class Path
     public static function validateFile($path)
     {
         if (!file_exists($path)) {
-            throw new InvalidFile("path does not exist: $path");
+            throw new InvalidFileException("path does not exist: $path");
         }
         if (!is_file($path)) {
-            throw new InvalidFile("path is not a file: $path");
+            throw new InvalidFileException("path is not a file: $path");
         }
     }
 
     public static function validateDirectory($path)
     {
         if (!file_exists($path)) {
-            throw new InvalidDirectory("path does not exist: $path");
+            throw new InvalidDirectoryException("path does not exist: $path");
         }
         if (!is_dir($path)) {
-            throw new InvalidDirectory("path is not a directory: $path");
+            throw new InvalidDirectoryException("path is not a directory: $path");
         }
     }
 

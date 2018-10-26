@@ -2,8 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 use Flou\Path;
-use Flou\Exception\InvalidFile;
-use Flou\Exception\InvalidDirectory;
+use Flou\Exception\InvalidFileException;
+use Flou\Exception\InvalidDirectoryException;
 
 class PathTest extends TestCase
 {
@@ -22,7 +22,7 @@ class PathTest extends TestCase
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
             Path::validateDirectory($path);
-        } catch (InvalidDirectory $e) {
+        } catch (InvalidDirectoryException $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path does not exist/", $message);
@@ -34,7 +34,7 @@ class PathTest extends TestCase
         try {
             $path = Path::join(self::$base_path, "image1.jpg");
             Path::validateDirectory($path);
-        } catch (InvalidDirectory $e) {
+        } catch (InvalidDirectoryException $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path is not a directory/", $message);
@@ -49,7 +49,7 @@ class PathTest extends TestCase
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
             Path::validateFile($path);
-        } catch (InvalidFile $e) {
+        } catch (InvalidFileException $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path does not exist/", $message);
@@ -61,7 +61,7 @@ class PathTest extends TestCase
         try {
             $path = self::$base_path;
             Path::validateFile($path);
-        } catch (InvalidFile $e) {
+        } catch (InvalidFileException $e) {
             $caught = true;
             $message = $e->getMessage();
             $this->assertRegExp("/path is not a file/", $message);
