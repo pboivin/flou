@@ -47,7 +47,7 @@ class Image
             $this->base_path = dirname($file_path);
             $this->original_file = basename($file_path);
         }
-        $this->setDefaultProcessedFile();
+        $this->initDefaultProcessedFile();
         $this->is_processed = false;
         return $this;
     }
@@ -55,7 +55,7 @@ class Image
     /**
      * Computes the default output filename from $original_file
      */
-    private function setDefaultProcessedFile()
+    private function initDefaultProcessedFile()
     {
         $filename = Path::filename($this->original_file);
         $extension = Path::extension($this->original_file);
@@ -179,10 +179,10 @@ class Image
      * By default, the processed image is generated alongside the orinal image,
      * in $base_path. If set, $custom_processed_path is used instead of $base_path
      * as the output directory for the processed image.
-     * TODO: Move this comment
      *
      * @param string $processed_path
      * @return $this The Flou\Image instance.
+     * @see getProcessedFilePath()
      */
     public function setProcessedPath($processed_path)
     {
@@ -196,10 +196,11 @@ class Image
      * By default, the filename for the processed image is computed from the
      * original filename. If set, $custom_processed_file is used as the filename
      * instead of $default_processed_file.
-     * TODO: Move this comment
      *
      * @param string $base_path
      * @return $this The Flou\Image instance.
+     * @see getProcessedFilePath()
+     * @see getProcessedURL()
      */
     public function setProcessedFile($processed_file)
     {
@@ -224,6 +225,7 @@ class Image
      *
      * @param string $custom_processed_url
      * @return $this The Flou\Image instance.
+     * @see getProcessedURL()
      */
     public function setProcessedUrl($processed_url)
     {
@@ -282,7 +284,6 @@ class Image
 
     /**
      * Computes the full path to the processed image file.
-     * FIXME add details
      *
      * @return string|null
      */
@@ -318,8 +319,7 @@ class Image
     }
 
     /**
-     * Computes the full URL to the processed image file.
-     * FIXME add details
+     * Computes the full URL for the processed image file.
      *
      * @return string|null
      */
