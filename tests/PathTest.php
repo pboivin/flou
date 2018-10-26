@@ -15,13 +15,13 @@ class PathTest extends TestCase
         self::$base_path = Path::join($current_dir, "fixtures");
     }
 
-    public function testCheckDirectory()
+    public function testValidateDirectory()
     {
         // Must exist
         $caught = false;
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
-            Path::checkDirectory($path);
+            Path::validateDirectory($path);
         } catch (InvalidDirectory $e) {
             $caught = true;
             $message = $e->getMessage();
@@ -33,7 +33,7 @@ class PathTest extends TestCase
         $caught = false;
         try {
             $path = Path::join(self::$base_path, "image1.jpg");
-            Path::checkDirectory($path);
+            Path::validateDirectory($path);
         } catch (InvalidDirectory $e) {
             $caught = true;
             $message = $e->getMessage();
@@ -42,13 +42,13 @@ class PathTest extends TestCase
         $this->assertTrue($caught);
     }
 
-    public function testCheckFile()
+    public function testValidateFile()
     {
         // Must exist
         $caught = false;
         try {
             $path = Path::join(self::$base_path, "notfound.jpg");
-            Path::checkFile($path);
+            Path::validateFile($path);
         } catch (InvalidFile $e) {
             $caught = true;
             $message = $e->getMessage();
@@ -60,7 +60,7 @@ class PathTest extends TestCase
         $caught = false;
         try {
             $path = self::$base_path;
-            Path::checkFile($path);
+            Path::validateFile($path);
         } catch (InvalidFile $e) {
             $caught = true;
             $message = $e->getMessage();

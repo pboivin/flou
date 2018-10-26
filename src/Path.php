@@ -11,7 +11,7 @@ class Path
         return implode(DIRECTORY_SEPARATOR, $parts);
     }
 
-    public static function checkFile($path)
+    public static function validateFile($path)
     {
         if (!file_exists($path)) {
             throw new InvalidFile("path does not exist: $path");
@@ -21,7 +21,7 @@ class Path
         }
     }
 
-    public static function checkDirectory($path)
+    public static function validateDirectory($path)
     {
         if (!file_exists($path)) {
             throw new InvalidDirectory("path does not exist: $path");

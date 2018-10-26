@@ -24,12 +24,12 @@ class Image
         if ($this->base_path) {
             // original_file is to be found in base_path
             $file_path = Path::join($this->base_path, $original_file);
-            Path::checkFile($file_path);
+            Path::validateFile($file_path);
             $this->original_file = $original_file;
         } else {
             // original_file is a complete path, extract base_path from it
             $file_path = $original_file;
-            Path::checkFile($file_path);
+            Path::validateFile($file_path);
             $this->base_path = dirname($file_path);
             $this->original_file = basename($file_path);
         }
@@ -113,7 +113,7 @@ class Image
 
     public function setBasePath($base_path)
     {
-        Path::checkDirectory($base_path);
+        Path::validateDirectory($base_path);
         $this->base_path = $base_path;
         return $this;
     }
