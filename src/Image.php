@@ -378,6 +378,7 @@ class Image
      * The URL of the original image is attached to the processed image via
      * the data-original attribute, which can be used to implement lazy-loading.
      *
+     * @param string $alt The alt text to be included in the <img> tag.
      * @return string|null
      */
     public function getHTML($alt="")
