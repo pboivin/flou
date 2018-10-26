@@ -4,6 +4,10 @@ namespace Flou;
 use Flou\Path;
 use Flou\Exception\ImageProcessException;
 
+/**
+ * Flou\Image is the main class. It loads, processes and outputs images suitable to
+ * implement lazy-loading on the Web.
+ */
 class Image
 {
     private $base_path;
@@ -19,15 +23,25 @@ class Image
     private $blur_radius = 10;
     private $blur_sigma = 10;
 
+
+    /**
+     * Loads the image file to be processed.
+     *
+     * If $base_path is set, $original_file is expected to be a filename to be
+     * found in that directory. Otherwise, $original_file should be a full path
+     * to the image, from which $base_path is extracted for future reference.
+     *
+     * @param string $original_file The filename or full path to the image.
+     * @return $this The Flou\Image instance.
+     * @throws InvalidFileException If the path isn't a file or doesn't exist.
+     */
     public function load($original_file)
     {
         if ($this->base_path) {
-            // original_file is to be found in base_path
             $file_path = Path::join($this->base_path, $original_file);
             Path::validateFile($file_path);
             $this->original_file = $original_file;
         } else {
-            // original_file is a complete path, extract base_path from it
             $file_path = $original_file;
             Path::validateFile($file_path);
             $this->base_path = dirname($file_path);
@@ -38,6 +52,9 @@ class Image
         return $this;
     }
 
+    /**
+     * Computes the default output filename from $original_file
+     */
     private function setDefaultProcessedFile()
     {
         $filename = Path::filename($this->original_file);
@@ -45,24 +62,25 @@ class Image
         $this->default_processed_file = "{$filename}.flou.{$extension}";
     }
 
-    private function internalProcess($force_process=false)
-    {
-        $input_file = $this->getOriginalFilePath();
-        $imagick_image = new \Imagick($input_file);
-        $this->original_geometry = $imagick_image->getImageGeometry();
-
-        if ($force_process or !$this->isProcessed()) {
-            $this->processImage($imagick_image);
-            $this->is_processed = true;
-        }
-    }
-
+    /**
+     * Process the original image if it hasn't been processed yet.
+     *
+     * @return $this The Flou\Image instance.
+     * @see internalProcess()
+     */
     public function process()
     {
         $this->internalProcess();
         return $this;
     }
 
+    /**
+     * Process the original image, even if it has already been processed. The
+     * existing file is deleted and generated again.
+     *
+     * @return $this The Flou\Image instance.
+     * @see internalProcess()
+     */
     public function forceProcess()
     {
         $output_file = $this->getProcessedFilePath();
@@ -73,7 +91,32 @@ class Image
         return $this;
     }
 
-    private function processImage($imagick_image)
+    /**
+     * Process the image. Saves the original image's geometry to be used in
+     * the HTML output.
+     *
+     * @param bool $force_process Regenerate the image if it already exists.
+     */
+    private function internalProcess($force_process=false)
+    {
+        $input_file = $this->getOriginalFilePath();
+        $imagick_image = new \Imagick($input_file);
+        $this->original_geometry = $imagick_image->getImageGeometry();
+
+        if ($force_process or !$this->isProcessed()) {
+            $this->processImagickImage($imagick_image);
+            $this->is_processed = true;
+        }
+    }
+
+    /**
+     * Generates a resized and blurred version of an original image then writes
+     * the generated image to a file.
+     *
+     * @param Imagick $imagick_image The original image instance.
+     * @throws ImageProcessException If the image can't be processed.
+     */
+    private function processImagickImage($imagick_image)
     {
         $input_file = $this->getOriginalFilePath();
         $output_file = $this->getProcessedFilePath();
@@ -99,6 +142,11 @@ class Image
         }
     }
 
+    /**
+     * Checks whether the $original_image has already been processed.
+     *
+     * @return bool
+     */
     public function isProcessed()
     {
         if ($this->is_processed) {
@@ -111,6 +159,13 @@ class Image
         return false;
     }
 
+    /**
+     * Sets $base_path.
+     *
+     * @param string $base_path
+     * @return $this The Flou\Image instance.
+     * @throws InvalidDirectoryException If the path isn't a directory or doesn't exist.
+     */
     public function setBasePath($base_path)
     {
         Path::validateDirectory($base_path);
@@ -118,48 +173,105 @@ class Image
         return $this;
     }
 
+    /**
+     * Sets $custom_processed_path.
+     *
+     * By default, the processed image is generated alongside the orinal image,
+     * in $base_path. If set, $custom_processed_path is used instead of $base_path
+     * as the output directory for the processed image.
+     * TODO: Move this comment
+     *
+     * @param string $processed_path
+     * @return $this The Flou\Image instance.
+     */
     public function setProcessedPath($processed_path)
     {
         $this->custom_processed_path = $processed_path;
         return $this;
     }
 
+    /**
+     * Sets $custom_processed_file.
+     *
+     * By default, the filename for the processed image is computed from the
+     * original filename. If set, $custom_processed_file is used as the filename
+     * instead of $default_processed_file.
+     * TODO: Move this comment
+     *
+     * @param string $base_path
+     * @return $this The Flou\Image instance.
+     */
     public function setProcessedFile($processed_file)
     {
         $this->custom_processed_file = $processed_file;
         return $this;
     }
 
+    /**
+     * Sets $base_url.
+     *
+     * @param string $base_url
+     * @return $this The Flou\Image instance.
+     */
     public function setBaseUrl($base_url)
     {
         $this->base_url = $base_url;
         return $this;
     }
 
+    /**
+     * Sets $custom_processed_url.
+     *
+     * @param string $custom_processed_url
+     * @return $this The Flou\Image instance.
+     */
     public function setProcessedUrl($processed_url)
     {
         $this->custom_processed_url = $processed_url;
         return $this;
     }
 
+    /**
+     * Sets $blur_radius.
+     *
+     * @param string $value
+     * @return $this The Flou\Image instance.
+     */
     public function setBlurRadius($value)
     {
         $this->blur_radius = $value;
         return $this;
     }
 
+    /**
+     * Sets $blur_sigma.
+     *
+     * @param string $value
+     * @return $this The Flou\Image instance.
+     */
     public function setBlurSigma($value)
     {
         $this->blur_sigma = $value;
         return $this;
     }
 
+    /**
+     * Sets $resize_width.
+     *
+     * @param string $value
+     * @return $this The Flou\Image instance.
+     */
     public function setResizeWidth($value)
     {
         $this->resize_width = $value;
         return $this;
     }
 
+    /**
+     * Computes the full path to the original image file.
+     *
+     * @return string|null
+     */
     public function getOriginalFilePath()
     {
         if ($this->base_path && $this->original_file) {
@@ -168,6 +280,12 @@ class Image
         return null;
     }
 
+    /**
+     * Computes the full path to the processed image file.
+     * FIXME add details
+     *
+     * @return string|null
+     */
     public function getProcessedFilePath()
     {
         $base_path = $this->base_path;
@@ -186,6 +304,11 @@ class Image
         return null;
     }
 
+    /**
+     * Computes the full URL to the original image file.
+     *
+     * @return string|null
+     */
     public function getOriginalURL()
     {
         if ($this->base_url && $this->original_file) {
@@ -194,6 +317,12 @@ class Image
         return null;
     }
 
+    /**
+     * Computes the full URL to the processed image file.
+     * FIXME add details
+     *
+     * @return string|null
+     */
     public function getProcessedURL()
     {
         $base_url = $this->base_url;
@@ -217,6 +346,11 @@ class Image
         return null;
     }
 
+    /**
+     * Returns the with of the original image.
+     *
+     * @return int|null
+     */
     public function getOriginalWidth()
     {
         if ($this->original_geometry) {
@@ -225,6 +359,11 @@ class Image
         return null;
     }
 
+    /**
+     * Returns the height of the original image.
+     *
+     * @return int|null
+     */
     public function getOriginalHeight()
     {
         if ($this->original_geometry) {
@@ -233,6 +372,14 @@ class Image
         return null;
     }
 
+    /**
+     * Returns the HTML code to display the processed image in a web page.
+     *
+     * The URL of the original image is attached to the processed image via
+     * the data-original attribute, which can be used to implement lazy-loading.
+     *
+     * @return string|null
+     */
     public function getHTML($alt="")
     {
         // TODO separate into ImageRenderer class

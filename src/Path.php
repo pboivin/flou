@@ -4,13 +4,28 @@ namespace Flou;
 use Flou\Exception\InvalidFileException;
 use Flou\Exception\InvalidDirectoryException;
 
+/**
+ * Flou\Path is a set of static helper methods used to work with paths more easily.
+ */
 class Path
 {
+    /**
+     * Joins multiple parts into a complete path
+     *
+     * @param string[] $parts
+     * @return string
+     */
     public static function join(...$parts)
     {
         return implode(DIRECTORY_SEPARATOR, $parts);
     }
 
+    /**
+     * Validates that $path exists and is a file.
+     *
+     * @param string $path
+     * @throws InvalidFileException If the path isn't a file or doesn't exist.
+     */
     public static function validateFile($path)
     {
         if (!file_exists($path)) {
@@ -21,6 +36,12 @@ class Path
         }
     }
 
+    /**
+     * Validates that $path exists and is a directory.
+     *
+     * @param string $path
+     * @throws InvalidDirectoryException If the path isn't a directory or doesn't exist.
+     */
     public static function validateDirectory($path)
     {
         if (!file_exists($path)) {
@@ -31,6 +52,12 @@ class Path
         }
     }
 
+    /**
+     * Returns the prefix part of a filename, stripped from the file extension.
+     *
+     * @param string $path
+     * @return string
+     */
     public static function filename($path)
     {
         $info = pathinfo($path);
@@ -40,6 +67,12 @@ class Path
         return "";
     }
 
+    /**
+     * Returns the extension part of a filename.
+     *
+     * @param string $path
+     * @return string
+     */
     public static function extension($path)
     {
         $info = pathinfo($path);
