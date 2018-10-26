@@ -235,6 +235,8 @@ class Image
 
     public function getHTML($alt="")
     {
+        // TODO separate into ImageRenderer class
+
         $container_class = "flou-container";
         $img_class = "flou-image";
         $width = $this->getOriginalWidth();
