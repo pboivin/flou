@@ -10,7 +10,7 @@
         <h1>Demos</h1>
         <ul>
             <li><a href="basic/">Basic usage with built-in front-end assets</a></li>
-            <li><a href="custom-assets/">Using custom front-end assets</a></li>
+            <li><a href="lazyload/">Integration with LazyLoad</a></li>
         </ul>
     </div>
 </body>
