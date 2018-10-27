@@ -9,7 +9,7 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 use Flou\Image;
 
 function show_image($filename) {
-    // Process the image
+    // Load and process the image
     $image = (new Image())
         ->setBasePath(__DIR__ . "/../img")
         ->setBaseURL("/img")
@@ -39,7 +39,9 @@ EOT;
 
     <link rel="stylesheet" href="/common.css">
 
+    <!-- @see https://github.com/verlok/lazyload -->
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@10.19.0/dist/lazyload.min.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function(){
             new LazyLoad({
