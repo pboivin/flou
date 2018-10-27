@@ -64,8 +64,12 @@ attempt to regenerate the placeholder; the existing image will be used instead.
 
 #### Integrating to your project
 
-Have a look at the `demos/basic/` folder for an example of a complete integration
-using the built-in front-end helper.
+[`demos/basic/`](https://github.com/pboi20/flou/tree/master/demos/basic)
+is an example of a simple integration using the built-in front-end helper.
+
+[`demos/lazyload/`](https://github.com/pboi20/flou/tree/master/demos/lazyload)
+is an example of a complete integration using the [LazyLoad](https://github.com/verlok/lazyload)
+library.
 
 
 ### Development
