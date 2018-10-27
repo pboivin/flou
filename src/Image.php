@@ -130,7 +130,7 @@ class Image
         }
 
         $radius = $this->blur_radius;
-        $sigma = $this->blur_sigma;;
+        $sigma = $this->blur_sigma;
         $blurred = $imagick_image->adaptiveBlurImage($radius, $sigma);
         if (!$blurred) {
             throw new ImageProcessException("Blur failed: $input_file");

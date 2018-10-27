@@ -8,7 +8,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use Flou\Image;
 
-function show_image($filename) {
+function show_image($filename)
+{
     // Load and process the image
     $image = (new Image())
         ->setBasePath(__DIR__ . "/img")
