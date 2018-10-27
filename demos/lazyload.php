@@ -4,14 +4,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . "/../../vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use Flou\Image;
 
 function show_image($filename) {
     // Load and process the image
     $image = (new Image())
-        ->setBasePath(__DIR__ . "/../img")
+        ->setBasePath(__DIR__ . "/img")
         ->setBaseURL("/img")
         ->load($filename)
         ->process();
@@ -37,7 +37,7 @@ EOT;
     <meta charset="utf-8">
     <title>Integration with LazyLoad</title>
 
-    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="css/common.css">
 
     <!-- @see https://github.com/verlok/lazyload -->
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@10.19.0/dist/lazyload.min.js"></script>

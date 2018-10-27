@@ -64,10 +64,10 @@ attempt to regenerate the placeholder; the existing image will be used instead.
 
 #### Integrating to your project
 
-[`demos/basic/`](https://github.com/pboi20/flou/tree/master/demos/basic)
+[`demos/basic.php`](https://github.com/pboi20/flou/tree/master/demos/basic.php)
 is an example of a simple integration using the built-in front-end helper.
 
-[`demos/lazyload/`](https://github.com/pboi20/flou/tree/master/demos/lazyload)
+[`demos/lazyload.php`](https://github.com/pboi20/flou/tree/master/demos/lazyload.php)
 is an example of a complete integration using the [LazyLoad](https://github.com/verlok/lazyload)
 library.
 

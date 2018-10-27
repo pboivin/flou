@@ -4,13 +4,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . "/../../vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use Flou\Image;
 
 // Load and process the image
 $image1 = (new Image())
-    ->setBasePath(__DIR__ . "/../img")
+    ->setBasePath(__DIR__ . "/img")
     ->setBaseURL("/img")
     ->load("image1.jpg")
     ->process();
@@ -22,7 +22,7 @@ $image1 = (new Image())
     <meta charset="utf-8">
     <title>Basic Demo</title>
 
-    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="css/common.css">
 
     <!--
         The assets are inlined here for the sake simplicity. You can manually
@@ -31,11 +31,11 @@ $image1 = (new Image())
     -->
 
     <style>
-        <?= file_get_contents(__DIR__ . "/../../assets/flou.css") ?>
+        <?= file_get_contents(__DIR__ . "/../assets/flou.css") ?>
     </style>
 
     <script>
-        <?= file_get_contents(__DIR__ . "/../../assets/flou.js") ?>
+        <?= file_get_contents(__DIR__ . "/../assets/flou.js") ?>
 
         document.addEventListener("DOMContentLoaded", Flou.loadImages);
     </script>
