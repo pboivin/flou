@@ -36,6 +36,7 @@ EOT;
 <head>
     <meta charset="utf-8">
     <title>Integration with LazyLoad</title>
+
     <link rel="stylesheet" href="/common.css">
 
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@10.19.0/dist/lazyload.min.js"></script>
