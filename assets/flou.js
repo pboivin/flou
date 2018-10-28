@@ -4,28 +4,29 @@
     else { root.Flou = factory(); }
 }(typeof self !== 'undefined' ? self : this, function () {
     var Flou = {
-        image_class: "flou-image",
-        image_loaded_class: "flou-image-loaded",
-        image_loaded_delay: 500,
+        imageClass: "flou-image",
+        imageLoadedClass: "flou-image-loaded",
+        imageLoadedDelay: 500,
 
         handleImageLoaded: function(src) {
             var image = this;
             setTimeout(function(){
                 image.setAttribute("src", src);
-                image.classList.add(Flou.image_loaded_class);
-            }, Flou.image_loaded_delay);
+                image.classList.add(Flou.imageLoadedClass);
+            }, Flou.imageLoadedDelay);
         },
 
-        loadImages: function() {
-            var selector = "." + Flou.image_class + ":not(." + Flou.image_loaded_class + ")";
-            var images = document.querySelectorAll(selector);
+        loadImage: function(imageElement) {
+            var originalSrc = imageElement.getAttribute("data-original");
+            var originalImage = new Image();
+            originalImage.onload = Flou.handleImageLoaded.bind(imageElement, originalSrc);
+            originalImage.src = originalSrc;
+        },
 
-            [].forEach.call(images, function(image) {
-                var originalSrc = image.getAttribute("data-original");
-                var originalImage = new Image();
-                originalImage.onload = Flou.handleImageLoaded.bind(image, originalSrc);
-                originalImage.src = originalSrc;
-            });
+        loadAllImages: function() {
+            var selector = "." + Flou.imageClass + ":not(." + Flou.imageLoadedClass + ")";
+            var images = document.querySelectorAll(selector);
+            [].forEach.call(images, Flou.loadImage);
         }
     };
     return Flou;
