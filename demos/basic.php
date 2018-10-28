@@ -37,7 +37,7 @@ $image1 = (new Image())
     <script>
         <?= file_get_contents(__DIR__ . "/../assets/flou.js") ?>
 
-        document.addEventListener("DOMContentLoaded", Flou.loadImages);
+        document.addEventListener("DOMContentLoaded", Flou.loadAllImages);
     </script>
 </head>
 <body>
