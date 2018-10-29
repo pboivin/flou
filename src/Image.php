@@ -23,6 +23,7 @@ class Image
     private $resize_width = 40;
     private $blur_radius = 10;
     private $blur_sigma = 10;
+    private $image_renderer = 'Flou\ImageRenderer';
 
 
     /**
@@ -271,6 +272,18 @@ class Image
     }
 
     /**
+     * Sets $image_renderer.
+     *
+     * @param string $image_renderer The ImageRenderer class.
+     * @return $this The Flou\Image instance.
+     */
+    public function setImageRenderer($image_renderer)
+    {
+        $this->image_renderer = $image_renderer;
+        return $this;
+    }
+
+    /**
      * Computes the full path to the original image file.
      *
      * @return string|null
@@ -382,7 +395,9 @@ class Image
      */
     public function getHTML($alt="")
     {
-        return (new ImageRenderer($this))
+        $image_renderer = $this->image_renderer;
+
+        return (new $image_renderer($this))
             ->setAltText($alt)
             ->render();
     }
