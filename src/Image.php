@@ -2,6 +2,7 @@
 namespace Flou;
 
 use Flou\Path;
+use Flou\ImageRenderer;
 use Flou\Exception\ImageProcessException;
 
 /**
@@ -373,35 +374,16 @@ class Image
     }
 
     /**
-     * Returns the HTML code to display the processed image in a web page.
-     *
-     * The URL of the original image is attached to the processed image via
-     * the data-original attribute, which can be used to implement lazy-loading.
+     * Returns the HTML code from an ImageRenderer to display the processed
+     * image on a web page.
      *
      * @param string $alt The alt text to be included in the <img> tag.
      * @return string|null
      */
     public function getHTML($alt="")
     {
-        // TODO separate into ImageRenderer class
-
-        $container_class = "flou-container";
-        $img_class = "flou-image";
-        $width = $this->getOriginalWidth();
-        $height = $this->getOriginalHeight();
-        $processed_url = $this->getProcessedURL();
-        $original_url = $this->getOriginalURL();
-
-        $template = sprintf(
-            '<div class="%s">' .
-                '<img class="%s" width="%s" height="%s" src="%s" data-original="%s" alt="%s" />' .
-            '</div>',
-            $container_class, $img_class, $width, $height, $processed_url, $original_url, $alt
-        );
-
-        if ($original_url && $processed_url) {
-            return $template;
-        }
-        return null;
+        return (new ImageRenderer($this))
+            ->setAltText($alt)
+            ->render();
     }
 }
