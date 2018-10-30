@@ -2,11 +2,11 @@
 namespace Flou;
 
 use Flou\Image;
+use Flou\ImageRendererInterface;
 
 /**
- * Flou\ImageRenderer ...
  */
-class ImageRenderer
+class DefaultImageRenderer implements ImageRendererInterface
 {
     private $image;
     private $container_class = "flou-container";
@@ -15,9 +15,18 @@ class ImageRenderer
 
     /**
      */
-    public function __construct(Image $image)
+    public function setImage(Image $image)
     {
         $this->image = $image;
+        return $this;
+    }
+
+    /**
+     */
+    public function setDescription($description)
+    {
+        $this->alt_text = $description;
+        return $this;
     }
 
     /**
@@ -37,15 +46,7 @@ class ImageRenderer
     }
 
     /**
-     */
-    public function setAltText($alt_text)
-    {
-        $this->alt_text = $alt_text;
-        return $this;
-    }
-
-    /**
-     * Returns the HTML code to display the an image on a web page.
+     * Returns the HTML code to display the image on a Web page.
      *
      * The URL of the original image is attached to the processed image via
      * the data-original attribute, which can be used to implement lazy-loading.

@@ -1,9 +1,10 @@
 <?php
 namespace Flou;
 
-use Flou\Path;
-use Flou\ImageRenderer;
 use Flou\Exception\ImageProcessException;
+use Flou\ImageRendererInterface;
+use Flou\DefaultImageRenderer;
+use Flou\Path;
 
 /**
  * Flou\Image is the main class. It loads, processes and outputs images suitable to
@@ -23,6 +24,7 @@ class Image
     private $resize_width = 40;
     private $blur_radius = 10;
     private $blur_sigma = 10;
+    private $image_renderer;
 
 
     /**
@@ -271,6 +273,19 @@ class Image
     }
 
     /**
+     * Sets the image renderer to be used in Image::render.
+     *
+     * @param ImageRendererInterface $image_renderer
+     * @return $this The Flou\Image instance.
+     * @see render()
+     */
+    public function setImageRenderer(ImageRendererInterface $image_renderer)
+    {
+        $this->image_renderer = $image_renderer;
+        return $this;
+    }
+
+    /**
      * Computes the full path to the original image file.
      *
      * @return string|null
@@ -374,16 +389,21 @@ class Image
     }
 
     /**
-     * Returns the output from ImageRenderer::render to display the processed
-     * image on a Web page.
+     * Returns the output from and image renderer to display an image.
+     * DefaultImageRenderer is used if no other image renderer was configured.
      *
-     * @param string $alt The alt text to be included in the <img> tag.
+     * @param string $description The image description.
      * @return string|null
      */
-    public function render($alt="")
+    public function render($description="")
     {
-        return (new ImageRenderer($this))
-            ->setAltText($alt)
+        if (!$this->image_renderer) {
+            $this->setImageRenderer(new DefaultImageRenderer());
+        }
+
+        return $this->image_renderer
+            ->setImage($this)
+            ->setDescription($description)
             ->render();
     }
 }
