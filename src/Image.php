@@ -23,7 +23,6 @@ class Image
     private $resize_width = 40;
     private $blur_radius = 10;
     private $blur_sigma = 10;
-    private $image_renderer = 'Flou\ImageRenderer';
 
 
     /**
@@ -272,18 +271,6 @@ class Image
     }
 
     /**
-     * Sets $image_renderer.
-     *
-     * @param string $image_renderer The ImageRenderer class.
-     * @return $this The Flou\Image instance.
-     */
-    public function setImageRenderer($image_renderer)
-    {
-        $this->image_renderer = $image_renderer;
-        return $this;
-    }
-
-    /**
      * Computes the full path to the original image file.
      *
      * @return string|null
@@ -387,17 +374,15 @@ class Image
     }
 
     /**
-     * Returns the HTML code from an ImageRenderer to display the processed
-     * image on a web page.
+     * Returns the output from ImageRenderer::render to display the processed
+     * image on a Web page.
      *
      * @param string $alt The alt text to be included in the <img> tag.
      * @return string|null
      */
     public function render($alt="")
     {
-        $image_renderer = $this->image_renderer;
-
-        return (new $image_renderer($this))
+        return (new ImageRenderer($this))
             ->setAltText($alt)
             ->render();
     }
