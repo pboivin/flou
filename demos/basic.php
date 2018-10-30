@@ -45,7 +45,7 @@ $image1 = (new Image())
         <h1>Basic Demo</h1>
 
         <!-- Return the HTML snippet as needed by `flou.js` -->
-        <?= $image1->getHTML() ?>
+        <?= $image1->render() ?>
     </div>
 </body>
 </html>

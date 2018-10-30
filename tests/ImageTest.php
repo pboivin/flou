@@ -186,7 +186,7 @@ class ImageTest extends TestCase
     /**
      * Generate the HTML markup for an image using default output settings
      */
-    public function testGetHTML()
+    public function testRender()
     {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
@@ -195,12 +195,12 @@ class ImageTest extends TestCase
         $this->assertTrue($image->isProcessed());
 
         // Cannot generate HTML without a base_url
-        $html = $image->getHTML("Image Description");
+        $html = $image->render("Image Description");
         $this->assertNull($html);
 
         $html = $image
             ->setBaseUrl("/img")
-            ->getHTML("Image Description");
+            ->render("Image Description");
         $expected_src = "/img/image1.flou.jpg";
         $expected_data_original = "/img/image1.jpg";
 
@@ -217,7 +217,7 @@ class ImageTest extends TestCase
     /**
      * Generate the HTML markup for an image **using custom output settings**
      */
-    public function testGetHTMLCustomOutput()
+    public function testRenderCustomOutput()
     {
         $custom_processed_basepath = self::$custom_processed_basepath;
         $custom_processed_path = self::$custom_processed_path3;
@@ -235,12 +235,12 @@ class ImageTest extends TestCase
         // output path
         $html = $image
             ->setBaseUrl("/img")
-            ->getHTML("Image Description");
+            ->render("Image Description");
         $this->assertNull($html);
 
         $html = $image
             ->setProcessedUrl("/custom")
-            ->getHTML("Image Description");
+            ->render("Image Description");
         $expected_src = "/custom/image1.custom.jpg";
         $expected_data_original = "/img/image1.jpg";
 

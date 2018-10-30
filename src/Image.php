@@ -393,7 +393,7 @@ class Image
      * @param string $alt The alt text to be included in the <img> tag.
      * @return string|null
      */
-    public function getHTML($alt="")
+    public function render($alt="")
     {
         $image_renderer = $this->image_renderer;
 
