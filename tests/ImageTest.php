@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Flou\Path;
 use Flou\Image;
 
+
 class ImageTest extends TestCase
 {
     public static $base_path;
@@ -12,6 +13,7 @@ class ImageTest extends TestCase
     public static $custom_processed_basepath;
     public static $custom_processed_path2;
     public static $custom_processed_path3;
+
 
     public static function setUpBeforeClass()
     {

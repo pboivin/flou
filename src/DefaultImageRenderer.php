@@ -4,6 +4,7 @@ namespace Flou;
 use Flou\Image;
 use Flou\ImageRendererInterface;
 
+
 /**
  */
 class DefaultImageRenderer implements ImageRendererInterface
