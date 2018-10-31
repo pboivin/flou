@@ -189,6 +189,8 @@ class Image
      */
     public function setProcessedPath($processed_path)
     {
+        // TODO validate directory
+
         $this->custom_processed_path = $processed_path;
         return $this;
     }
@@ -316,7 +318,9 @@ class Image
             if ($this->custom_processed_file) {
                 $processed_file = $this->custom_processed_file;
             }
-            return Path::join($base_path, $processed_file);
+            if ($processed_file) {
+                return Path::join($base_path, $processed_file);
+            }
         }
         return null;
     }
@@ -397,6 +401,8 @@ class Image
      */
     public function render($description="")
     {
+        // TODO add getImageRenderer
+
         if (!$this->image_renderer) {
             $this->setImageRenderer(new DefaultImageRenderer());
         }
