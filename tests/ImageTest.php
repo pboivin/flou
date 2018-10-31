@@ -8,10 +8,6 @@ class ImageTest extends TestCase
 {
     public static $base_path;
     public static $processed_path;
-    public static $custom_processed_path1;
-    public static $custom_processed_basepath;
-    public static $custom_processed_path2;
-    public static $custom_processed_path3;
 
 
     public static function setUpBeforeClass()
@@ -19,13 +15,8 @@ class ImageTest extends TestCase
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures");
         self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
-        self::$custom_processed_path1 = Path::join(self::$base_path, "processed_image.jpg");
-        self::$custom_processed_basepath = Path::join($current_dir, "fixtures", "tmp");
-        self::$custom_processed_path2 = Path::join(self::$custom_processed_basepath, "image1.flou.jpg");
-        self::$custom_processed_path3 = Path::join(self::$custom_processed_basepath, "image1.custom.jpg");
 
         self::_cleanup();
-        mkdir(self::$custom_processed_basepath);
     }
 
     public static function tearDownAfterClass()
@@ -35,24 +26,8 @@ class ImageTest extends TestCase
 
     public static function _cleanup()
     {
-        $files = [
-            self::$processed_path,
-            self::$custom_processed_path1,
-            self::$custom_processed_path2,
-            self::$custom_processed_path3,
-        ];
-        $dirs = [
-            self::$custom_processed_basepath,
-        ];
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                unlink($file);
-            }
-        }
-        foreach ($dirs as $dir) {
-            if (file_exists($dir)) {
-                rmdir($dir);
-            }
+        if (file_exists(self::$processed_path)) {
+            unlink(self::$processed_path);
         }
     }
 
@@ -191,6 +166,7 @@ class ImageTest extends TestCase
 
     /**
      * Generate the HTML markup for an image using default settings
+     *
      * @see DefaultImageRendererTest
      */
     public function testRender()
