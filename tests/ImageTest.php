@@ -157,10 +157,13 @@ class ImageTest extends TestCase
 
     /**
      * Force-process an image that has already been processed
+     *
+     * @depends testProcess
      */
     public function testForceProcess()
     {
         $processed_path = self::$processed_path;
+        $this->assertTrue(file_exists($processed_path));
 
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
