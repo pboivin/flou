@@ -5,7 +5,6 @@ use Flou\DefaultImageRenderer;
 use Flou\Image;
 use Flou\Path;
 
-
 class DefaultImageRendererTest extends TestCase
 {
     public static $base_path;

@@ -4,7 +4,6 @@ use PHPUnit\Framework\TestCase;
 use Flou\Path;
 use Flou\Image;
 
-
 class ImageTest extends TestCase
 {
     public static $base_path;
@@ -187,6 +186,7 @@ class ImageTest extends TestCase
 
     /**
      * Generate the HTML markup for an image using default settings
+     * @see DefaultImageRendererTest
      */
     public function testRender()
     {

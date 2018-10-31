@@ -4,7 +4,6 @@ namespace Flou;
 use Flou\Image;
 use Flou\ImageRendererInterface;
 
-
 /**
  * Flou\DefaultImageRenderer is used by default to render a processed Image
  * instance to HTML.

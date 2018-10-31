@@ -6,7 +6,6 @@ use Flou\ImageRendererInterface;
 use Flou\DefaultImageRenderer;
 use Flou\Path;
 
-
 /**
  * Flou\Image is the main class. It loads, processes and outputs images suitable to
  * implement lazy-loading on the Web.
