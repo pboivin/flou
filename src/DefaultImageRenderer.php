@@ -6,6 +6,8 @@ use Flou\ImageRendererInterface;
 
 
 /**
+ * Flou\DefaultImageRenderer is used by default to render a processed Image
+ * instance to HTML.
  */
 class DefaultImageRenderer implements ImageRendererInterface
 {
@@ -14,7 +16,12 @@ class DefaultImageRenderer implements ImageRendererInterface
     private $img_class = "flou-image";
     private $alt_text = "";
 
+
     /**
+     * Sets the Image instance to be rendered.
+     *
+     * @param Image $image
+     * @return $this The Flou\Image instance.
      */
     public function setImage(Image $image)
     {
@@ -23,6 +30,10 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
+     * Sets the text to be used in the img's alt attribute.
+     *
+     * @param string $description
+     * @return $this The Flou\Image instance.
      */
     public function setDescription($description)
     {
@@ -31,6 +42,10 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
+     * Sets the CSS class to be used for the container element.
+     *
+     * @param string $container_class
+     * @return $this The Flou\Image instance.
      */
     public function setContainerClass($container_class)
     {
@@ -39,6 +54,10 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
+     * Sets the CSS class to be used for the img element.
+     *
+     * @param string $img_class
+     * @return $this The Flou\Image instance.
      */
     public function setImgClass($img_class)
     {
@@ -50,7 +69,7 @@ class DefaultImageRenderer implements ImageRendererInterface
      * Returns the HTML code to display the image on a Web page.
      *
      * The URL of the original image is attached to the processed image via
-     * the data-original attribute, which can be used to implement lazy-loading.
+     * the data-original attribute, which is used to implement lazy-loading.
      *
      * @return string|null
      */
