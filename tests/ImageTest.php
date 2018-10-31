@@ -57,6 +57,55 @@ class ImageTest extends TestCase
     }
 
     /**
+     * Get the original file path from an Image
+     */
+    public function testGetOriginalFilePath()
+    {
+        $image = new Flou\Image();
+
+        // Expect `null` until the Image is properly configured
+        $this->assertNull($image->getOriginalFilePath());
+        $image->setBasePath(self::$base_path);
+        $this->assertNull($image->getOriginalFilePath());
+        $image->load("image1.jpg");
+        $this->assertNotNull($image->getOriginalFilePath());
+
+        $expected_path = Path::join(self::$base_path, "image1.jpg");
+        $this->assertEquals($expected_path, $image->getOriginalFilePath());
+    }
+
+    /**
+     * Get the processed file path from an Image
+     */
+    public function testGetProcessedFilePath()
+    {
+        $image = new Flou\Image();
+
+        // Using the default processed file path:
+        // Expect `null` until the Image is properly configured
+        $this->assertNull($image->getProcessedFilePath());
+        $image->setBasePath(self::$base_path);
+        $this->assertNull($image->getProcessedFilePath());
+        $image->load("image1.jpg");
+        $this->assertNotNull($image->getProcessedFilePath());
+
+        $expected_path = Path::join(self::$base_path, "image1.flou.jpg");
+        $this->assertEquals($expected_path, $image->getProcessedFilePath());
+
+        // Using a custom processed file path:
+        $custom_path = Path::join(self::$base_path, "custom");
+        $image->setProcessedPath($custom_path);
+        $expected_path = Path::join($custom_path, "image1.flou.jpg");
+        $this->assertEquals($expected_path, $image->getProcessedFilePath());
+
+        // Using a custom processed filename:
+        $custom_file = "custom.jpg";
+        $image->setProcessedFile($custom_file);
+        $expected_path = Path::join($custom_path, $custom_file);
+        $this->assertEquals($expected_path, $image->getProcessedFilePath());
+    }
+
+    /**
      * Call `setBasePath` and load an image relative to that path
      */
     public function testLoadWithBasePath()
