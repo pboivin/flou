@@ -186,19 +186,18 @@ class ImageTest extends TestCase
     }
 
     /**
-     * Generate the HTML markup for an image using default output settings
+     * Generate the HTML markup for an image using default settings
      */
     public function testRender()
     {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->setBaseUrl("/img")
-            ->load("image1.jpg")
-            ->process();
+            ->load("image1.jpg");
         $this->assertTrue($image->isProcessed());
 
-        // Cannot generate HTML without a base_url
         $html = $image->render("Image Description");
         $this->assertNotNull($html);
+        $this->assertContains("Image Description", $html);
     }
 }
