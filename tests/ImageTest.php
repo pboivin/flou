@@ -156,53 +156,6 @@ class ImageTest extends TestCase
     }
 
     /**
-     * Process an image using the default output path and **a custom output filename**
-     */
-    public function testCustomProcessedFile()
-    {
-        $initial_processed_path = self::$processed_path;
-        $custom_processed_path = self::$custom_processed_path1;
-        $this->assertFalse(file_exists($custom_processed_path));
-
-        $image = (new Flou\Image())
-            ->setBasePath(self::$base_path)
-            ->load("image1.jpg");
-
-        // `getProcessedFilePath` returns the expected default path
-        $this->assertEquals($initial_processed_path, $image->getProcessedFilePath());
-
-        $image->setProcessedFile("processed_image.jpg");
-        $image->process();
-        $this->assertTrue($image->isProcessed());
-
-        // `getProcessedFilePath` return the custom path
-        $this->assertEquals($custom_processed_path, $image->getProcessedFilePath());
-        $this->assertTrue(file_exists($custom_processed_path));
-    }
-
-    /**
-     * Process an image using **a custom output path** and the default output filename
-     */
-    public function testCustomProcessedPath()
-    {
-        $initial_processed_path = self::$processed_path;
-        $custom_processed_basepath = self::$custom_processed_basepath;
-        $custom_processed_path = self::$custom_processed_path2;
-        $this->assertFalse(file_exists($custom_processed_path));
-
-        $image = (new Flou\Image())
-            ->setBasePath(self::$base_path)
-            ->load("image1.jpg");
-        $this->assertEquals($initial_processed_path, $image->getProcessedFilePath());
-
-        $image->setProcessedPath($custom_processed_basepath);
-        $image->process();
-        $this->assertTrue($image->isProcessed());
-        $this->assertEquals($custom_processed_path, $image->getProcessedFilePath());
-        $this->assertTrue(file_exists($custom_processed_path));
-    }
-
-    /**
      * Force-process an image that has already been processed
      */
     public function testForceProcess()
