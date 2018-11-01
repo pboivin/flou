@@ -40,7 +40,7 @@ class DefaultImageRendererTest extends TestCase
         $expected_src = "/img/image1.flou.jpg";
         $expected_data_original = "/img/image1.jpg";
 
-        // The HTML is as expected
+        // The default HTML is as expected
         $container = new SimpleXMLElement($html);
         $this->assertEquals("flou-container", $container['class']);
         $this->assertEquals(1, count($container->img));
@@ -48,5 +48,14 @@ class DefaultImageRendererTest extends TestCase
         $this->assertEquals($expected_src, $container->img['src']);
         $this->assertEquals($expected_data_original, $container->img['data-original']);
         $this->assertEquals("This is my image", $container->img['alt']);
+
+        // Test using custom CSS classes
+        $renderer
+            ->setContainerClass("my-container")
+            ->setImgClass("my-img");
+        $html = $renderer->render();
+        $container = new SimpleXMLElement($html);
+        $this->assertEquals("my-container", $container['class']);
+        $this->assertEquals("my-img", $container->img['class']);
     }
 }
