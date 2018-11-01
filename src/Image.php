@@ -347,13 +347,12 @@ class Image
     {
         $base_url = $this->base_url;
 
-        if ($this->custom_processed_path) {
-            if ($this->custom_processed_url) {
-                $base_url = $this->custom_processed_url;
-            } else {
-                // custom_processed_url is required when using custom_processed_path
-                return null;
-            }
+        if ($this->custom_processed_path xor $this->custom_processed_url) {
+            // TODO maybe trow an NotConfiguredException for such requirements...
+            return null;
+        }
+        if ($this->custom_processed_url) {
+            $base_url = $this->custom_processed_url;
         }
         if ($base_url) {
             $processed_file = $this->default_processed_file;
@@ -361,7 +360,9 @@ class Image
             if ($this->custom_processed_file) {
                 $processed_file = $this->custom_processed_file;
             }
-            return "{$base_url}/{$processed_file}";
+            if ($processed_file) {
+                return "{$base_url}/{$processed_file}";
+            }
         }
         return null;
     }
