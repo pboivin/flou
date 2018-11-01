@@ -98,6 +98,42 @@ class ImageTest extends TestCase
     }
 
     /**
+     * Get the processed URL for an Image
+     */
+    public function testGetProcessedURL()
+    {
+        $image = new Flou\Image();
+
+        // Using the default settings:
+        // Expect `null` until the Image is properly configured
+        $this->assertNull($image->getProcessedURL());
+        $image->setBasePath(self::$base_path);
+        $this->assertNull($image->getProcessedURL());
+        $image->setBaseURL("/img");
+        $this->assertNull($image->getProcessedURL());
+        $image->load("image1.jpg");
+        $this->assertNotNull($image->getProcessedURL());
+        $expected_url = "/img/image1.flou.jpg";
+        $this->assertEquals($expected_url, $image->getProcessedURL());
+
+        // Using a custom processed URL:
+        $custom_path = Path::join(self::$base_path, "img", "processed");
+        $custom_url = "/img/processed";
+        $image->setProcessedPath($custom_path);
+        $this->assertNull($image->getProcessedURL());
+        $image->setProcessedUrl($custom_url);
+        $this->assertNotNull($image->getProcessedURL());
+        $expected_url = "/img/processed/image1.flou.jpg";
+        $this->assertEquals($expected_url, $image->getProcessedURL());
+
+        // Using a custom processed filename:
+        $custom_file = "custom.jpg";
+        $image->setProcessedFile($custom_file);
+        $expected_url = "/img/processed/custom.jpg";
+        $this->assertEquals($expected_url, $image->getProcessedURL());
+    }
+
+    /**
      * Call `setBasePath` and load an image relative to that path
      */
     public function testLoadWithBasePath()
