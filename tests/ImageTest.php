@@ -81,6 +81,26 @@ class ImageTest extends TestCase
     }
 
     /**
+     * Get the original URL for an Image
+     */
+    public function testGetOriginalURL()
+    {
+        $image = new Flou\Image();
+
+        // Expect `null` until the Image is properly configured
+        $this->assertNull($image->getOriginalURL());
+        $image->setBasePath(self::$base_path);
+        $this->assertNull($image->getOriginalURL());
+        $image->setBaseURL("/img");
+        $this->assertNull($image->getOriginalURL());
+        $image->load("image1.jpg");
+        $this->assertNotNull($image->getOriginalURL());
+
+        $expected_url = "/img/image1.jpg";
+        $this->assertEquals($expected_url, $image->getOriginalURL());
+    }
+
+    /**
      * Call `setBasePath` and load an image relative to that path
      */
     public function testLoadWithBasePath()
