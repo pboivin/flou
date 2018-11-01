@@ -218,6 +218,30 @@ class ImageTest extends TestCase
     }
 
     /**
+     * Get the original width and height of an Image
+     *
+     * @depends testProcess
+     */
+    public function testGetOrginalGeometry()
+    {
+        $processed_path = self::$processed_path;
+        $this->assertTrue(file_exists($processed_path));
+
+        $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg");
+
+        // Expect `null` until `process()` is called
+        $this->assertNull($image->getOriginalWidth());
+        $this->assertNull($image->getOriginalHeight());
+
+        $image->process();
+        $this->assertNotNull($image->getOriginalWidth());
+        $this->assertNotNull($image->getOriginalHeight());
+    }
+
+
+    /**
      * Generate the HTML markup for an image using default settings
      *
      * @see DefaultImageRendererTest
