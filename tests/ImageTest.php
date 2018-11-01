@@ -44,7 +44,6 @@ class ImageTest extends TestCase
         $this->assertNull($image->getOriginalFilePath());
         $image->load("image1.jpg");
         $this->assertNotNull($image->getOriginalFilePath());
-
         $expected_path = Path::join(self::$base_path, "image1.jpg");
         $this->assertEquals($expected_path, $image->getOriginalFilePath());
     }
@@ -63,7 +62,6 @@ class ImageTest extends TestCase
         $this->assertNull($image->getProcessedFilePath());
         $image->load("image1.jpg");
         $this->assertNotNull($image->getProcessedFilePath());
-
         $expected_path = Path::join(self::$base_path, "image1.flou.jpg");
         $this->assertEquals($expected_path, $image->getProcessedFilePath());
 
@@ -95,7 +93,6 @@ class ImageTest extends TestCase
         $this->assertNull($image->getOriginalURL());
         $image->load("image1.jpg");
         $this->assertNotNull($image->getOriginalURL());
-
         $expected_url = "/img/image1.jpg";
         $this->assertEquals($expected_url, $image->getOriginalURL());
     }
