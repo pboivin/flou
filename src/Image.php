@@ -1,8 +1,9 @@
 <?php
 namespace Flou;
 
-use Flou\Exception\ImageProcessException;
+use Flou\ImageProcessorInterface;
 use Flou\ImageRendererInterface;
+use Flou\DefaultImageProcessor;
 use Flou\DefaultImageRenderer;
 use Flou\Path;
 
@@ -19,12 +20,9 @@ class Image
     private $custom_processed_file;
     private $custom_processed_path;
     private $custom_processed_url;
-    private $original_geometry;
     private $is_processed;
-    private $resize_width = 40;
-    private $blur_radius = 10;
-    private $blur_sigma = 10;
     private $image_renderer;
+    private $image_processor;
 
 
     /**
@@ -95,71 +93,45 @@ class Image
     }
 
     /**
-     * Process the image. Saves the original image's geometry to be used in
-     * the HTML output.
+     * Process the image.
      *
      * @param bool $force_process Regenerate the image if it already exists.
      */
     private function internalProcess($force_process=false)
     {
-        $input_file = $this->getOriginalFilePath();
-        $imagick_image = new \Imagick($input_file);
-        $this->original_geometry = $imagick_image->getImageGeometry();
+        // TODO add getImageProcessor
 
-        if ($force_process or !$this->isProcessed()) {
-            $this->processImagickImage($imagick_image);
-            $this->is_processed = true;
+        if (!$this->image_processor) {
+            $this->setImageProcessor(new DefaultImageProcessor());
         }
+
+        $this->image_processor->setImage($this);
+
+        if ($force_process or !$this->processedFileExists()) {
+            $this->image_processor->process();
+        }
+        $this->is_processed = true;
     }
 
     /**
-     * Generates a resized and blurred version of an original image then writes
-     * the generated image to a file.
-     *
-     * @param Imagick $imagick_image The original image instance.
-     * @throws ImageProcessException If the image can't be processed.
-     */
-    private function processImagickImage($imagick_image)
-    {
-        $input_file = $this->getOriginalFilePath();
-        $output_file = $this->getProcessedFilePath();
-        $geometry = $this->original_geometry;
-
-        $resize_width = $this->resize_width;
-        $resize_height = $resize_width * $geometry["height"] / $geometry["width"];
-        $resized = $imagick_image->adaptiveResizeImage($resize_width, $resize_height, true);
-        if (!$resized) {
-            throw new ImageProcessException("Resize failed: $input_file");
-        }
-
-        $radius = $this->blur_radius;
-        $sigma = $this->blur_sigma;
-        $blurred = $imagick_image->adaptiveBlurImage($radius, $sigma);
-        if (!$blurred) {
-            throw new ImageProcessException("Blur failed: $input_file");
-        }
-
-        $written = $imagick_image->writeImage($output_file);
-        if (!$written) {
-            throw new ImageProcessException("Write failed: $input_file");
-        }
-    }
-
-    /**
-     * Checks whether the $original_image has already been processed.
+     * Whether the image has already been processed;
      *
      * @return bool
      */
     public function isProcessed()
     {
-        if ($this->is_processed) {
-            return true;
-        }
+        return $this->is_processed;
+    }
+
+    /**
+     * Whether the processed file exists.
+     *
+     * @return bool
+     */
+    private function processedFileExists()
+    {
         $file_path = $this->getProcessedFilePath();
-        if (file_exists($file_path)) {
-            return true;
-        }
-        return false;
+        return file_exists($file_path);
     }
 
     /**
@@ -239,43 +211,20 @@ class Image
     }
 
     /**
-     * Sets $blur_radius.
+     * Sets the image processor to be used for processing.
      *
-     * @param string $value
+     * @param ImageProcessorInterface $image_processor
      * @return $this The Flou\Image instance.
+     * @see internalProcess()
      */
-    public function setBlurRadius($value)
+    public function setImageProcessor(ImageProcessorInterface $image_processor)
     {
-        $this->blur_radius = $value;
+        $this->image_processor = $image_processor;
         return $this;
     }
 
     /**
-     * Sets $blur_sigma.
-     *
-     * @param string $value
-     * @return $this The Flou\Image instance.
-     */
-    public function setBlurSigma($value)
-    {
-        $this->blur_sigma = $value;
-        return $this;
-    }
-
-    /**
-     * Sets $resize_width.
-     *
-     * @param string $value
-     * @return $this The Flou\Image instance.
-     */
-    public function setResizeWidth($value)
-    {
-        $this->resize_width = $value;
-        return $this;
-    }
-
-    /**
-     * Sets the image renderer to be used in Image::render.
+     * Sets the image renderer to be used for rendering.
      *
      * @param ImageRendererInterface $image_renderer
      * @return $this The Flou\Image instance.
@@ -374,8 +323,8 @@ class Image
      */
     public function getOriginalWidth()
     {
-        if ($this->original_geometry) {
-            return $this->original_geometry["width"];
+        if ($this->is_processed) {
+            return $this->image_processor->getOriginalWidth();
         }
         return null;
     }
@@ -387,8 +336,8 @@ class Image
      */
     public function getOriginalHeight()
     {
-        if ($this->original_geometry) {
-            return $this->original_geometry["height"];
+        if ($this->is_processed) {
+            return $this->image_processor->getOriginalHeight();
         }
         return null;
     }
