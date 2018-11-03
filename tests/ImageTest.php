@@ -199,9 +199,6 @@ class ImageTest extends TestCase
             ->process();
         $mtime1 = filemtime($processed_path);
 
-        // The image was processed and saved
-        $this->assertTrue($image->isProcessed());
-
         sleep(1);
         $image->process();
         $mtime2 = filemtime($processed_path);
@@ -252,7 +249,6 @@ class ImageTest extends TestCase
             ->setBasePath(self::$base_path)
             ->setBaseUrl("/img")
             ->load("image1.jpg");
-        $this->assertTrue($image->isProcessed());
 
         $html = $image->render("Image Description");
         $this->assertNotNull($html);
