@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Flou\Exception\ImageProcessorException;
 use Flou\DefaultImageProcessor;
 use Flou\Image;
 use Flou\Path;
@@ -48,6 +49,24 @@ class DefaultImageProcessorTest extends TestCase
         $this->assertNotNull($processor->getOriginalHeight());
     }
 
-    // XXX Add testProcess()
+    /**
+     * Set the Image and process it.
+     */
+    public function testProcess()
+    {
+        $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg");
 
+        // Does not throw ImageProcessorException
+        $caught = false;
+        try {
+            $processor = (new DefaultImageProcessor())
+                ->setImage($image)
+                ->process();
+        } catch (ImageProcessorException $e) {
+            $caught = true;
+        }
+        $this->assertFalse($caught);
+    }
 }
