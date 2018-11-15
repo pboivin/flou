@@ -2,7 +2,7 @@
 namespace Flou;
 
 use Flou\Exception\ImageProcessorException;
-use Flou\ImageProcessorInterface;;
+use Flou\ImageProcessorInterface;
 use Flou\Image;
 
 /**
@@ -24,7 +24,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * original image's dimensions.
      *
      * @param Image $image
-     * @return $this The Flou\Image instance.
+     * @return $this The Flou\DefaultImageProcessor instance.
      */
     public function setImage(Image $image)
     {
@@ -44,7 +44,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets $blur_radius.
      *
      * @param string $value
-     * @return $this The Flou\Image instance.
+     * @return $this The Flou\DefaultImageProcessor instance.
      */
     public function setBlurRadius($value)
     {
@@ -56,7 +56,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets $blur_sigma.
      *
      * @param string $value
-     * @return $this The Flou\Image instance.
+     * @return $this The Flou\DefaultImageProcessor instance.
      */
     public function setBlurSigma($value)
     {
@@ -68,7 +68,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets $resize_width.
      *
      * @param string $value
-     * @return $this The Flou\Image instance.
+     * @return $this The Flou\DefaultImageProcessor instance.
      */
     public function setResizeWidth($value)
     {
