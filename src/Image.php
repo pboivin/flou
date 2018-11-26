@@ -247,6 +247,21 @@ class Image
     }
 
     /**
+     * Gets the image renderer to be used for this Image. An instance of
+     * DefaultImageRenderer is created if not configured.
+     *
+     * @return Image $this
+     * @see render()
+     */
+    public function getImageRenderer()
+    {
+        if (!$this->image_renderer) {
+            $this->setImageRenderer(new DefaultImageRenderer());
+        }
+        return $this->image_renderer;
+    }
+
+    /**
      * Computes the full path to the original image file.
      *
      * @return string|null
@@ -363,13 +378,9 @@ class Image
      */
     public function render($description="")
     {
-        // TODO add getImageRenderer
+        $image_renderer = $this->getImageRenderer();
 
-        if (!$this->image_renderer) {
-            $this->setImageRenderer(new DefaultImageRenderer());
-        }
-
-        return $this->image_renderer
+        return $image_renderer
             ->setImage($this)
             ->setDescription($description)
             ->render();
