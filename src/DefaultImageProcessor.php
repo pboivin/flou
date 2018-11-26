@@ -2,6 +2,7 @@
 namespace Flou;
 
 use Imagine\Image\ImagineInterface;
+use Imagine\Image\ImageInterface as ImagineImageInterface;
 use Imagine\Image\Box;
 
 use Flou\Exception\ImageProcessorException;
@@ -9,7 +10,7 @@ use Flou\ImageProcessorInterface;
 use Flou\Image;
 
 /**
- * Flou\DefaultImageProcessor is used by default to process an Image.
+ * Flou\DefaultImageProcessor is used by default to process a Flou\Image.
  */
 class DefaultImageProcessor implements ImageProcessorInterface
 {
@@ -26,7 +27,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets the Imagine instance to be used for processing.
      *
      * @param ImagineInterface $imagine
-     * @return $this The Flou\DefaultImageProcessor instance.
+     * @return DefaultImageProcessor $this
      */
     public function setImagine(ImagineInterface $imagine)
     {
@@ -38,7 +39,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Get the Imagine instance to be used for processing. An
      * Imagine\Imagick\Imagine is instantiated by default if not configured.
      *
-     * @return An Imagine object.
+     * @return ImagineInterface
      */
     public function getImagine()
     {
@@ -51,7 +52,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     /**
      * Get the Imagine image ready to be processed.
      *
-     * @return An Imagine Image object.
+     * @return ImagineImageInterface
      */
     public function getImagineImage()
     {
@@ -67,11 +68,11 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
-     * Sets the Image instance to be processed. Also inspects and saves the
+     * Sets the Flou\Image instance to be processed. Also inspects and saves the
      * original image's dimensions.
      *
      * @param Image $image
-     * @return $this The Flou\DefaultImageProcessor instance.
+     * @return DefaultImageProcessor $this
      */
     public function setImage(Image $image)
     {
@@ -91,7 +92,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets $blur_sigma.
      *
      * @param string $value
-     * @return $this The Flou\DefaultImageProcessor instance.
+     * @return DefaultImageProcessor $this
      */
     public function setBlurSigma($value)
     {
@@ -103,7 +104,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets $resize_width.
      *
      * @param string $value
-     * @return $this The Flou\DefaultImageProcessor instance.
+     * @return DefaultImageProcessor $this
      */
     public function setResizeWidth($value)
     {
@@ -112,6 +113,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
+     * Gets $original_width.
      *
      * @return int|null
      */
@@ -121,6 +123,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
+     * Gets $original_height.
      *
      * @return int|null
      */
