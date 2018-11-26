@@ -33,7 +33,7 @@ class Image
      * to the image, from which $base_path is extracted for future reference.
      *
      * @param string $original_file The filename or full path to the image.
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @throws InvalidFileException If the path isn't a file or doesn't exist.
      */
     public function load($original_file)
@@ -66,7 +66,7 @@ class Image
     /**
      * Process the original image if it hasn't been processed yet.
      *
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see internalProcess()
      */
     public function process()
@@ -79,7 +79,7 @@ class Image
      * Process the original image, even if it has already been processed. The
      * existing file is deleted and generated again.
      *
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see internalProcess()
      */
     public function forceProcess()
@@ -138,7 +138,7 @@ class Image
      * Sets $base_path.
      *
      * @param string $base_path
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @throws InvalidDirectoryException If the path isn't a directory or doesn't exist.
      */
     public function setBasePath($base_path)
@@ -156,7 +156,7 @@ class Image
      * as the output directory for the processed image.
      *
      * @param string $processed_path
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see getProcessedFilePath()
      */
     public function setProcessedPath($processed_path)
@@ -175,7 +175,7 @@ class Image
      * instead of $default_processed_file.
      *
      * @param string $base_path
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see getProcessedFilePath()
      * @see getProcessedURL()
      */
@@ -189,7 +189,7 @@ class Image
      * Sets $base_url.
      *
      * @param string $base_url
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      */
     public function setBaseUrl($base_url)
     {
@@ -201,7 +201,7 @@ class Image
      * Sets $custom_processed_url.
      *
      * @param string $custom_processed_url
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see getProcessedURL()
      */
     public function setProcessedUrl($processed_url)
@@ -214,7 +214,7 @@ class Image
      * Sets the image processor to be used for processing.
      *
      * @param ImageProcessorInterface $image_processor
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see internalProcess()
      */
     public function setImageProcessor(ImageProcessorInterface $image_processor)
@@ -227,7 +227,7 @@ class Image
      * Sets the image renderer to be used for rendering.
      *
      * @param ImageRendererInterface $image_renderer
-     * @return $this The Flou\Image instance.
+     * @return Image $this
      * @see render()
      */
     public function setImageRenderer(ImageRendererInterface $image_renderer)

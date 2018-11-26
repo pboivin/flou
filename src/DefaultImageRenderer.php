@@ -1,11 +1,11 @@
 <?php
 namespace Flou;
 
-use Flou\Image;
 use Flou\ImageRendererInterface;
+use Flou\Image;
 
 /**
- * Flou\DefaultImageRenderer is used by default to render a processed Image
+ * Flou\DefaultImageRenderer is used by default to render a processed Flou\Image
  * instance to HTML.
  */
 class DefaultImageRenderer implements ImageRendererInterface
@@ -20,7 +20,7 @@ class DefaultImageRenderer implements ImageRendererInterface
      * Sets the Image instance to be rendered.
      *
      * @param Image $image
-     * @return $this The Flou\Image instance.
+     * @return DefaultImageRenderer $this
      */
     public function setImage(Image $image)
     {
@@ -32,7 +32,7 @@ class DefaultImageRenderer implements ImageRendererInterface
      * Sets the text to be used in the img's alt attribute.
      *
      * @param string $description
-     * @return $this The Flou\Image instance.
+     * @return DefaultImageRenderer $this
      */
     public function setDescription($description)
     {
@@ -44,7 +44,7 @@ class DefaultImageRenderer implements ImageRendererInterface
      * Sets the CSS class to be used for the container element.
      *
      * @param string $container_class
-     * @return $this The Flou\Image instance.
+     * @return DefaultImageRenderer $this
      */
     public function setContainerClass($container_class)
     {
@@ -56,7 +56,7 @@ class DefaultImageRenderer implements ImageRendererInterface
      * Sets the CSS class to be used for the img element.
      *
      * @param string $img_class
-     * @return $this The Flou\Image instance.
+     * @return DefaultImageRenderer $this
      */
     public function setImgClass($img_class)
     {
@@ -65,9 +65,9 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
-     * Returns the HTML code to display the image on a Web page.
+     * Returns the HTML code to display the processed image on a Web page.
      *
-     * The URL of the original image is attached to the processed image via
+     * The URL of the original image is attached to the img tag via
      * the data-original attribute, which is used to implement lazy-loading.
      *
      * @return string|null

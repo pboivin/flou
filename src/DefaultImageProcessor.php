@@ -3,6 +3,7 @@ namespace Flou;
 
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\ImageInterface as ImagineImageInterface;
+use Imagine\Gd\Imagine as DefaultImagine;
 use Imagine\Image\Box;
 
 use Flou\Exception\ImageProcessorException;
@@ -36,15 +37,15 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
-     * Get the Imagine instance to be used for processing. An
-     * Imagine\Imagick\Imagine is instantiated by default if not configured.
+     * Get the Imagine instance to be used for processing. A DefaultImagine
+     * (alised above) is instantiated by default if not configured.
      *
      * @return ImagineInterface
      */
     public function getImagine()
     {
         if (!$this->imagine) {
-            $this->imagine = new \Imagine\Gd\Imagine();
+            $this->imagine = new DefaultImagine();
         }
         return $this->imagine;
     }
@@ -71,7 +72,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * Sets the Flou\Image instance to be processed. Also inspects and saves the
      * original image's dimensions.
      *
-     * @param Image $image
+     * @param Flou\Image $image
      * @return DefaultImageProcessor $this
      */
     public function setImage(Image $image)
