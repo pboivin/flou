@@ -8,19 +8,18 @@
         imageLoadedClass: "flou-image-loaded",
         imageLoadedDelay: 500,
 
-        handleImageLoaded: function(src) {
-            var image = this;
+        handleImageLoaded: function(imageElement, originalSrc) {
             setTimeout(function(){
-                image.setAttribute("src", src);
-                image.classList.add(Flou.imageLoadedClass);
+                imageElement.setAttribute("src", originalSrc);
+                imageElement.classList.add(Flou.imageLoadedClass);
             }, Flou.imageLoadedDelay);
         },
 
         loadImage: function(imageElement) {
             var originalSrc = imageElement.getAttribute("data-original");
-            var originalImage = new Image();
-            originalImage.onload = Flou.handleImageLoaded.bind(imageElement, originalSrc);
-            originalImage.src = originalSrc;
+            var originalImageLoader = new Image();
+            originalImageLoader.onload = Flou.handleImageLoaded.bind(this, imageElement, originalSrc);
+            originalImageLoader.src = originalSrc;
         },
 
         loadAllImages: function() {
