@@ -20,7 +20,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     private $original_width;
     private $original_height;
     private $resize_width = 40;
-    private $blur_sigma = 10;
+    private $blur_sigma = 0.5;
 
 
     /**
