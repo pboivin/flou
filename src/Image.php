@@ -99,16 +99,11 @@ class Image
      */
     private function internalProcess($force_process=false)
     {
-        // TODO add getImageProcessor
-
-        if (!$this->image_processor) {
-            $this->setImageProcessor(new DefaultImageProcessor());
-        }
-
-        $this->image_processor->setImage($this);
+        $image_processor = $this->getImageProcessor();
+        $image_processor->setImage($this);
 
         if ($force_process or !$this->processedFileExists()) {
-            $this->image_processor->process();
+            $image_processor->process();
         }
         $this->is_processed = true;
     }
@@ -224,6 +219,21 @@ class Image
     }
 
     /**
+     * Gets the image processor to be used for this Image. An instance of
+     * DefaultImageProcessor is created if not configured.
+     *
+     * @return ImageProcessorInterface
+     * @see internalProcess()
+     */
+    public function getImageProcessor()
+    {
+        if (!$this->image_processor) {
+            $this->setImageProcessor(new DefaultImageProcessor());
+        }
+        return $this->image_processor;
+    }
+
+    /**
      * Sets the image renderer to be used for rendering.
      *
      * @param ImageRendererInterface $image_renderer
@@ -324,7 +334,8 @@ class Image
     public function getOriginalWidth()
     {
         if ($this->is_processed) {
-            return $this->image_processor->getOriginalWidth();
+            $image_processor = $this->getImageProcessor();
+            return $image_processor->getOriginalWidth();
         }
         return null;
     }
@@ -337,7 +348,8 @@ class Image
     public function getOriginalHeight()
     {
         if ($this->is_processed) {
-            return $this->image_processor->getOriginalHeight();
+            $image_processor = $this->getImageProcessor();
+            return $image_processor->getOriginalHeight();
         }
         return null;
     }
