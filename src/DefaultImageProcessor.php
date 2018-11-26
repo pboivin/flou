@@ -19,7 +19,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
     private $original_width;
     private $original_height;
     private $resize_width = 40;
-    private $blur_radius = 10;
     private $blur_sigma = 10;
 
 
@@ -85,18 +84,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
         $this->original_width = $size->getWidth();
         $this->original_height = $size->getHeight();
 
-        return $this;
-    }
-
-    /**
-     * Sets $blur_radius.
-     *
-     * @param string $value
-     * @return $this The Flou\DefaultImageProcessor instance.
-     */
-    public function setBlurRadius($value)
-    {
-        $this->blur_radius = $value;
         return $this;
     }
 
