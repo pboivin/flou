@@ -140,6 +140,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
      */
     public function process()
     {
+        $input_file = $this->image->getOriginalFilePath();
         $output_file = $this->image->getProcessedFilePath();
 
         $width = $this->original_width;
@@ -148,11 +149,23 @@ class DefaultImageProcessor implements ImageProcessorInterface
         $resize_height = $resize_width * $height / $width;
 
         $imagine_image = $this->getImagineImage();
-        $imagine_image->resize(new Box($resize_width, $resize_height));
-        $imagine_image->effects()
-            ->blur($this->blur_sigma);
 
-        $output_file = $this->image->getProcessedFilePath();
-        $imagine_image->save($output_file);
+        try {
+            $imagine_image->resize(new Box($resize_width, $resize_height));
+        } catch (\Exception $e) {
+            throw new ImageProcessorException("Resize failed: $input_file");
+        }
+
+        try {
+            $imagine_image->effects()->blur($this->blur_sigma);
+        } catch (\Exception $e) {
+            throw new ImageProcessorException("Blur failed: $input_file");
+        }
+
+        try {
+            $imagine_image->save($output_file);
+        } catch (\Exception $e) {
+            throw new ImageProcessorException("Save failed: $input_file");
+        }
     }
 }
