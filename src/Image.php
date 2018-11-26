@@ -157,12 +157,12 @@ class Image
      *
      * @param string $processed_path
      * @return Image $this
+     * @throws InvalidDirectoryException If the path isn't a directory or doesn't exist.
      * @see getProcessedFilePath()
      */
     public function setProcessedPath($processed_path)
     {
-        // TODO validate directory
-
+        Path::validateDirectory($processed_path);
         $this->custom_processed_path = $processed_path;
         return $this;
     }

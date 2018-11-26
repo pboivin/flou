@@ -117,19 +117,19 @@ class ImageTest extends TestCase
         $this->assertEquals($expected_url, $image->getProcessedURL());
 
         // Using a custom processed URL:
-        $custom_path = Path::join(self::$base_path, "img", "processed");
-        $custom_url = "/img/processed";
+        $custom_path = Path::join(self::$base_path, "custom");
+        $custom_url = "/custom";
         $image->setProcessedPath($custom_path);
         $this->assertNull($image->getProcessedURL());
         $image->setProcessedUrl($custom_url);
         $this->assertNotNull($image->getProcessedURL());
-        $expected_url = "/img/processed/image1.flou.jpg";
+        $expected_url = "/custom/image1.flou.jpg";
         $this->assertEquals($expected_url, $image->getProcessedURL());
 
         // Using a custom processed filename:
         $custom_file = "custom.jpg";
         $image->setProcessedFile($custom_file);
-        $expected_url = "/img/processed/custom.jpg";
+        $expected_url = "/custom/custom.jpg";
         $this->assertEquals($expected_url, $image->getProcessedURL());
     }
 
