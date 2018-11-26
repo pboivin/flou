@@ -44,7 +44,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     public function getImagine()
     {
         if (!$this->imagine) {
-            $this->imagine = new \Imagine\Imagick\Imagine();
+            $this->imagine = new \Imagine\Gd\Imagine();
         }
         return $this->imagine;
     }
