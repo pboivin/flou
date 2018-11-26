@@ -1,6 +1,9 @@
 <?php
 namespace Flou;
 
+use Imagine\Image\ImagineInterface;
+use Imagine\Image\Box;
+
 use Flou\Exception\ImageProcessorException;
 use Flou\ImageProcessorInterface;
 use Flou\Image;
@@ -11,13 +14,58 @@ use Flou\Image;
 class DefaultImageProcessor implements ImageProcessorInterface
 {
     private $image;
-    private $imagick_image;
+    private $imagine;
+    private $imagine_image;
     private $original_width;
     private $original_height;
     private $resize_width = 40;
     private $blur_radius = 10;
     private $blur_sigma = 10;
 
+
+    /**
+     * Sets the Imagine instance to be used for processing.
+     *
+     * @param ImagineInterface $imagine
+     * @return $this The Flou\DefaultImageProcessor instance.
+     */
+    public function setImagine(ImagineInterface $imagine)
+    {
+        $this->imagine = $imagine;
+        return $this;
+    }
+
+    /**
+     * Get the Imagine instance to be used for processing. An
+     * Imagine\Imagick\Imagine is instantiated by default if not configured.
+     *
+     * @return An Imagine object.
+     */
+    public function getImagine()
+    {
+        if (!$this->imagine) {
+            $this->imagine = new \Imagine\Imagick\Imagine();
+        }
+        return $this->imagine;
+    }
+
+    /**
+     * Get the Imagine image ready to be processed.
+     *
+     * @return An Imagine Image object.
+     */
+    public function getImagineImage()
+    {
+        if (!$this->image) {
+            return null;
+        }
+        if (!$this->imagine_image) {
+            $original_file = $this->image->getOriginalFilePath();
+            $imagine = $this->getImagine();
+            $this->imagine_image = $imagine->open($original_file);
+        }
+        return $this->imagine_image;
+    }
 
     /**
      * Sets the Image instance to be processed. Also inspects and saves the
@@ -31,11 +79,11 @@ class DefaultImageProcessor implements ImageProcessorInterface
         $this->image = $image;
 
         $input_file = $image->getOriginalFilePath();
-        $this->imagick_image = new \Imagick($input_file);
+        $imagine_image = $this->getImagineImage();
 
-        $geometry = $this->imagick_image->getImageGeometry();
-        $this->original_width = $geometry["width"];
-        $this->original_height = $geometry["height"];
+        $size = $imagine_image->getSize();
+        $this->original_width = $size->getWidth();
+        $this->original_height = $size->getHeight();
 
         return $this;
     }
@@ -102,28 +150,19 @@ class DefaultImageProcessor implements ImageProcessorInterface
      */
     public function process()
     {
-        $input_file = $this->image->getOriginalFilePath();
         $output_file = $this->image->getProcessedFilePath();
 
         $width = $this->original_width;
         $height = $this->original_height;
         $resize_width = $this->resize_width;
         $resize_height = $resize_width * $height / $width;
-        $resized = $this->imagick_image->adaptiveResizeImage($resize_width, $resize_height, true);
-        if (!$resized) {
-            throw new ImageProcessorException("Resize failed: $input_file");
-        }
 
-        $radius = $this->blur_radius;
-        $sigma = $this->blur_sigma;
-        $blurred = $this->imagick_image->adaptiveBlurImage($radius, $sigma);
-        if (!$blurred) {
-            throw new ImageProcessorException("Blur failed: $input_file");
-        }
+        $imagine_image = $this->getImagineImage();
+        $imagine_image->resize(new Box($resize_width, $resize_height));
+        $imagine_image->effects()
+            ->blur($this->blur_sigma);
 
-        $written = $this->imagick_image->writeImage($output_file);
-        if (!$written) {
-            throw new ImageProcessorException("Write failed: $input_file");
-        }
+        $output_file = $this->image->getProcessedFilePath();
+        $imagine_image->save($output_file);
     }
 }
