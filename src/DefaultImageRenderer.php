@@ -67,7 +67,7 @@ class DefaultImageRenderer implements ImageRendererInterface
         $height = $this->image->getOriginalHeight();
         $processed_url = $this->image->getProcessedURL();
         $original_url = $this->image->getOriginalURL();
-        $alt = $this->image->description;
+        $alt = $this->image->getDescription();
 
         $template = sprintf(
             '<div class="%s">' .
