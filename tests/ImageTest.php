@@ -248,9 +248,10 @@ class ImageTest extends TestCase
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
             ->setBaseUrl("/img")
+            ->setDescription("Image Description")
             ->load("image1.jpg");
 
-        $html = $image->render("Image Description");
+        $html = $image->render();
         $this->assertNotNull($html);
         $this->assertContains("Image Description", $html);
     }

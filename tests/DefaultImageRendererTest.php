@@ -23,11 +23,11 @@ class DefaultImageRendererTest extends TestCase
     {
         $image = (new Flou\Image())
             ->setBasePath(self::$base_path)
+            ->setDescription("This is my image")
             ->load("image1.jpg");
 
         $renderer = (new DefaultImageRenderer())
-            ->setImage($image)
-            ->setDescription("This is my image");
+            ->setImage($image);
 
         // Cannot generate HTML without a base_url
         $html = $renderer->render();
