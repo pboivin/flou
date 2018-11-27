@@ -13,7 +13,6 @@ class DefaultImageRenderer implements ImageRendererInterface
     protected $image;
     protected $container_class = "flou-container";
     protected $img_class = "flou-image";
-    protected $description = "";
 
 
     /**
@@ -25,18 +24,6 @@ class DefaultImageRenderer implements ImageRendererInterface
     public function setImage(Image $image)
     {
         $this->image = $image;
-        return $this;
-    }
-
-    /**
-     * Sets the text to be used in the img's alt attribute.
-     *
-     * @param string $description
-     * @return DefaultImageRenderer $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
         return $this;
     }
 
@@ -80,7 +67,7 @@ class DefaultImageRenderer implements ImageRendererInterface
         $height = $this->image->getOriginalHeight();
         $processed_url = $this->image->getProcessedURL();
         $original_url = $this->image->getOriginalURL();
-        $alt = $this->description;
+        $alt = $this->image->description;
 
         $template = sprintf(
             '<div class="%s">' .

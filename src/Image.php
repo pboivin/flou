@@ -23,6 +23,7 @@ class Image
     private $is_processed;
     private $image_renderer;
     private $image_processor;
+    private $description;
 
 
     /**
@@ -373,16 +374,36 @@ class Image
      * Returns the output from and image renderer to display an image.
      * DefaultImageRenderer is used if no other image renderer was configured.
      *
-     * @param string $description The image description.
      * @return string|null
      */
-    public function render($description="")
+    public function render()
     {
         $image_renderer = $this->getImageRenderer();
 
         return $image_renderer
             ->setImage($this)
-            ->setDescription($description)
             ->render();
+    }
+
+    /**
+     * Sets the image description.
+     *
+     * @param string $description
+     * @return Image $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Gets the image description.
+     *
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
