@@ -24,6 +24,7 @@ class LazyloadImageRenderer extends DefaultImageRenderer
                     data-src="{$this->image->getOriginalURL()}"
                     width="{$this->image->getOriginalWidth()}"
                     height="{$this->image->getOriginalHeight()}"
+                    alt="{$this->image->getDescription()}"
                 >
             </div>
 EOT;
@@ -31,22 +32,22 @@ EOT;
 }
 
 /**
- * Helper function to process and render an image in our template
+ * Helper function to load and process images
  */
-function show_image($filename)
+function load_image($filename, $description)
 {
-    // Load and process the image
-    $image = (new Image())
+    return (new Image())
+        ->setImageRenderer(new LazyloadImageRenderer())
+        ->setDescription($description)
         ->setBasePath(__DIR__ . "/img")
         ->setBaseURL("/img")
         ->load($filename)
         ->process();
-
-    // Render the image to HTML using a custom renderer
-    return $image
-        ->setImageRenderer(new LazyloadImageRenderer())
-        ->render();
 }
+
+$image1 = load_image("image1.jpg", "My first image");
+$image2 = load_image("image2.jpg", "My second image");
+$image3 = load_image("image3.jpg", "My third image");
 
 ?>
 <!doctype html>
@@ -76,7 +77,7 @@ function show_image($filename)
 
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis sodales enim. Fusce quis dictum mauris. Curabitur facilisis tincidunt mollis. Morbi vehicula mauris massa, vel tincidunt lectus commodo malesuada. Sed nec tortor blandit arcu facilisis posuere. Fusce viverra consectetur mi, condimentum semper urna ullamcorper eget. Donec iaculis ac nunc id accumsan. Quisque lectus augue, feugiat quis mi vel, viverra eleifend enim. Curabitur sit amet urna arcu.</p>
 
-        <?= show_image("image1.jpg") ?>
+        <?= $image1->render(); ?>
 
         <p>Proin facilisis orci et sem volutpat, in rhoncus odio facilisis. Maecenas elit ante, accumsan quis malesuada vel, tristique sit amet dolor. In posuere erat a dolor congue vehicula. Nam auctor porttitor dolor, id eleifend mi. Cras sed felis nec purus tincidunt blandit sit amet in nisi. Ut mollis ante nec odio pellentesque bibendum. Pellentesque id commodo erat, id commodo odio. Quisque rutrum metus in ipsum tristique mollis sed in nibh. Phasellus vel purus eget magna fermentum vulputate.</p>
         <p>Quisque quis velit non leo consequat hendrerit sit amet a orci. Cras ut ligula quam. Curabitur sollicitudin dui non mi luctus, ac consequat orci venenatis. In hac habitasse platea dictumst. Suspendisse eleifend condimentum erat in fringilla. Nam a elit ut odio varius consectetur. Donec eleifend libero ipsum, quis vestibulum felis consequat non. Maecenas a imperdiet lacus, in feugiat dui. Pellentesque orci elit, pharetra in tellus et, rhoncus dignissim nisl. Nunc lacinia eros ut urna pretium maximus.</p>
@@ -85,7 +86,7 @@ function show_image($filename)
 
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis sodales enim. Fusce quis dictum mauris. Curabitur facilisis tincidunt mollis. Morbi vehicula mauris massa, vel tincidunt lectus commodo malesuada. Sed nec tortor blandit arcu facilisis posuere. Fusce viverra consectetur mi, condimentum semper urna ullamcorper eget. Donec iaculis ac nunc id accumsan. Quisque lectus augue, feugiat quis mi vel, viverra eleifend enim. Curabitur sit amet urna arcu.</p>
 
-        <?= show_image("image2.jpg") ?>
+        <?= $image2->render(); ?>
 
         <p>Proin facilisis orci et sem volutpat, in rhoncus odio facilisis. Maecenas elit ante, accumsan quis malesuada vel, tristique sit amet dolor. In posuere erat a dolor congue vehicula. Nam auctor porttitor dolor, id eleifend mi. Cras sed felis nec purus tincidunt blandit sit amet in nisi. Ut mollis ante nec odio pellentesque bibendum. Pellentesque id commodo erat, id commodo odio. Quisque rutrum metus in ipsum tristique mollis sed in nibh. Phasellus vel purus eget magna fermentum vulputate.</p>
         <p>Quisque quis velit non leo consequat hendrerit sit amet a orci. Cras ut ligula quam. Curabitur sollicitudin dui non mi luctus, ac consequat orci venenatis. In hac habitasse platea dictumst. Suspendisse eleifend condimentum erat in fringilla. Nam a elit ut odio varius consectetur. Donec eleifend libero ipsum, quis vestibulum felis consequat non. Maecenas a imperdiet lacus, in feugiat dui. Pellentesque orci elit, pharetra in tellus et, rhoncus dignissim nisl. Nunc lacinia eros ut urna pretium maximus.</p>
@@ -94,7 +95,7 @@ function show_image($filename)
 
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis sodales enim. Fusce quis dictum mauris. Curabitur facilisis tincidunt mollis. Morbi vehicula mauris massa, vel tincidunt lectus commodo malesuada. Sed nec tortor blandit arcu facilisis posuere. Fusce viverra consectetur mi, condimentum semper urna ullamcorper eget. Donec iaculis ac nunc id accumsan. Quisque lectus augue, feugiat quis mi vel, viverra eleifend enim. Curabitur sit amet urna arcu.</p>
 
-        <?= show_image("image3.jpg") ?>
+        <?= $image3->render(); ?>
 
         <p>Proin facilisis orci et sem volutpat, in rhoncus odio facilisis. Maecenas elit ante, accumsan quis malesuada vel, tristique sit amet dolor. In posuere erat a dolor congue vehicula. Nam auctor porttitor dolor, id eleifend mi. Cras sed felis nec purus tincidunt blandit sit amet in nisi. Ut mollis ante nec odio pellentesque bibendum. Pellentesque id commodo erat, id commodo odio. Quisque rutrum metus in ipsum tristique mollis sed in nibh. Phasellus vel purus eget magna fermentum vulputate.</p>
         <p>Quisque quis velit non leo consequat hendrerit sit amet a orci. Cras ut ligula quam. Curabitur sollicitudin dui non mi luctus, ac consequat orci venenatis. In hac habitasse platea dictumst. Suspendisse eleifend condimentum erat in fringilla. Nam a elit ut odio varius consectetur. Donec eleifend libero ipsum, quis vestibulum felis consequat non. Maecenas a imperdiet lacus, in feugiat dui. Pellentesque orci elit, pharetra in tellus et, rhoncus dignissim nisl. Nunc lacinia eros ut urna pretium maximus.</p>
