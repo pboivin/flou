@@ -78,10 +78,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     public function setImage(Image $image)
     {
         $this->image = $image;
-
-        $input_file = $image->getOriginalFilePath();
         $imagine_image = $this->getImagineImage();
-
         $size = $imagine_image->getSize();
         $this->original_width = $size->getWidth();
         $this->original_height = $size->getHeight();
@@ -134,39 +131,48 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
-     * Generates a resized and blurred version of an original image then writes
-     * the generated image to a file.
+     * Generates a resized and blurred version of an original image. Optionnaly
+     * saves the generated image to a file.
      *
+     * @param bool $save
      * @throws ImageProcessorException If the image can't be processed.
      */
-    public function process()
+    public function process($save=true)
     {
         $input_file = $this->image->getOriginalFilePath();
-        $output_file = $this->image->getProcessedFilePath();
-
+        $imagine_image = $this->getImagineImage();
         $width = $this->original_width;
         $height = $this->original_height;
         $resize_width = $this->resize_width;
         $resize_height = $resize_width * $height / $width;
 
-        $imagine_image = $this->getImagineImage();
-
         try {
             $imagine_image->resize(new Box($resize_width, $resize_height));
-        } catch (\Exception $e) {
-            throw new ImageProcessorException("Resize failed: $input_file");
-        }
-
-        try {
             $imagine_image->effects()->blur($this->blur_sigma);
         } catch (\Exception $e) {
-            throw new ImageProcessorException("Blur failed: $input_file");
+            throw new ImageProcessorException("Process failed for input file: $input_file");
         }
+
+        if ($save) {
+            $this->save();
+        }
+    }
+
+    /**
+     * Saves the generated image to a file.
+     *
+     * @throws ImageProcessorException If the image can't be saved.
+     */
+    public function save()
+    {
+        $input_file = $this->image->getOriginalFilePath();
+        $output_file = $this->image->getProcessedFilePath();
+        $imagine_image = $this->getImagineImage();
 
         try {
             $imagine_image->save($output_file);
         } catch (\Exception $e) {
-            throw new ImageProcessorException("Save failed: $input_file");
+            throw new ImageProcessorException("Save failed for input file: $input_file");
         }
     }
 }

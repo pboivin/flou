@@ -11,5 +11,7 @@ interface ImageProcessorInterface
 
     public function getOriginalHeight();
 
-    public function process();
+    public function process($save);
+
+    public function save();
 }
