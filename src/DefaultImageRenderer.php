@@ -10,10 +10,10 @@ use Flou\Image;
  */
 class DefaultImageRenderer implements ImageRendererInterface
 {
-    private $image;
-    private $container_class = "flou-container";
-    private $img_class = "flou-image";
-    private $alt_text = "";
+    protected $image;
+    protected $container_class = "flou-container";
+    protected $img_class = "flou-image";
+    protected $alt_text = "";
 
 
     /**

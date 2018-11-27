@@ -15,13 +15,13 @@ use Flou\Image;
  */
 class DefaultImageProcessor implements ImageProcessorInterface
 {
-    private $image;
-    private $imagine;
-    private $imagine_image;
-    private $original_width;
-    private $original_height;
-    private $resize_width = 40;
-    private $blur_sigma = 0.5;
+    protected $image;
+    protected $imagine;
+    protected $imagine_image;
+    protected $original_width;
+    protected $original_height;
+    protected $resize_width = 40;
+    protected $blur_sigma = 0.5;
 
 
     /**
