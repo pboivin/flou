@@ -68,8 +68,12 @@ attempt to regenerate the placeholder; the existing image will be used instead.
 is an example of a simple integration using the built-in front-end helper.
 
 [`demos/lazyload.php`](https://github.com/pboi20/flou/tree/master/demos/lazyload.php)
-is an example of a complete integration using the [LazyLoad](https://github.com/verlok/lazyload)
-library.
+is an example of how to extend the `DefaultImageRenderer` class to integrate with
+the [LazyLoad](https://github.com/verlok/lazyload) JavaScript library.
+
+[`demos/processor.php`](https://github.com/pboi20/flou/tree/master/demos/processor.php)
+is an example of how to extend the `DefaultImageProcessor` class to add custom image
+processing steps.
 
 
 ### Development
