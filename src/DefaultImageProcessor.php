@@ -6,7 +6,6 @@ use Imagine\Image\ImageInterface as ImagineImageInterface;
 use Imagine\Gd\Imagine as DefaultImagine;
 use Imagine\Image\Box;
 
-use Flou\Exception\ImageProcessorException;
 use Flou\ImageProcessorInterface;
 use Flou\Image;
 
@@ -135,27 +134,39 @@ class DefaultImageProcessor implements ImageProcessorInterface
      * saves the generated image to a file.
      *
      * @param bool $save
-     * @throws ImageProcessorException If the image can't be processed.
      */
     public function process($save=true)
     {
-        $input_file = $this->image->getOriginalFilePath();
-        $imagine_image = $this->getImagineImage();
-        $width = $this->original_width;
-        $height = $this->original_height;
-        $resize_width = $this->resize_width;
-        $resize_height = $resize_width * $height / $width;
-
-        try {
-            $imagine_image->resize(new Box($resize_width, $resize_height));
-            $imagine_image->effects()->blur($this->blur_sigma);
-        } catch (\Exception $e) {
-            throw new ImageProcessorException("Process failed for input file: $input_file");
-        }
+        $this->resize();
+        $this->blur();
 
         if ($save) {
             $this->save();
         }
+    }
+
+    /**
+     * Resizes the image.
+     */
+    protected function resize()
+    {
+        $width = $this->original_width;
+        $height = $this->original_height;
+        $resize_width = $this->resize_width;
+        $resize_height = $resize_width * $height / $width;
+        $imagine_image = $this->getImagineImage();
+
+        $imagine_image->resize(new Box($resize_width, $resize_height));
+    }
+
+    /**
+     * Blurs the image.
+     */
+    protected function blur()
+    {
+        $imagine_image = $this->getImagineImage();
+
+        $imagine_image->effects()->blur($this->blur_sigma);
     }
 
     /**
@@ -165,14 +176,9 @@ class DefaultImageProcessor implements ImageProcessorInterface
      */
     public function save()
     {
-        $input_file = $this->image->getOriginalFilePath();
         $output_file = $this->image->getProcessedFilePath();
         $imagine_image = $this->getImagineImage();
 
-        try {
-            $imagine_image->save($output_file);
-        } catch (\Exception $e) {
-            throw new ImageProcessorException("Save failed for input file: $input_file");
-        }
+        $imagine_image->save($output_file);
     }
 }
