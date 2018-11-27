@@ -11,6 +11,7 @@
         <ul>
             <li><a href="basic.php">Basic usage with built-in front-end assets</a></li>
             <li><a href="lazyload.php">Integration with LazyLoad</a></li>
+            <li><a href="processor.php">Custom image processing</a></li>
         </ul>
     </div>
 </body>

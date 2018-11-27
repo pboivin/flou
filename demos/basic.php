@@ -21,7 +21,7 @@ $image1 = (new Image())
     <link rel="stylesheet" href="css/common.css">
 
     <!--
-        The assets are inlined here for the sake simplicity. You can manually
+        The assets are inlined here for the sake of simplicity. You can manually
         copy both `flou.css` and `flou.js` into your project if you wish to
         include them in your CSS and JavaScript bundles.
     -->
