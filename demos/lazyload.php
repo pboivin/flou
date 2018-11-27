@@ -7,7 +7,32 @@ error_reporting(E_ALL);
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use Flou\Image;
+use Flou\DefaultImageRenderer;
 
+/**
+ * Custom image renderer to generate the HTML snippet prepared for LazyLoad
+ */
+class LazyloadImageRenderer extends DefaultImageRenderer
+{
+    public function render()
+    {
+        return <<<EOT
+            <div class="lazy-container">
+                <img
+                    class="lazy"
+                    src="{$this->image->getProcessedURL()}"
+                    data-src="{$this->image->getOriginalURL()}"
+                    width="{$this->image->getOriginalWidth()}"
+                    height="{$this->image->getOriginalHeight()}"
+                >
+            </div>
+EOT;
+    }
+}
+
+/**
+ * Helper function to process and render an image in our template
+ */
 function show_image($filename)
 {
     // Load and process the image
@@ -17,18 +42,10 @@ function show_image($filename)
         ->load($filename)
         ->process();
 
-    // Return the HTML snippet as needed by LazyLoad
-    return <<<EOT
-        <div class="lazy-container">
-            <img
-                class="lazy"
-                src="{$image->getProcessedURL()}"
-                data-src="{$image->getOriginalURL()}"
-                width="{$image->getOriginalWidth()}"
-                height="{$image->getOriginalHeight()}"
-            >
-        </div>
-EOT;
+    // Render the image to HTML using a custom renderer
+    return $image
+        ->setImageRenderer(new LazyloadImageRenderer())
+        ->render();
 }
 
 ?>
