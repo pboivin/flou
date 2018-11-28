@@ -171,8 +171,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
 
     /**
      * Saves the generated image to a file.
-     *
-     * @throws ImageProcessorException If the image can't be saved.
      */
     public function save()
     {
