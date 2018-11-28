@@ -7,5 +7,7 @@ interface ImageRendererInterface
 {
     public function setImage(Image $image);
 
+    public function getImage();
+
     public function render();
 }

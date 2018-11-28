@@ -101,6 +101,16 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
+     * Gets $image.
+     *
+     * @return Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      * Sets $blur_sigma.
      *
      * @param string $value

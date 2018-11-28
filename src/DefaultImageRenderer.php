@@ -13,9 +13,9 @@ class DefaultImageRenderer implements ImageRendererInterface
 {
     use ConfigurableTrait;
 
-    protected $image;
-    protected $container_class;
-    protected $img_class;
+    private $image;
+    private $container_class;
+    private $img_class;
 
 
     /**
@@ -39,6 +39,16 @@ class DefaultImageRenderer implements ImageRendererInterface
     {
         $this->image = $image;
         return $this;
+    }
+
+    /**
+     * Gets $image.
+     *
+     * @return Image
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 
     /**
