@@ -1,6 +1,7 @@
 <?php
 namespace Flou;
 
+use Flou\ConfigurableTrait;
 use Flou\ImageRendererInterface;
 use Flou\Image;
 
@@ -10,10 +11,23 @@ use Flou\Image;
  */
 class DefaultImageRenderer implements ImageRendererInterface
 {
-    protected $image;
-    protected $container_class = "flou-container";
-    protected $img_class = "flou-image";
+    use ConfigurableTrait;
 
+    protected $image;
+    protected $container_class;
+    protected $img_class;
+
+
+    /**
+     * Initialize the class default values.
+     */
+    public static function initialize()
+    {
+        self::configure([
+            "container_class" => "flou-container",
+            "img_class" => "flou-image",
+        ]);
+    }
 
     /**
      * Sets the Image instance to be rendered.
@@ -40,6 +54,16 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
+     * Gets the CSS class to be used for the container element.
+     *
+     * @return string
+     */
+    public function getContainerClass()
+    {
+        return $this->container_class ?? self::getConfig("container_class");
+    }
+
+    /**
      * Sets the CSS class to be used for the img element.
      *
      * @param string $img_class
@@ -52,6 +76,16 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
+     * Gets the CSS class to be used for the img element.
+     *
+     * @return string
+     */
+    public function getImgClass()
+    {
+        return $this->img_class ?? self::getConfig("img_class");
+    }
+
+    /**
      * Returns the HTML code to display the processed image on a Web page.
      *
      * The URL of the original image is attached to the img tag via
@@ -61,8 +95,8 @@ class DefaultImageRenderer implements ImageRendererInterface
      */
     public function render()
     {
-        $container_class = $this->container_class;
-        $img_class = $this->img_class;
+        $container_class = $this->getContainerClass();
+        $img_class = $this->getImgClass();
         $width = $this->image->getOriginalWidth();
         $height = $this->image->getOriginalHeight();
         $processed_url = $this->image->getProcessedURL();
@@ -82,3 +116,5 @@ class DefaultImageRenderer implements ImageRendererInterface
         return null;
     }
 }
+
+DefaultImageRenderer::initialize();
