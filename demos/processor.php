@@ -12,11 +12,11 @@ use Flou\DefaultImageProcessor;
  */
 class PinkImageProcessor extends DefaultImageProcessor
 {
-    protected $resize_width = 100;
-
     public function process($save=false)
     {
+        $this->setResizeWidth(100);
         parent::process(false);
+
         $imagine_image = $this->getImagineImage();
         $pink = $imagine_image->palette()->color('#FF00D0');
         $imagine_image->effects()->colorize($pink);

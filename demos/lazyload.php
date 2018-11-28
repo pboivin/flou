@@ -12,15 +12,17 @@ class LazyloadImageRenderer extends DefaultImageRenderer
 {
     public function render()
     {
+        $image = $this->getImage();
+
         return <<<EOT
             <div class="lazy-container">
                 <img
                     class="lazy"
-                    src="{$this->image->getProcessedURL()}"
-                    data-src="{$this->image->getOriginalURL()}"
-                    width="{$this->image->getOriginalWidth()}"
-                    height="{$this->image->getOriginalHeight()}"
-                    alt="{$this->image->getDescription()}"
+                    src="{$image->getProcessedURL()}"
+                    data-src="{$image->getOriginalURL()}"
+                    width="{$image->getOriginalWidth()}"
+                    height="{$image->getOriginalHeight()}"
+                    alt="{$image->getDescription()}"
                 >
             </div>
 EOT;
