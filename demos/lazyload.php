@@ -10,23 +10,9 @@ use Flou\DefaultImageRenderer;
  */
 class LazyloadImageRenderer extends DefaultImageRenderer
 {
-    public function render()
-    {
-        $image = $this->getImage();
-
-        return <<<EOT
-            <div class="lazy-container">
-                <img
-                    class="lazy"
-                    src="{$image->getProcessedURL()}"
-                    data-src="{$image->getOriginalURL()}"
-                    width="{$image->getOriginalWidth()}"
-                    height="{$image->getOriginalHeight()}"
-                    alt="{$image->getDescription()}"
-                >
-            </div>
-EOT;
-    }
+    protected $container_class = "lazy-container";
+    protected $img_class = "lazy";
+    protected $original_attr = "data-src";
 }
 
 /**
