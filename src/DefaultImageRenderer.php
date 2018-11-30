@@ -1,7 +1,6 @@
 <?php
 namespace Flou;
 
-use Flou\ConfigurableTrait;
 use Flou\ImageRendererInterface;
 use Flou\Image;
 
@@ -11,23 +10,11 @@ use Flou\Image;
  */
 class DefaultImageRenderer implements ImageRendererInterface
 {
-    use ConfigurableTrait;
-
     private $image;
-    private $container_class;
-    private $img_class;
+    protected $container_class = "flou-container";
+    protected $img_class = "flou-image";
+    protected $original_attr = "data-original";
 
-
-    /**
-     * Initialize the class default values.
-     */
-    public static function initialize()
-    {
-        self::configure([
-            "container_class" => "flou-container",
-            "img_class" => "flou-image",
-        ]);
-    }
 
     /**
      * Sets the Image instance to be rendered.
@@ -64,16 +51,6 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
-     * Gets the CSS class to be used for the container element.
-     *
-     * @return string
-     */
-    public function getContainerClass()
-    {
-        return $this->container_class ?? self::getConfig("container_class");
-    }
-
-    /**
      * Sets the CSS class to be used for the img element.
      *
      * @param string $img_class
@@ -86,13 +63,15 @@ class DefaultImageRenderer implements ImageRendererInterface
     }
 
     /**
-     * Gets the CSS class to be used for the img element.
+     * Sets the attribute name to contain the original image src.
      *
-     * @return string
+     * @param string $original_attr
+     * @return DefaultImageRenderer $this
      */
-    public function getImgClass()
+    public function setOriginalAttr($original_attr)
     {
-        return $this->img_class ?? self::getConfig("img_class");
+        $this->original_attr = $original_attr;
+        return $this;
     }
 
     /**
@@ -105,26 +84,26 @@ class DefaultImageRenderer implements ImageRendererInterface
      */
     public function render()
     {
-        $container_class = $this->getContainerClass();
-        $img_class = $this->getImgClass();
         $width = $this->image->getOriginalWidth();
         $height = $this->image->getOriginalHeight();
         $processed_url = $this->image->getProcessedURL();
         $original_url = $this->image->getOriginalURL();
         $alt = $this->image->getDescription();
 
-        $template = sprintf(
-            '<div class="%s">' .
-                '<img class="%s" width="%s" height="%s" src="%s" data-original="%s" alt="%s" />' .
-            '</div>',
-            $container_class, $img_class, $width, $height, $processed_url, $original_url, $alt
-        );
-
         if ($original_url && $processed_url) {
-            return $template;
+            return <<<EOT
+                <div class="{$this->container_class}">
+                    <img
+                        class="{$this->img_class}"
+                        width="{$width}"
+                        height="{$height}"
+                        src="{$processed_url}"
+                        {$this->original_attr}="{$original_url}"
+                        alt="{$alt}"
+                    />
+                </div>
+EOT;
         }
         return null;
     }
 }
-
-DefaultImageRenderer::initialize();
