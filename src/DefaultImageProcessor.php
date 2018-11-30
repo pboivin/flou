@@ -5,7 +5,6 @@ use Imagine\Image\ImagineInterface;
 use Imagine\Image\ImageInterface as ImagineImageInterface;
 use Imagine\Image\Box;
 
-use Flou\ConfigurableTrait;
 use Flou\ImageProcessorInterface;
 use Flou\Image;
 
@@ -14,28 +13,15 @@ use Flou\Image;
  */
 class DefaultImageProcessor implements ImageProcessorInterface
 {
-    use ConfigurableTrait;
-
     private $image;
     private $imagine;
     private $imagine_image;
-    private $resize_width;
-    private $blur_sigma;
     private $original_width;
     private $original_height;
+    protected $resize_width = 40;
+    protected $blur_sigma = 0.5;
+    protected $default_imagine_class = "Imagine\Gd\Imagine";
 
-
-    /**
-     * Initialize the class default values.
-     */
-    public static function initialize()
-    {
-        self::configure([
-            "resize_width" => 40,
-            "blur_sigma" => 0.5,
-            "imagine_class" => "Imagine\Gd\Imagine",
-        ]);
-    }
 
     /**
      * Sets the Imagine instance to be used for processing.
@@ -50,16 +36,15 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
-     * Get the Imagine instance to be used for processing. A default imagine class
-     * (configurable) is instantiated if not set.
+     * Get the Imagine instance to be used for processing. $default_imagine_class
+     * is instantiated if not set.
      *
      * @return ImagineInterface
      */
     public function getImagine()
     {
         if (!$this->imagine) {
-            $imagine_class = self::getConfig("imagine_class");
-            $this->imagine = new $imagine_class;
+            $this->imagine = new $this->default_imagine_class;
         }
         return $this->imagine;
     }
@@ -123,16 +108,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
     }
 
     /**
-     * Gets $blur_sigma.
-     *
-     * @return string
-     */
-    public function getBlurSigma()
-    {
-        return $this->blur_sigma ?? self::getConfig("blur_sigma");
-    }
-
-    /**
      * Sets $resize_width.
      *
      * @param string $value
@@ -142,16 +117,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
     {
         $this->resize_width = $value;
         return $this;
-    }
-
-    /**
-     * Gets $resize_width.
-     *
-     * @return string
-     */
-    public function getResizeWidth()
-    {
-        return $this->resize_width ?? self::getConfig("resize_width");
     }
 
     /**
@@ -197,10 +162,9 @@ class DefaultImageProcessor implements ImageProcessorInterface
     {
         $width = $this->original_width;
         $height = $this->original_height;
-        $resize_width = $this->getResizeWidth();
+        $resize_width = $this->resize_width;
         $resize_height = $resize_width * $height / $width;
         $imagine_image = $this->getImagineImage();
-
         $imagine_image->resize(new Box($resize_width, $resize_height));
     }
 
@@ -210,8 +174,7 @@ class DefaultImageProcessor implements ImageProcessorInterface
     protected function blur()
     {
         $imagine_image = $this->getImagineImage();
-
-        $imagine_image->effects()->blur($this->getBlurSigma());
+        $imagine_image->effects()->blur($this->blur_sigma);
     }
 
     /**
@@ -221,9 +184,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
     {
         $output_file = $this->image->getProcessedFilePath();
         $imagine_image = $this->getImagineImage();
-
         $imagine_image->save($output_file);
     }
 }
-
-DefaultImageProcessor::initialize();
