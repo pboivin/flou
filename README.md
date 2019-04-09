@@ -7,8 +7,8 @@
 
 An implementation of the Medium-style progressive image loading technique.
 
-This package provides a simple wrapper around PHP's Imagick class to generate
-scaled-down, blurry versions of your images. These compressed images are used
+This package provides a simple wrapper around the [Imagine library](https://github.com/avalanche123/Imagine)
+to generate scaled-down, blurry versions of your images. These compressed images are used
 as temporary placeholders while the browser is loading the original images.
 
 A thin front-end layer is provided: a simple ES5/UMD module and a few lines of
