@@ -100,10 +100,8 @@ class Image
      */
     private function internalProcess($force_process=false)
     {
-        $image_processor = $this->getImageProcessor();
-        $image_processor->setImage($this);
-
         if ($force_process or !$this->processedFileExists()) {
+            $image_processor = $this->getImageProcessor();
             $image_processor->process();
         }
         $this->is_processed = true;
@@ -230,6 +228,7 @@ class Image
     {
         if (!$this->image_processor) {
             $this->setImageProcessor(new DefaultImageProcessor());
+            $this->image_processor->setImage($this);
         }
         return $this->image_processor;
     }
