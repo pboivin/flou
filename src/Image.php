@@ -1,4 +1,5 @@
 <?php
+
 namespace Flou;
 
 use Flou\ImageProcessorInterface;
@@ -24,7 +25,6 @@ class Image
     private $image_renderer;
     private $image_processor;
     private $description;
-
 
     /**
      * Loads the image file to be processed.
@@ -377,7 +377,6 @@ class Image
     public function render()
     {
         $image_renderer = $this->getImageRenderer();
-
         return $image_renderer->render();
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Flou;
 
 use Imagine\Image\ImagineInterface;
@@ -21,7 +22,6 @@ class DefaultImageProcessor implements ImageProcessorInterface
     protected $resize_width = 40;
     protected $blur_sigma = 0.5;
     protected $default_imagine_class = "Imagine\Gd\Imagine";
-
 
     /**
      * constructor

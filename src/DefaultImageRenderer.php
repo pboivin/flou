@@ -1,4 +1,5 @@
 <?php
+
 namespace Flou;
 
 use Flou\ImageRendererInterface;
@@ -14,7 +15,6 @@ class DefaultImageRenderer implements ImageRendererInterface
     protected $container_class = "flou-container";
     protected $img_class = "flou-image";
     protected $original_attr = "data-original";
-
 
     /**
      * constructor

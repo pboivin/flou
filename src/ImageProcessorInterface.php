@@ -1,4 +1,5 @@
 <?php
+
 namespace Flou;
 
 use Flou\Image;
