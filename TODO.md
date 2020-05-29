@@ -1,8 +1,11 @@
 # TODO
 
+### v0.1.1
+
+x Review image handling in `Image::internalProcess()`
+
 ### v0.2
 
-- Review image handling in `Image::internalProcess()`
 - Cache known image sizes after processing
     - Option 1: Use JSON file
     - Option 2: Use processed image filename
