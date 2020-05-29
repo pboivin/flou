@@ -227,8 +227,7 @@ class Image
     public function getImageProcessor()
     {
         if (!$this->image_processor) {
-            $this->setImageProcessor(new DefaultImageProcessor());
-            $this->image_processor->setImage($this);
+            $this->setImageProcessor(new DefaultImageProcessor($this));
         }
         return $this->image_processor;
     }
@@ -256,7 +255,7 @@ class Image
     public function getImageRenderer()
     {
         if (!$this->image_renderer) {
-            $this->setImageRenderer(new DefaultImageRenderer());
+            $this->setImageRenderer(new DefaultImageRenderer($this));
         }
         return $this->image_renderer;
     }
@@ -379,9 +378,7 @@ class Image
     {
         $image_renderer = $this->getImageRenderer();
 
-        return $image_renderer
-            ->setImage($this)
-            ->render();
+        return $image_renderer->render();
     }
 
     /**

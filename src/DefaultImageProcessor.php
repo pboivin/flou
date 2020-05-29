@@ -24,6 +24,18 @@ class DefaultImageProcessor implements ImageProcessorInterface
 
 
     /**
+     * constructor
+     *
+     * @param Flou\Image $image
+     */
+    public function __construct(Image $image=null)
+    {
+        if ($image) {
+            $this->setImage($image);
+        }
+    }
+
+    /**
      * Sets the Imagine instance to be used for processing.
      *
      * @param ImagineInterface $imagine

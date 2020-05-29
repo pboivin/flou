@@ -17,6 +17,18 @@ class DefaultImageRenderer implements ImageRendererInterface
 
 
     /**
+     * constructor
+     *
+     * @param Flou\Image $image
+     */
+    public function __construct(Image $image=null)
+    {
+        if ($image) {
+            $this->setImage($image);
+        }
+    }
+
+    /**
      * Sets the Image instance to be rendered.
      *
      * @param Image $image
