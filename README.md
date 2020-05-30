@@ -96,23 +96,11 @@ php -S 0.0.0.0:8080 -t demos
 Then, visit `http://localhost:8080`.
 
 
-#### Running the tests
+#### Composer scripts
 
-```
-./vendor/bin/phpunit -v tests
-```
-
-
-#### Running PHP-CS-Fixer (PHP Coding Standards Fixer)
-
-```
-# Dry run (see what needs to be changed)
-./vendor/bin/php-cs-fixer -vvv fix --dry-run --diff
-
-# Fix
-./vendor/bin/php-cs-fixer fix
-
-```
+`composer run-script test`: Run tests with phpunit
+`composer run-script lint`: Run linting with php-cs-fixer (dry run)
+`composer run-script lint-fix`: Run linting and fix all warnings
 
 
 ### Disclaimer
