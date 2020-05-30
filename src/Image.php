@@ -229,6 +229,9 @@ class Image
         if (!$this->image_processor) {
             $this->setImageProcessor(new DefaultImageProcessor($this));
         }
+        if (!$this->image_processor->getImage()) {
+            $this->image_processor->setImage($this);
+        }
         return $this->image_processor;
     }
 
@@ -256,6 +259,9 @@ class Image
     {
         if (!$this->image_renderer) {
             $this->setImageRenderer(new DefaultImageRenderer($this));
+        }
+        if (!$this->image_renderer->getImage()) {
+            $this->image_renderer->setImage($this);
         }
         return $this->image_renderer;
     }
