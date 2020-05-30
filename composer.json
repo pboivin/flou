@@ -1,6 +1,11 @@
 {
     "name": "pboi20/flou",
     "license": "MIT",
+    "scripts": {
+        "test": "phpunit -v tests",
+        "lint": "php-cs-fixer -vvv fix --dry-run --diff",
+        "lint-fix": "php-cs-fixer fix"
+    },
     "autoload": {
         "psr-4": {
             "Flou\\": "src/"
