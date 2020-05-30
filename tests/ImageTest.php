@@ -4,6 +4,9 @@ use PHPUnit\Framework\TestCase;
 use Flou\Path;
 use Flou\Image;
 
+require_once __DIR__ . '/fixtures/CustomImageRenderer.php';
+require_once __DIR__ . '/fixtures/CustomImageProcessor.php';
+
 class ImageTest extends TestCase
 {
     public static $base_path;
@@ -215,6 +218,24 @@ class ImageTest extends TestCase
     }
 
     /**
+     * Process an image using a custom processor
+     */
+    public function testCustomProcessor()
+    {
+        $processed_path = self::$processed_path;
+        $this->assertTrue(file_exists($processed_path));
+
+        $image = (new Flou\Image())
+            ->setImageProcessor(new CustomImageProcessor())
+            ->setBasePath(self::$base_path)
+            ->load("image1.jpg");
+
+        $image->process();
+        $this->assertTrue($image->isProcessed());
+        $this->assertTrue(file_exists($processed_path));
+    }
+
+    /**
      * Get the original width and height of an Image
      *
      * @depends testProcess
@@ -237,7 +258,6 @@ class ImageTest extends TestCase
         $this->assertNotNull($image->getOriginalHeight());
     }
 
-
     /**
      * Generate the HTML markup for an image using default settings
      *
@@ -246,6 +266,23 @@ class ImageTest extends TestCase
     public function testRender()
     {
         $image = (new Flou\Image())
+            ->setBasePath(self::$base_path)
+            ->setBaseUrl("/img")
+            ->setDescription("Image Description")
+            ->load("image1.jpg");
+
+        $html = $image->render();
+        $this->assertNotNull($html);
+        $this->assertContains("Image Description", $html);
+    }
+
+    /**
+     * Generate the HTML markup for an image using a custom renderer
+     */
+    public function testCustomRenderer()
+    {
+        $image = (new Flou\Image())
+            ->setImageRenderer(new CustomImageRenderer())
             ->setBasePath(self::$base_path)
             ->setBaseUrl("/img")
             ->setDescription("Image Description")
