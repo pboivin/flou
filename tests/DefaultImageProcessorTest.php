@@ -14,7 +14,7 @@ class DefaultImageProcessorTest extends TestCase
     public static function setUpBeforeClass()
     {
         $current_dir = dirname(__FILE__);
-        self::$base_path = Path::join($current_dir, "fixtures");
+        self::$base_path = Path::join($current_dir, "fixtures/images");
         self::$processed_path = Path::join(self::$base_path, "defaultImageProcessorOutput.jpg");
 
         self::_cleanup();
