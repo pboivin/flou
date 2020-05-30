@@ -38,7 +38,7 @@ Add the following to your `composer.json`:
         }
     ],
     "require": {
-        "pboi20/flou": "dev-master"
+        "pboi20/flou": "0.1.1"
     }
 }
 
@@ -99,7 +99,9 @@ Then, visit `http://localhost:8080`.
 #### Composer scripts
 
 `composer run-script test`: Run tests with phpunit
+
 `composer run-script lint`: Run linting with php-cs-fixer (dry run)
+
 `composer run-script lint-fix`: Run linting and fix all warnings
 
 
