@@ -13,9 +13,13 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6",
-        "friendsofphp/php-cs-fixer": "^2.13"
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "intervention/image": "^2.5"
     },
     "require": {
         "imagine/imagine": "^1.1"
+    },
+    "suggest": {
+        "intervention/image": "An alternative to imagine/imagine for image processing"
     }
 }
