@@ -15,7 +15,7 @@ class DefaultImageProcessorTest extends TestCase
     {
         $current_dir = dirname(__FILE__);
         self::$base_path = Path::join($current_dir, "fixtures/images");
-        self::$processed_path = Path::join(self::$base_path, "defaultImageProcessorOutput.jpg");
+        self::$processed_path = Path::join(self::$base_path, "image1.flou.jpg");
 
         self::_cleanup();
     }
@@ -67,5 +67,8 @@ class DefaultImageProcessorTest extends TestCase
             $caught = true;
         }
         $this->assertFalse($caught);
+
+        // Image exists
+        $this->assertTrue(file_exists(self::$processed_path));
     }
 }
