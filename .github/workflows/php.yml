@@ -9,14 +9,21 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.4']
 
     steps:
     - uses: actions/checkout@v2
 
-    #- name: Validate composer.json and composer.lock
-    #  run: composer validate
-      
+    - name: Setup PHP, with composer and extensions
+      uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
+      with:
+        php-version: ${{ matrix.php-versions }}
+
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
