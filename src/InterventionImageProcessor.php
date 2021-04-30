@@ -27,7 +27,7 @@ class InterventionImageProcessor implements ImageProcessorInterface
      */
     public function __construct(Image $image=null)
     {
-        $this->intervention_manager = new ImageManager(array('driver' => 'gd'));
+        $this->intervention_manager = new ImageManager(['driver' => 'gd']);
 
         if ($image) {
             $this->setImage($image);
