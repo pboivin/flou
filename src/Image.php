@@ -4,8 +4,20 @@ namespace Pboivin\Flou;
 
 class Image
 {
-    public function start()
+    public function __construct(
+        protected string $sourceUrl,
+        protected string $cacheUrl
+    )
     {
-        return "fresh";
+    }
+
+    public function sourceUrl(): string
+    {
+        return $this->sourceUrl;
+    }
+
+    public function url(): string
+    {
+        return $this->cacheUrl;
     }
 }

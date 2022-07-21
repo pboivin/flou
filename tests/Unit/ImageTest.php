@@ -7,8 +7,11 @@ use PHPUnit\Framework\TestCase;
 
 class ImageTest extends TestCase
 {
-    public function test_start_fresh()
+    public function test_can_create_image()
     {
-        $this->assertEquals('fresh', (new Image)->start());
+        $image = new Image('/source/source.jpg', '/cache/cached.jpg');
+
+        $this->assertEquals('/cache/cached.jpg', $image->url());
+        $this->assertEquals('/source/source.jpg', $image->sourceUrl());
     }
 }
