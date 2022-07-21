@@ -1,6 +1,7 @@
 .DS_Store
 *.swp
 
+/__tmp__
 /vendor
 /composer.lock
 /.php_cs.cache

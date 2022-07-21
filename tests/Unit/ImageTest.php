@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Pboivin\Flou\Image;
 use PHPUnit\Framework\TestCase;
+use Pboivin\Flou\Image;
 
 class ImageTest extends TestCase
 {
