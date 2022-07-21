@@ -58,7 +58,7 @@ class ImageFactory
 
     public function cachePath(): ?string
     {
-        if (! $this->sourcePath) {
+        if (! $this->cachePath) {
             throw new InvalidArgumentException("'cachePath' is not set.");
         }
 
@@ -74,7 +74,7 @@ class ImageFactory
 
     public function sourceUrlBase(): ?string
     {
-        if (! $this->sourcePath) {
+        if (! $this->sourceUrlBase) {
             throw new InvalidArgumentException("'sourceUrlBase' is not set.");
         }
 
@@ -90,7 +90,7 @@ class ImageFactory
 
     public function cacheUrlBase(): ?string
     {
-        if (! $this->sourcePath) {
+        if (! $this->cacheUrlBase) {
             throw new InvalidArgumentException("'cacheUrlBase' is not set.");
         }
 
