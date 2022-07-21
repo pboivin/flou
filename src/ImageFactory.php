@@ -29,6 +29,11 @@ class ImageFactory
         }
     }
 
+    public static function create(array $config = [])
+    {
+        return new static($config);
+    }
+
     protected function acceptConfig(array $config): void
     {
         foreach ($config as $key => $value) {

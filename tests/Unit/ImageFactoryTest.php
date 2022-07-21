@@ -102,6 +102,25 @@ class ImageFactoryTest extends TestCase
         $this->assertEquals('/images/source/source.jpg', $image->sourceUrl());
     }
 
+    public function test_static_constructor()
+    {
+        $flou = ImageFactory::create([
+            'sourcePath' => '/path/to/image/source',
+            'cachePath' => '/path/to/image/cache',
+            'sourceUrlBase' => '/images/source',
+            'cacheUrlBase' => '/images/cache',
+        ]);
+
+        $this->assertEquals('/path/to/image/source', $flou->sourcePath());
+        $this->assertEquals('/path/to/image/cache', $flou->cachePath());
+        $this->assertEquals('/images/source', $flou->sourceUrlBase());
+        $this->assertEquals('/images/cache', $flou->cacheUrlBase());
+    }
+
+    //
+    // Helpers
+    //
+
     public function getFactory($options = [])
     {
         $factory = new ImageFactory($options ?: [
