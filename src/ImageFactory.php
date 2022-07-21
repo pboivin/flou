@@ -2,6 +2,7 @@
 
 namespace Pboivin\Flou;
 
+use InvalidArgumentException;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 
@@ -21,29 +22,30 @@ class ImageFactory
 
     protected $glideServer;
 
-    public function __construct(array $options = [])
+    public function __construct(array $config = [])
     {
-        if ($options) {
-            $this->acceptOptions($options);
+        if ($config) {
+            $this->acceptConfig($config);
         }
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    protected function acceptOptions(array $options): void
+    protected function acceptConfig(array $config): void
     {
-        foreach ($options as $key => $value) {
+        foreach ($config as $key => $value) {
             if (method_exists($this, $method = "set{$key}")) {
                 $this->$method($value);
             } else {
-                throw new \InvalidArgumentException("Invalid option '$key'", 1);
+                throw new InvalidArgumentException("Invalid option '$key'.");
             }
         }
     }
 
     public function sourcePath(): ?string
     {
+        if (! $this->sourcePath) {
+            throw new InvalidArgumentException("'sourcePath' is not set.");
+        }
+
         return $this->sourcePath;
     }
 
@@ -56,6 +58,10 @@ class ImageFactory
 
     public function cachePath(): ?string
     {
+        if (! $this->sourcePath) {
+            throw new InvalidArgumentException("'cachePath' is not set.");
+        }
+
         return $this->cachePath;
     }
 
@@ -68,6 +74,10 @@ class ImageFactory
 
     public function sourceUrlBase(): ?string
     {
+        if (! $this->sourcePath) {
+            throw new InvalidArgumentException("'sourceUrlBase' is not set.");
+        }
+
         return $this->sourceUrlBase;
     }
 
@@ -80,6 +90,10 @@ class ImageFactory
 
     public function cacheUrlBase(): ?string
     {
+        if (! $this->sourcePath) {
+            throw new InvalidArgumentException("'cacheUrlBase' is not set.");
+        }
+
         return $this->cacheUrlBase;
     }
 
