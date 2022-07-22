@@ -4,12 +4,13 @@ namespace Pboivin\Flou;
 
 class ImageFile
 {
+    protected $size;
+
     public function __construct(
         protected string $fileName,
         protected string $path,
         protected string $url,
-        protected int $width,
-        protected int $height
+        protected ImageFileInspector $inspector,
     )
     {
     }
@@ -31,11 +32,20 @@ class ImageFile
 
     public function width(): int
     {
-        return $this->width;
+        return $this->size('width');
     }
 
     public function height(): int
     {
-        return $this->height;
+        return $this->size('height');
+    }
+
+    protected function size(string $param): int
+    {
+        if (! $this->size) {
+            $this->size = $this->inspector->getSize($this->path);
+        }
+
+        return $this->size[$param];
     }
 }

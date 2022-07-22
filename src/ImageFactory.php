@@ -22,6 +22,8 @@ class ImageFactory
 
     protected $glideServer;
 
+    protected $inspector;
+
     public function __construct(array $config = [])
     {
         if ($config) {
@@ -153,6 +155,22 @@ class ImageFactory
         return $glideServer;
     }
 
+    public function inspector(): ImageFileInspector
+    {
+        if (! $this->inspector) {
+            $this->inspector = new ImageFileInspector();
+        }
+
+        return $this->inspector;
+    }
+
+    public function setInspector(ImageFileInspector $inspector): self
+    {
+        $this->inspector = $inspector;
+
+        return $this;
+    }
+
     public function image(string $sourceFileName, ?array $glideParams = null): Image
     {
         $glideParams ??= $this->glideParams();
@@ -173,8 +191,7 @@ class ImageFactory
             $fileName,
             $this->sourcePath() . '/' . $fileName,
             $this->sourceUrlBase() . '/' . $fileName,
-            123, //$width,
-            123, //$height
+            $this->inspector()
         );
     }
 
@@ -184,8 +201,7 @@ class ImageFactory
             $fileName,
             $this->cachePath() . '/' . $fileName,
             $this->cacheUrlBase() . '/' . $fileName,
-            123, //$width,
-            123, //$height
+            $this->inspector()
         );
     }
 }
