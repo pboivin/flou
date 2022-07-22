@@ -4,10 +4,7 @@ namespace Pboivin\Flou;
 
 class Image
 {
-    public function __construct(
-        protected ImageFile $source,
-        protected ImageFile $cached
-    )
+    public function __construct(protected ImageFile $source, protected ImageFile $cached)
     {
     }
 

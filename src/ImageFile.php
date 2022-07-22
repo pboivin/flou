@@ -10,9 +10,8 @@ class ImageFile
         protected string $fileName,
         protected string $path,
         protected string $url,
-        protected ImageFileInspector $inspector,
-    )
-    {
+        protected ImageFileInspector $inspector
+    ) {
     }
 
     public function fileName(): string
@@ -42,7 +41,7 @@ class ImageFile
 
     protected function size(string $param): int
     {
-        if (! $this->size) {
+        if (!$this->size) {
             $this->size = $this->inspector->getSize($this->path);
         }
 

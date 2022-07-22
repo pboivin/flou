@@ -1,0 +1,12 @@
+trailingComma: all
+printWidth: 120
+tabWidth: 4
+useTabs: false
+singleQuote: true
+requirePragma: false
+insertPragma: false
+semi: false
+
+# PHP
+trailingCommaPHP: true
+braceStyle: psr-2

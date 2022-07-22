@@ -16,12 +16,10 @@ class ImageFileTest extends TestCase
             'my-image.jpg',
             '/path/to/my-image.jpg',
             '/url/to/my-image.jpg',
-            $inspector = $this->mockInspector()
+            ($inspector = $this->mockInspector())
         );
 
-        $inspector
-            ->shouldReceive('getSize')
-            ->andReturn(['width' => 123, 'height' => 123]);
+        $inspector->shouldReceive('getSize')->andReturn(['width' => 123, 'height' => 123]);
 
         $this->assertEquals('my-image.jpg', $imageFile->fileName());
         $this->assertEquals('/path/to/my-image.jpg', $imageFile->path());

@@ -43,12 +43,7 @@ class ImageFactoryTest extends TestCase
 
     public function requiredOptions()
     {
-        return [
-            ['sourcePath'],
-            ['cachePath'],
-            ['sourceUrlBase'],
-            ['cacheUrlBase'],
-        ];
+        return [['sourcePath'], ['cachePath'], ['sourceUrlBase'], ['cacheUrlBase']];
     }
 
     public function test_accepts_valid_options()
@@ -79,7 +74,9 @@ class ImageFactoryTest extends TestCase
     {
         $flou = $this->getFactory();
 
-        $flou->glideServer()->shouldReceive('makeImage')
+        $flou
+            ->glideServer()
+            ->shouldReceive('makeImage')
             ->with('source.jpg', ImageFactory::DEFAULT_GLIDE_PARAMS)
             ->andReturn('cached.jpg');
 
@@ -93,7 +90,9 @@ class ImageFactoryTest extends TestCase
     {
         $flou = $this->getFactory();
 
-        $flou->glideServer()->shouldReceive('makeImage')
+        $flou
+            ->glideServer()
+            ->shouldReceive('makeImage')
             ->with('source.jpg', ['h' => 123])
             ->andReturn('cached.jpg');
 

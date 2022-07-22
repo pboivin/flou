@@ -12,10 +12,7 @@ class ImageTest extends TestCase
 
     public function test_can_create_image()
     {
-        $image = new Image(
-            $source = $this->mockImageFile(),
-            $cached = $this->mockImageFile()
-        );
+        $image = new Image(($source = $this->mockImageFile()), ($cached = $this->mockImageFile()));
 
         $source->shouldReceive('url')->andReturn('/source.jpg');
         $cached->shouldReceive('url')->andReturn('/cached.jpg');

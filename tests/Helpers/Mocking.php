@@ -12,12 +12,14 @@ trait Mocking
 {
     public function getFactory($options = [])
     {
-        $factory = new ImageFactory($options ?: [
-            'sourcePath' => '/path/to/image/source',
-            'cachePath' => '/path/to/image/cache',
-            'sourceUrlBase' => '/images/source',
-            'cacheUrlBase' => '/images/cache',
-        ]);
+        $factory = new ImageFactory(
+            $options ?: [
+                'sourcePath' => '/path/to/image/source',
+                'cachePath' => '/path/to/image/cache',
+                'sourceUrlBase' => '/images/source',
+                'cacheUrlBase' => '/images/cache',
+            ]
+        );
 
         $factory->setGlideServer($this->mockServer());
         $factory->setInspector($this->mockInspector());
@@ -48,6 +50,4 @@ trait Mocking
 
         return $file;
     }
-
-
 }

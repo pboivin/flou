@@ -49,7 +49,7 @@ class ImageFactory
 
     public function sourcePath(): ?string
     {
-        if (! $this->sourcePath) {
+        if (!$this->sourcePath) {
             throw new InvalidArgumentException("'sourcePath' is not set.");
         }
 
@@ -65,7 +65,7 @@ class ImageFactory
 
     public function cachePath(): ?string
     {
-        if (! $this->cachePath) {
+        if (!$this->cachePath) {
             throw new InvalidArgumentException("'cachePath' is not set.");
         }
 
@@ -81,7 +81,7 @@ class ImageFactory
 
     public function sourceUrlBase(): ?string
     {
-        if (! $this->sourceUrlBase) {
+        if (!$this->sourceUrlBase) {
             throw new InvalidArgumentException("'sourceUrlBase' is not set.");
         }
 
@@ -97,7 +97,7 @@ class ImageFactory
 
     public function cacheUrlBase(): ?string
     {
-        if (! $this->cacheUrlBase) {
+        if (!$this->cacheUrlBase) {
             throw new InvalidArgumentException("'cacheUrlBase' is not set.");
         }
 
@@ -129,7 +129,7 @@ class ImageFactory
 
     public function glideServer(): Server
     {
-        if (! $this->glideServer) {
+        if (!$this->glideServer) {
             $this->glideServer = $this->createGlideServer();
         }
 
@@ -157,7 +157,7 @@ class ImageFactory
 
     public function inspector(): ImageFileInspector
     {
-        if (! $this->inspector) {
+        if (!$this->inspector) {
             $this->inspector = new ImageFileInspector();
         }
 
@@ -179,10 +179,7 @@ class ImageFactory
 
         $cachedFileName = $server->makeImage($sourceFileName, $glideParams);
 
-        return new Image(
-            $this->sourceImageFile($sourceFileName),
-            $this->cachedImageFile($cachedFileName)
-        );
+        return new Image($this->sourceImageFile($sourceFileName), $this->cachedImageFile($cachedFileName));
     }
 
     public function sourceImageFile($fileName): ImageFile
