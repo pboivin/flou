@@ -1,6 +1,6 @@
 <?php
 
-namespace Pboivin\Flou\Tests\Unit;
+namespace Pboivin\Flou\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageFileInspector;
