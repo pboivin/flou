@@ -4,6 +4,7 @@ namespace Pboivin\Flou\Tests\Helpers;
 
 use League\Glide\Server;
 use Mockery;
+use Pboivin\Flou\Image;
 use Pboivin\Flou\ImageFactory;
 use Pboivin\Flou\ImageFile;
 use Pboivin\Flou\ImageFileInspector;
@@ -25,6 +26,11 @@ trait Mocking
         $factory->setInspector($this->mockInspector());
 
         return $factory;
+    }
+
+    public function getImage()
+    {
+        return new Image($this->mockImageFile(), $this->mockImageFile());
     }
 
     public function mockServer()

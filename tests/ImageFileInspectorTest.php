@@ -14,7 +14,7 @@ class ImageFileInspectorTest extends TestCase
     {
         $inspector = new ImageFileInspector();
 
-        $size = $inspector->getSize(__DIR__ . '/../fixtures/square.jpg');
+        $size = $inspector->getSize(__DIR__ . '/fixtures/square.jpg');
 
         $this->assertEquals(100, $size['width']);
         $this->assertEquals(100, $size['height']);
