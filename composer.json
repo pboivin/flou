@@ -6,6 +6,11 @@
             "Pboivin\\Flou\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Pboivin\\Flou\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "php": ">=8.0",
         "league/glide": "^2.2"

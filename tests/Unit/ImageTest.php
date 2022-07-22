@@ -1,19 +1,20 @@
 <?php
 
-namespace Tests\Unit;
+namespace Pboivin\Flou\Tests\Unit;
 
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\Image;
-use Pboivin\Flou\ImageFile;
+use Pboivin\Flou\Tests\Helpers\Mocking;
 
 class ImageTest extends TestCase
 {
+    use Mocking;
+
     public function test_can_create_image()
     {
         $image = new Image(
-            $source = $this->getImageFile(),
-            $cached = $this->getImageFile()
+            $source = $this->mockImageFile(),
+            $cached = $this->mockImageFile()
         );
 
         $source->shouldReceive('url')->andReturn('/source.jpg');
@@ -21,13 +22,5 @@ class ImageTest extends TestCase
 
         $this->assertEquals('/source.jpg', $image->source()->url());
         $this->assertEquals('/cached.jpg', $image->cached()->url());
-    }
-
-    public function getImageFile()
-    {
-        /** @var ImageFile */
-        $file = Mockery::mock(ImageFile::class);
-
-        return $file;
     }
 }

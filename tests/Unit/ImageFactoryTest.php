@@ -1,15 +1,16 @@
 <?php
 
-namespace Tests\Unit;
+namespace Pboivin\Flou\Tests\Unit;
 
 use InvalidArgumentException;
-use League\Glide\Server;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageFactory;
+use Pboivin\Flou\Tests\Helpers\Mocking;
 
 class ImageFactoryTest extends TestCase
 {
+    use Mocking;
+
     public function test_rejects_invalid_options()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -115,31 +116,5 @@ class ImageFactoryTest extends TestCase
         $this->assertEquals('/path/to/image/cache', $flou->cachePath());
         $this->assertEquals('/images/source', $flou->sourceUrlBase());
         $this->assertEquals('/images/cache', $flou->cacheUrlBase());
-    }
-
-    //
-    // Helpers
-    //
-
-    public function getFactory($options = [])
-    {
-        $factory = new ImageFactory($options ?: [
-            'sourcePath' => '/path/to/image/source',
-            'cachePath' => '/path/to/image/cache',
-            'sourceUrlBase' => '/images/source',
-            'cacheUrlBase' => '/images/cache',
-        ]);
-
-        $factory->setGlideServer($this->getServer());
-
-        return $factory;
-    }
-
-    public function getServer()
-    {
-        /** @var Server */
-        $server = Mockery::mock(Server::class);
-
-        return $server;
     }
 }
