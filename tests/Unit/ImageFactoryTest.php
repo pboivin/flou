@@ -84,8 +84,8 @@ class ImageFactoryTest extends TestCase
 
         $image = $flou->image('source.jpg');
 
-        $this->assertEquals('/images/cache/cached.jpg', $image->url());
-        $this->assertEquals('/images/source/source.jpg', $image->sourceUrl());
+        $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
+        $this->assertEquals('/images/source/source.jpg', $image->source()->url());
     }
 
     public function test_generates_image_with_inline_glide_params()
@@ -98,8 +98,8 @@ class ImageFactoryTest extends TestCase
 
         $image = $flou->image('source.jpg', ['h' => 123]);
 
-        $this->assertEquals('/images/cache/cached.jpg', $image->url());
-        $this->assertEquals('/images/source/source.jpg', $image->sourceUrl());
+        $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
+        $this->assertEquals('/images/source/source.jpg', $image->source()->url());
     }
 
     public function test_static_constructor()
