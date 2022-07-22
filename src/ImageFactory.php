@@ -159,21 +159,33 @@ class ImageFactory
 
         $server = $this->glideServer();
 
-        $cacheFileName = $server->makeImage($sourceFileName, $glideParams);
+        $cachedFileName = $server->makeImage($sourceFileName, $glideParams);
 
         return new Image(
-            $this->sourceUrl($sourceFileName),
-            $this->cacheUrl($cacheFileName)
+            $this->sourceImageFile($sourceFileName),
+            $this->cachedImageFile($cachedFileName)
         );
     }
 
-    protected function sourceUrl(string $fileName): string
+    public function sourceImageFile($fileName): ImageFile
     {
-        return $this->sourceUrlBase() . '/' . $fileName;
+        return new ImageFile(
+            $fileName,
+            $this->sourcePath() . '/' . $fileName,
+            $this->sourceUrlBase() . '/' . $fileName,
+            123, //$width,
+            123, //$height
+        );
     }
 
-    protected function cacheUrl(string $fileName): string
+    public function cachedImageFile($fileName): ImageFile
     {
-        return $this->cacheUrlBase() . '/' . $fileName;
+        return new ImageFile(
+            $fileName,
+            $this->cachePath() . '/' . $fileName,
+            $this->cacheUrlBase() . '/' . $fileName,
+            123, //$width,
+            123, //$height
+        );
     }
 }

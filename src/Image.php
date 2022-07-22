@@ -5,19 +5,19 @@ namespace Pboivin\Flou;
 class Image
 {
     public function __construct(
-        protected string $sourceUrl,
-        protected string $cacheUrl
+        protected ImageFile $source,
+        protected ImageFile $cached
     )
     {
     }
 
-    public function sourceUrl(): string
+    public function source(): ImageFile
     {
-        return $this->sourceUrl;
+        return $this->source;
     }
 
-    public function url(): string
+    public function cached(): ImageFile
     {
-        return $this->cacheUrl;
+        return $this->cached;
     }
 }
