@@ -182,6 +182,11 @@ class ImageFactory
         return new Image($this->sourceImageFile($sourceFileName), $this->cachedImageFile($cachedFileName));
     }
 
+    public function imageSet(array $config): ImageSet
+    {
+        return new ImageSet($config, $this);
+    }
+
     public function sourceImageFile($fileName): ImageFile
     {
         return new ImageFile(

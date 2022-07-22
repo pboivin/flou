@@ -5,6 +5,7 @@ namespace Pboivin\Flou\Tests;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageFactory;
+use Pboivin\Flou\ImageSet;
 use Pboivin\Flou\Tests\Helpers\Mocking;
 
 class ImageFactoryTest extends TestCase
@@ -115,5 +116,26 @@ class ImageFactoryTest extends TestCase
         $this->assertEquals('/path/to/image/cache', $flou->cachePath());
         $this->assertEquals('/images/source', $flou->sourceUrlBase());
         $this->assertEquals('/images/cache', $flou->cacheUrlBase());
+    }
+
+    public function test_generates_imageset()
+    {
+        $flou = $this->getFactory();
+
+        $flou
+            ->glideServer()
+            ->shouldReceive('makeImage')
+            ->andReturn('cached.jpg');
+
+        $set = $flou->imageSet([
+            'image' => 'source.jpg',
+            'sources' => [
+                'sm' => ['width' => 400],
+                'md' => ['width' => 800],
+                'lg' => ['width' => 1200],
+            ],
+        ]);
+
+        $this->assertTrue($set instanceof ImageSet);
     }
 }
