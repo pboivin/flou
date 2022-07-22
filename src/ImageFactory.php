@@ -179,7 +179,10 @@ class ImageFactory
 
         $cachedFileName = $server->makeImage($sourceFileName, $glideParams);
 
-        return new Image($this->sourceImageFile($sourceFileName), $this->cachedImageFile($cachedFileName));
+        return new Image(
+            $this->sourceImageFile($sourceFileName),
+            $this->cachedImageFile($cachedFileName)
+        );
     }
 
     public function imageSet(array $config): ImageSet
