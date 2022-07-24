@@ -71,6 +71,21 @@ class ImageFactoryTest extends TestCase
         $this->assertNotNull($flou->glideParams());
     }
 
+    public function test_static_constructor()
+    {
+        $flou = ImageFactory::create([
+            'sourcePath' => '/path/to/image/source',
+            'cachePath' => '/path/to/image/cache',
+            'sourceUrlBase' => '/images/source',
+            'cacheUrlBase' => '/images/cache',
+        ]);
+
+        $this->assertEquals('/path/to/image/source', $flou->sourcePath());
+        $this->assertEquals('/path/to/image/cache', $flou->cachePath());
+        $this->assertEquals('/images/source', $flou->sourceUrlBase());
+        $this->assertEquals('/images/cache', $flou->cacheUrlBase());
+    }
+
     public function test_generates_image_with_default_glide_params()
     {
         $flou = $this->getFactory();
@@ -101,21 +116,6 @@ class ImageFactoryTest extends TestCase
 
         $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
         $this->assertEquals('/images/source/source.jpg', $image->source()->url());
-    }
-
-    public function test_static_constructor()
-    {
-        $flou = ImageFactory::create([
-            'sourcePath' => '/path/to/image/source',
-            'cachePath' => '/path/to/image/cache',
-            'sourceUrlBase' => '/images/source',
-            'cacheUrlBase' => '/images/cache',
-        ]);
-
-        $this->assertEquals('/path/to/image/source', $flou->sourcePath());
-        $this->assertEquals('/path/to/image/cache', $flou->cachePath());
-        $this->assertEquals('/images/source', $flou->sourceUrlBase());
-        $this->assertEquals('/images/cache', $flou->cacheUrlBase());
     }
 
     public function test_generates_imageset()

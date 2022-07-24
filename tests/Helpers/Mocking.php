@@ -56,4 +56,20 @@ trait Mocking
 
         return $file;
     }
+
+    public function mockFactory()
+    {
+        /** @var ImageFactory */
+        $factory = Mockery::mock(ImageFactory::class);
+
+        return $factory;
+    }
+
+    public function mockImage()
+    {
+        /** @var Image */
+        $image = Mockery::mock(Image::class);
+
+        return $image;
+    }
 }
