@@ -21,14 +21,22 @@ abstract class ImgRenderable
 
     protected function prepareAttributes(array $attributes = []): array
     {
+        $style = [];
+
         if ($this->aspectRatio) {
-            $attributes['style'] = implode(' ', [
-                "aspect-ratio: {$this->aspectRatio};",
-                $attributes['style'] ?? '',
-            ]);
+            $style[] = "aspect-ratio: {$this->aspectRatio};";
+        }
+
+        if ($attributes['style'] ?? false) {
+            $style[] = $attributes['style'];
+        }
+
+        if ($style) {
+            $attributes['style'] = implode(' ', $style);
         }
 
         $attributes['class'] = implode(' ', [$this->baseClass, $attributes['class'] ?? '']);
+
         $attributes['alt'] = $attributes['alt'] ?? '';
 
         return $attributes;

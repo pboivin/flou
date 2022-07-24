@@ -42,7 +42,7 @@ class ImageSetRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; " src="lqip.jpg" width="4000" height="3000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1;" src="lqip.jpg" width="4000" height="3000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
             $output
         );
     }

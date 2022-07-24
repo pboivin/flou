@@ -42,7 +42,29 @@ class ImageRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; " src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
+            $output
+        );
+    }
+
+    public function test_can_render_preserving_existing_styles()
+    {
+        [$imageRender, $image] = $this->prepareImageRender();
+
+        $image
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageRender->useAspectRatio()->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+            'data-custom' => 'custom',
+            'style' => 'object-fit: cover;',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
             $output
         );
     }
