@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Run tests
 
 on:
   push:
@@ -7,14 +7,14 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  build:
+  tests:
 
     runs-on: ubuntu-20.04
 
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0']
+        php-versions: ['8.0', '8.1']
 
     steps:
     - uses: actions/checkout@v2
