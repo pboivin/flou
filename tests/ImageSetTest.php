@@ -66,6 +66,59 @@ class ImageSetTest extends TestCase
         $set->toArray();
     }
 
+    public function test_has_default_sizes()
+    {
+        ($image = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
+
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+
+        $set = new ImageSet(
+            [
+                'image' => 'source.jpg',
+                'sources' => [
+                    'sm' => ['width' => 400],
+                    'md' => ['width' => 800],
+                    'lg' => ['width' => 1200],
+                ],
+            ],
+            $factory
+        );
+
+        $data = $set->toArray();
+
+        $this->assertEquals('100vw', $data['sizes']);
+    }
+
+    public function test_can_use_custom_sizes()
+    {
+        ($image = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
+
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+
+        $set = new ImageSet(
+            [
+                'image' => 'source.jpg',
+                'sizes' => '(max-width: 800px) 100vw, 50vw',
+                'sources' => [
+                    'sm' => ['width' => 400],
+                    'md' => ['width' => 800],
+                    'lg' => ['width' => 1200],
+                ],
+            ],
+            $factory
+        );
+
+        $data = $set->toArray();
+
+        $this->assertEquals('(max-width: 800px) 100vw, 50vw', $data['sizes']);
+    }
+
     public function test_can_prepare_sources_with_single_image()
     {
         ($image = $this->getImage())
@@ -87,14 +140,23 @@ class ImageSetTest extends TestCase
             $factory
         );
 
-        $this->assertEquals(
-            [
-                'src' => 'cached3.jpg',
-                'sizes' => '100vw',
-                'srcset' => ['cached1.jpg 400w', 'cached2.jpg 800w', 'cached3.jpg 1200w'],
-            ],
-            $set->toArray()
-        );
+        $data = $set->toArray();
+
+        $this->assertEquals(3, count($data['srcset']));
+
+        $source = $data['srcset'][0];
+        $this->assertEquals('cached1.jpg', $source['image']->cached()->url());
+        $this->assertEquals(400, $source['width']);
+
+        $source = $data['srcset'][1];
+        $this->assertEquals('cached2.jpg', $source['image']->cached()->url());
+        $this->assertEquals(800, $source['width']);
+
+        $source = $data['srcset'][2];
+        $this->assertEquals('cached3.jpg', $source['image']->cached()->url());
+        $this->assertEquals(1200, $source['width']);
+
+        $this->assertEquals('cached3.jpg', $data['lqip']->cached()->url());
     }
 
     public function test_can_prepare_sources_with_multiple_images()
@@ -113,6 +175,12 @@ class ImageSetTest extends TestCase
             ->andReturn($image)
             ->shouldReceive('image')
             ->with('source3.jpg', ['w' => 1200])
+            ->andReturn($image);
+
+        // lqip
+        $factory
+            ->shouldReceive('image')
+            ->with('source3.jpg')
             ->andReturn($image);
 
         $set = new ImageSet(
@@ -135,14 +203,23 @@ class ImageSetTest extends TestCase
             $factory
         );
 
-        $this->assertEquals(
-            [
-                'src' => 'cached3.jpg',
-                'sizes' => '100vw',
-                'srcset' => ['cached1.jpg 400w', 'cached2.jpg 800w', 'cached3.jpg 1200w'],
-            ],
-            $set->toArray()
-        );
+        $data = $set->toArray();
+
+        $this->assertEquals(3, count($data['srcset']));
+
+        $source = $data['srcset'][0];
+        $this->assertEquals('cached1.jpg', $source['image']->cached()->url());
+        $this->assertEquals(400, $source['width']);
+
+        $source = $data['srcset'][1];
+        $this->assertEquals('cached2.jpg', $source['image']->cached()->url());
+        $this->assertEquals(800, $source['width']);
+
+        $source = $data['srcset'][2];
+        $this->assertEquals('cached3.jpg', $source['image']->cached()->url());
+        $this->assertEquals(1200, $source['width']);
+
+        $this->assertEquals('cached3.jpg', $data['lqip']->cached()->url());
     }
 
     // TODO add render test

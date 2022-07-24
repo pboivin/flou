@@ -40,7 +40,6 @@ class ImageSet
 
     protected function prepareOutput()
     {
-        $src = '';
         $sizes = $this->sizes ?: static::DEFAULT_SIZES_VALUE;
         $srcset = [];
 
@@ -50,23 +49,25 @@ class ImageSet
             }
 
             if (!isset($source['image']) && !$this->image) {
-                throw new InvalidArgumentException("Missing required 'image' option on source or imageset.");
+                throw new InvalidArgumentException(
+                    "Missing required 'image' option on source or imageset."
+                );
             }
 
-            $image = $source['image'] ?? $this->image;
+            $sourceImage = $source['image'] ?? $this->image;
 
-            $src = $this->factory
-                ->image($image, ['w' => $source['width']])
-                ->cached()
-                ->url();
-
-            $srcset[] = "{$src} {$source['width']}w";
+            $srcset[] = [
+                'image' => $this->factory->image($sourceImage, [
+                    'w' => $source['width'],
+                ]),
+                'width' => "{$source['width']}",
+            ];
         }
 
         $this->preparedOutput = [
-            'src' => $src,
             'sizes' => $sizes,
             'srcset' => $srcset,
+            'lqip' => $this->factory->image($sourceImage),
         ];
     }
 
@@ -96,8 +97,8 @@ class ImageSet
         return $this->preparedOutput;
     }
 
-    public function render()
+    public function render(): ImageSetRender
     {
-        // TODO
+        return new ImageSetRender($this);
     }
 }
