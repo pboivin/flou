@@ -6,7 +6,11 @@ use Pboivin\Flou\Image;
 
 class ImageRender
 {
-    public function __construct(protected Image $image, protected $baseClass = 'lazyload')
+    protected $baseClass = 'lazyload';
+
+    protected $aspectRatio = false;
+
+    public function __construct(protected Image $image)
     {
     }
 
@@ -17,8 +21,22 @@ class ImageRender
         return $this;
     }
 
+    public function useAspectRatio(?float $value = null): self
+    {
+        $this->aspectRatio = is_null($value) ? $this->image->source()->ratio() : $value;
+
+        return $this;
+    }
+
     public function img(array $attributes = []): string
     {
+        if ($this->aspectRatio) {
+            $attributes['style'] = implode(' ', [
+                "aspect-ratio: {$this->aspectRatio};",
+                $attributes['style'] ?? '',
+            ]);
+        }
+
         $attributes['class'] = implode(' ', [$this->baseClass, $attributes['class'] ?? '']);
         $attributes['alt'] = $attributes['alt'] ?? '';
         $attributes['src'] = $this->image->cached()->url();

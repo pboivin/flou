@@ -39,6 +39,11 @@ class ImageFile
         return $this->size('height');
     }
 
+    public function ratio(): float
+    {
+        return (float) $this->width() / $this->height();
+    }
+
     protected function size(string $param): int
     {
         if (!$this->size) {

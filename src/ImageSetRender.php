@@ -4,7 +4,11 @@ namespace Pboivin\Flou;
 
 class ImageSetRender
 {
-    public function __construct(protected ImageSet $imageSet, protected $baseClass = 'lazyload')
+    protected $baseClass = 'lazyload';
+
+    protected $aspectRatio = false;
+
+    public function __construct(protected ImageSet $imageSet)
     {
     }
 
@@ -15,9 +19,25 @@ class ImageSetRender
         return $this;
     }
 
+    public function useAspectRatio(?float $value = null): self
+    {
+        $data = $this->imageSet->toArray();
+
+        $this->aspectRatio = is_null($value) ? $data['lqip']->source()->ratio() : $value;
+
+        return $this;
+    }
+
     public function img(array $attributes = []): string
     {
         $data = $this->imageSet->toArray();
+
+        if ($this->aspectRatio) {
+            $attributes['style'] = implode(' ', [
+                "aspect-ratio: {$this->aspectRatio};",
+                $attributes['style'] ?? '',
+            ]);
+        }
 
         $attributes['class'] = implode(' ', [$this->baseClass, $attributes['class'] ?? '']);
         $attributes['alt'] = $attributes['alt'] ?? '';
