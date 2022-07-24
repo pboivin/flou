@@ -3,7 +3,6 @@
 namespace Pboivin\Flou\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Pboivin\Flou\ImageRender;
 use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\Tests\Helpers\Mocking;
 
@@ -12,6 +11,43 @@ class ImageSetRenderTest extends TestCase
     use Mocking;
 
     public function test_can_render_img()
+    {
+        [$imageSetRender] = $this->prepareImageSetRender();
+
+        $output = $imageSetRender->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+            'data-custom' => 'custom',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" src="lqip.jpg" width="4000" height="3000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
+            $output
+        );
+    }
+
+    public function test_can_render_using_aspect_ratio()
+    {
+        [$imageSetRender, $lqip] = $this->prepareImageSetRender();
+
+        $lqip
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender->useAspectRatio()->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+            'data-custom' => 'custom',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; " src="lqip.jpg" width="4000" height="3000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
+            $output
+        );
+    }
+
+    protected function prepareImageSetRender()
     {
         ($image1 = $this->getImage())
             ->cached()
@@ -52,15 +88,6 @@ class ImageSetRenderTest extends TestCase
             'lqip' => $lqip,
         ]);
 
-        $output = $imageSetRender->img([
-            'class' => 'test',
-            'alt' => 'This is a test',
-            'data-custom' => 'custom',
-        ]);
-
-        $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" src="lqip.jpg" width="4000" height="3000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
-            $output
-        );
+        return [$imageSetRender, $lqip];
     }
 }

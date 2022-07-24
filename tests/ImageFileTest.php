@@ -26,5 +26,6 @@ class ImageFileTest extends TestCase
         $this->assertEquals('/url/to/my-image.jpg', $imageFile->url());
         $this->assertEquals(123, $imageFile->width());
         $this->assertEquals(123, $imageFile->height());
+        $this->assertEquals(1, $imageFile->ratio());
     }
 }

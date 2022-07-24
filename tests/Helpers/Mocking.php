@@ -24,6 +24,7 @@ trait Mocking
         );
 
         $factory->setGlideServer($this->mockServer());
+
         $factory->setInspector($this->mockInspector());
 
         return $factory;
