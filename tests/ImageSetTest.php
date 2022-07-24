@@ -4,6 +4,7 @@ namespace Pboivin\Flou\Tests;
 
 use InvalidArgumentException;
 use Pboivin\Flou\ImageSet;
+use Pboivin\Flou\ImageSetRender;
 use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\Tests\Helpers\Mocking;
 
@@ -222,5 +223,27 @@ class ImageSetTest extends TestCase
         $this->assertEquals('cached3.jpg', $data['lqip']->cached()->url());
     }
 
-    // TODO add render test
+    public function test_can_render_imageset()
+    {
+        ($image = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
+
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+
+        $set = new ImageSet(
+            [
+                'image' => 'source.jpg',
+                'sources' => [
+                    'sm' => ['width' => 400],
+                    'md' => ['width' => 800],
+                    'lg' => ['width' => 1200],
+                ],
+            ],
+            $factory
+        );
+
+        $this->assertTrue($set->render() instanceof ImageSetRender);
+    }
 }

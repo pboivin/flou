@@ -8,6 +8,7 @@ use Pboivin\Flou\Image;
 use Pboivin\Flou\ImageFactory;
 use Pboivin\Flou\ImageFile;
 use Pboivin\Flou\ImageFileInspector;
+use Pboivin\Flou\ImageSet;
 
 trait Mocking
 {
@@ -71,5 +72,13 @@ trait Mocking
         $image = Mockery::mock(Image::class);
 
         return $image;
+    }
+
+    public function mockImageSet()
+    {
+        /** @var ImageSet */
+        $set = Mockery::mock(ImageSet::class);
+
+        return $set;
     }
 }
