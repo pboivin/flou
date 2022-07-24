@@ -1,4 +1,4 @@
-name: Run tests
+name: phpunit
 
 on:
   push:
@@ -7,14 +7,15 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  tests:
-
+  test:
     runs-on: ubuntu-20.04
 
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.0', '8.1']
+        php: ['8.0', '8.1']
+
+    name: P${{ matrix.php }}
 
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +23,7 @@ jobs:
     - name: Setup PHP, with composer and extensions
       uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
       with:
-        php-version: ${{ matrix.php-versions }}
+        php-version: ${{ matrix.php }}
 
     - name: Cache Composer packages
       id: composer-cache
@@ -38,4 +39,4 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Run test suite
-      run: ./vendor/bin/phpunit
+      run: php vendor/bin/phpunit
