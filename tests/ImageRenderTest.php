@@ -69,6 +69,30 @@ class ImageRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_using_wrapper_element()
+    {
+        [$imageRender, $image] = $this->prepareImageRender();
+
+        $image
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageRender
+            ->useAspectRatio()
+            ->useWrapper()
+            ->img([
+                'class' => 'test',
+                'alt' => 'This is a test',
+                'data-custom' => 'custom',
+            ]);
+
+        $this->assertEquals(
+            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            $output
+        );
+    }
+
     protected function prepareImageRender()
     {
         $imageRender = new ImageRender(($image = $this->getImage()));
