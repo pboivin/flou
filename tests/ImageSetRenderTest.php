@@ -71,6 +71,30 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_using_padding_top_strategy()
+    {
+        [$imageSetRender, $lqip] = $this->prepareImageSetRender();
+
+        $lqip
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender
+            ->usePaddingTop()
+            ->useWrapper()
+            ->img([
+                'class' => 'test',
+                'alt' => 'This is a test',
+                'data-custom' => 'custom',
+            ]);
+
+        $this->assertEquals(
+            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 100%;"><img class="lazyload test" alt="This is a test" data-custom="custom" style="position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="lqip.jpg" width="4000" height="3000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw"></div><img class="lazyload-lqip" src="lqip.jpg"></div>',
+            $output
+        );
+    }
+
     protected function prepareImageSetRender()
     {
         ($image1 = $this->getImage())

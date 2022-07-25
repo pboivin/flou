@@ -93,6 +93,30 @@ class ImageRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_using_padding_top_strategy()
+    {
+        [$imageRender, $image] = $this->prepareImageRender();
+
+        $image
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageRender
+            ->usePaddingTop()
+            ->useWrapper()
+            ->img([
+                'class' => 'test',
+                'alt' => 'This is a test',
+                'data-custom' => 'custom',
+            ]);
+
+        $this->assertEquals(
+            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 100%;"><img class="lazyload test" alt="This is a test" data-custom="custom" style="position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"></div><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            $output
+        );
+    }
+
     protected function prepareImageRender()
     {
         $imageRender = new ImageRender(($image = $this->getImage()));
