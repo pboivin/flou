@@ -4,40 +4,42 @@ namespace Pboivin\Flou;
 
 class ImageSetRender extends ImgRenderable
 {
+    protected $data;
+
     public function __construct(protected ImageSet $imageSet)
     {
+        $this->data = $this->imageSet->toArray();
     }
 
-    public function useAspectRatio(?float $value = null): self
+    public function source(): ImageFile
     {
-        $data = $this->imageSet->toArray();
+        return $this->data['lqip']->source();
+    }
 
-        $this->aspectRatio = is_null($value) ? $data['lqip']->source()->ratio() : $value;
-
-        return $this;
+    public function lqip(): ImageFile
+    {
+        return $this->data['lqip']->cached();
     }
 
     public function img(array $attributes = []): string
     {
-        $data = $this->imageSet->toArray();
-
         $attributes = $this->prepareAttributes($attributes);
 
-        $attributes['src'] = $data['lqip']->cached()->url();
-        $attributes['width'] = $data['lqip']->source()->width();
-        $attributes['height'] = $data['lqip']->source()->height();
-        $attributes['data-src'] = $this->getSrc($data);
-        $attributes['data-srcset'] = $this->getSrcset($data);
-        $attributes['data-sizes'] = $data['sizes'];
+        $attributes['src'] = $this->lqip()->url();
+        $attributes['width'] = $this->source()->width();
+        $attributes['height'] = $this->source()->height();
+        $attributes['data-src'] = $this->getSrc();
+        $attributes['data-srcset'] = $this->getSrcset();
+        $attributes['data-sizes'] = $this->data['sizes'];
 
         return $this->renderImg($attributes);
     }
 
-    protected function getSrcset(array $data): string
+    protected function getSrcset(): string
     {
         $srcset = [];
 
-        foreach ($data['srcset'] as $source) {
+        foreach ($this->data['srcset'] as $source) {
             $url = $source['image']->cached()->url();
             $width = $source['width'];
 
@@ -47,9 +49,9 @@ class ImageSetRender extends ImgRenderable
         return implode(', ', $srcset);
     }
 
-    protected function getSrc(array $data): string
+    protected function getSrc(): string
     {
-        $source = end($data['srcset']);
+        $source = end($this->data['srcset']);
 
         return $source['image']->cached()->url();
     }

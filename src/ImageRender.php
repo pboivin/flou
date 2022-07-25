@@ -10,21 +10,24 @@ class ImageRender extends ImgRenderable
     {
     }
 
-    public function useAspectRatio(?float $value = null): self
+    public function source(): ImageFile
     {
-        $this->aspectRatio = is_null($value) ? $this->image->source()->ratio() : $value;
+        return $this->image->source();
+    }
 
-        return $this;
+    public function lqip(): ImageFile
+    {
+        return $this->image->cached();
     }
 
     public function img(array $attributes = []): string
     {
         $attributes = $this->prepareAttributes($attributes);
 
-        $attributes['src'] = $this->image->cached()->url();
-        $attributes['data-src'] = $this->image->source()->url();
-        $attributes['width'] = $this->image->source()->width();
-        $attributes['height'] = $this->image->source()->height();
+        $attributes['src'] = $this->lqip()->url();
+        $attributes['data-src'] = $this->source()->url();
+        $attributes['width'] = $this->source()->width();
+        $attributes['height'] = $this->source()->height();
 
         return $this->renderImg($attributes);
     }

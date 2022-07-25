@@ -71,9 +71,7 @@ class ImageSetRenderTest extends TestCase
             ->shouldReceive('height')
             ->andReturn(3000);
 
-        $imageSetRender = new ImageSetRender(($set = $this->mockImageSet()));
-
-        $set->shouldReceive('toArray')->andReturn([
+        ($set = $this->mockImageSet())->shouldReceive('toArray')->andReturn([
             'sizes' => '50vw',
             'srcset' => [
                 [
@@ -87,6 +85,8 @@ class ImageSetRenderTest extends TestCase
             ],
             'lqip' => $lqip,
         ]);
+
+        $imageSetRender = new ImageSetRender($set);
 
         return [$imageSetRender, $lqip];
     }
