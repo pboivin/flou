@@ -1,15 +1,57 @@
-# flou 1.0
+# flou
 
-This is a draft.
+(This is a draft.)
 
-## Basic setup
+Flou is a PHP package integrating the [Glide (PHP)](#) and the [vanilla-lazyload (JS)](#) libraries.
 
-JS:
+It is optimized to quickly implement image lazyloading on prototypes and static sites, using a local folder of source images.
+
+Features:
+- Uses Glide for image processing
+- Framework agnostic — a set of plain PHP classes
+- Useable in static site generators and CLI scripts
+- Transforms images on initial page load — does not expose Glide URLs
+
+TOC:
+- Installing
+- Getting Started
+- Working with Single Images
+- Working with Image Sets (Responsive Images)
+- Examples
+
+
+## Installing 
+
+Can be installed via Composer:
+
+```
+composer require pboivin/flou
+```
+
+This will install Glide.
+
+You can pull-in the vanilla-lazyload package via a CDN:
 
 ```html
 <script src="https://unpkg.com/vanilla-lazyload@17.x"></script>
+```
+
+or via NPM:
+
+```
+npm install --save vanilla-lazyload
+```
+
+Consult the package's documentation for more information on how to install and configure it.
+
+
+## Getting Started
+
+First, initialize the `LazyLoad` JS object:
+
+```html
 <script>
-    document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", () => {
         new LazyLoad({
             elements_selector: ".lazyload",
         });
@@ -17,7 +59,7 @@ JS:
 </script>
 ```
 
-Factory:
+Then, setup the `ImageFactory` PHP object with your project-specific configuration:
 
 ```php
 use Pboivin\Flou\ImageFactory;
@@ -29,6 +71,124 @@ $flou = new ImageFactory([
     'cacheUrlBase' => '/images/cache',
 ]);
 ```
+
+If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to process and render images into HMTL.
+
+In the following code examples, we'll use a global helper function to this effect:
+
+```php
+function flou()
+{
+    static $instance;
+
+    if (!$instance) {
+        $instance = new ImageFactory([
+            'sourcePath' => '/home/user/my-site.com/public/images/source',
+            'cachePath' => '/home/user/my-site.com/public/images/cache',
+            'sourceUrlBase' => '/images/source',
+            'cacheUrlBase' => '/images/cache',
+        ]);
+    }
+
+    return $instance
+}
+```
+
+
+## Working with Single Images
+
+
+#### Transforming source images
+
+To load a source image and generate a low-quality image placeholder (LQIP):
+
+```php
+$image = flou()->image('01.jpg');
+```
+
+You can also provide custom Glide parameters for your image transformation:
+
+```php
+$image = flou()->image('01.jpg', ['w' => 10, 'h' => 4]);
+```
+
+You'll find all available parameters in the [Glide documentation](#).
+
+As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to only generating LQIP. You can generate as many transformation as you need from the same image:
+
+```php
+$phone = flou()->image('01.jpg', ['w' => 500]);
+$tablet = flou()->image('01.jpg', ['w' => 900]);
+$desktop = flou()->image('01.jpg', ['w' => 1300]);
+```
+
+If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#)).
+
+The `image()` method will return a `Image` object, from which you can access the information associated to the source images, and the cached (transformed) image:
+
+```php 
+# Source image data:
+echo $image->source()->url();       # /images/source/01.jpg
+echo $image->source()->width();     # 3840 
+echo $image->source()->height();    # 2160
+echo $image->source()->ratio();     # 1.7777777777777777
+
+# Transformed image data:
+echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg
+```
+
+
+#### Rendering single images
+
+The `render()` method on your image will return a `ImageRender` object, which is a basic helper to generate HTML suitable for the `vanilla-lazyload` library. Here's a basic example rendering an `<img>` element:
+
+```php
+echo $image->render()->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+```
+
+Output:
+
+```html
+<img 
+  class="lazyload w-full" 
+  alt="Lorem ipsum" 
+  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
+  data-src="/images/source/01.jpg" 
+  width="3840" 
+  height="2160"
+>
+```
+
+Any options passed into the `img()` method will be included as an HTML attribute on the element.
+
+
+
+
+
+
+
+
+
+
+
+# Working with Image Sets (Responsive Images)
+
+
+
+
+
+
+
+# Examples
+
+
+
+
+
+
+
+
+==================================================
 
 ## Single image rendering
 
@@ -101,9 +261,9 @@ Wrapper + fade-in (needs extra JS and CSS):
             elements_selector: ".lazyload",
 
             callback_loaded: (el) => {
-                const wrapper = el.closest('.lazyload-wrapper');
+                const wrapper = el.closest(".lazyload-wrapper");
                 if (wrapper) {
-                    wrapper.classList.add('loaded');
+                    wrapper.classList.add("loaded");
                 }
             }
         });
