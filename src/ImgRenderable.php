@@ -10,7 +10,11 @@ abstract class ImgRenderable
 
     protected $lqipClass = 'lazyload-lqip';
 
+    protected $paddingClass = 'lazyload-padding';
+
     protected $aspectRatio = false;
+
+    protected $paddingTop = false;
 
     protected $wrapper = false;
 
@@ -49,6 +53,15 @@ abstract class ImgRenderable
         return $this;
     }
 
+    public function usePaddingTop(?float $value = null): self
+    {
+        $this->useAspectRatio($value);
+
+        $this->paddingTop = true;
+
+        return $this;
+    }
+
     abstract public function source(): ImageFile;
 
     abstract public function lqip(): ImageFile;
@@ -59,7 +72,9 @@ abstract class ImgRenderable
     {
         $style = [];
 
-        if ($this->aspectRatio) {
+        if ($this->paddingTop && $this->aspectRatio) {
+            $style[] = "position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;";
+        } elseif ($this->aspectRatio) {
             $style[] = "aspect-ratio: {$this->aspectRatio};";
         }
 
@@ -80,10 +95,22 @@ abstract class ImgRenderable
 
     protected function renderImg(array $attributes = []): string
     {
+        $img = $this->imgTag($attributes);
+
+        if ($this->paddingTop && $this->aspectRatio) {
+            $padding = 1 / $this->aspectRatio * 100;
+
+            $img = implode('', [
+                '<div class="' . $this->paddingClass . '" style="position: relative; padding-top: ' . $padding . '%;">',
+                $img,
+                '</div>',
+            ]);
+        }
+
         if ($this->wrapper) {
             return implode('', [
-                '<div class="lazyload-wrapper">',
-                $this->imgTag($attributes),
+                '<div class="' . $this->wrapperClass . '">',
+                $img,
                 $this->imgTag([
                     'class' => $this->lqipClass,
                     'src' => $this->lqip()->url(),
@@ -92,7 +119,7 @@ abstract class ImgRenderable
             ]);
         }
 
-        return $this->imgTag($attributes);
+        return $img;
     }
 
     protected function imgTag(array $attributes = []): string
