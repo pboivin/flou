@@ -2,8 +2,6 @@
 
 namespace Pboivin\Flou;
 
-use Pboivin\Flou\Image;
-
 class ImageRender extends ImgRenderable
 {
     public function __construct(protected Image $image)

@@ -2,8 +2,6 @@
 
 namespace Pboivin\Flou;
 
-use Pboivin\Flou\ImageRender;
-
 class Image
 {
     public function __construct(protected ImageFile $source, protected ImageFile $cached)

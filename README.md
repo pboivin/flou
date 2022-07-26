@@ -2,38 +2,40 @@
 
 (This is a draft.)
 
-Flou is a PHP package integrating the [Glide (PHP)](#) and the [vanilla-lazyload (JS)](#) libraries.
+Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries.
 
-It is optimized to quickly implement image lazyloading on prototypes and static sites, using a local folder of source images.
+It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
 
 Features:
-- Uses Glide for image processing
-- Framework agnostic — a set of plain PHP classes
-- Useable in static site generators and CLI scripts
 - Transforms images on initial page load — does not expose Glide URLs
+- Useable in static site generators and CLI scripts
+- Framework agnostic — a set of plain PHP classes
 
-TOC:
-- Installing
-- Getting Started
-- Working with Single Images
-- Working with Image Sets (Responsive Images)
-- Examples
+Requirements:
+- PHP >= 8.0
+
+Table of contents:
+- [Installing](#installing)
+- [Getting Started](#getting-started)
+- [Working with Single Images](#working-with-single-images)
+- [Working with Image Sets (Responsive Images)](#working-with-image-sets-responsive-images)
+- [Examples](#examples)
 
 
 ## Installing 
 
-Can be installed via Composer:
+The package can be installed via Composer:
 
 ```
 composer require pboivin/flou
 ```
 
-This will install Glide.
+This will also install Glide as a Composer dependency.
 
-You can pull-in the vanilla-lazyload package via a CDN:
+You can pull-in the vanilla-lazyload library via a CDN:
 
 ```html
-<script src="https://unpkg.com/vanilla-lazyload@17.x"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
 ```
 
 or via NPM:
@@ -42,12 +44,12 @@ or via NPM:
 npm install --save vanilla-lazyload
 ```
 
-Consult the package's documentation for more information on how to install and configure it.
+Consult the [vanilla-lazyload documentation](https://github.com/verlok/vanilla-lazyload#-getting-started---script) for more installation options.
 
 
 ## Getting Started
 
-First, initialize the `LazyLoad` JS object:
+First, initialize the `LazyLoad` JS object. This can be done by adding the following script at the end of your `body` element:
 
 ```html
 <script>
@@ -72,27 +74,14 @@ $flou = new ImageFactory([
 ]);
 ```
 
-If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to process and render images into HMTL.
+The options are:
 
-In the following code examples, we'll use a global helper function to this effect:
+- `sourcePath`: The full path to your source images.
+- `cachePath`: The full path where Glide will store the image transformations.
+- `sourceUrlBase`: The base URL for the source images.
+- `cacheUrlBase`:  The base URL for the transformed images.
 
-```php
-function flou()
-{
-    static $instance;
-
-    if (!$instance) {
-        $instance = new ImageFactory([
-            'sourcePath' => '/home/user/my-site.com/public/images/source',
-            'cachePath' => '/home/user/my-site.com/public/images/cache',
-            'sourceUrlBase' => '/images/source',
-            'cacheUrlBase' => '/images/cache',
-        ]);
-    }
-
-    return $instance
-}
-```
+If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images. ([See Laravel Facade example.](#))
 
 
 ## Working with Single Images
@@ -103,47 +92,55 @@ function flou()
 To load a source image and generate a low-quality image placeholder (LQIP):
 
 ```php
-$image = flou()->image('01.jpg');
+$image = $flou->image('01.jpg');
 ```
 
 You can also provide custom Glide parameters for your image transformation:
 
 ```php
-$image = flou()->image('01.jpg', ['w' => 10, 'h' => 4]);
+$image = $flou->image('01.jpg', ['w' => 10, 'h' => 4]);
 ```
 
-You'll find all available parameters in the [Glide documentation](#).
+You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
 
-As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to only generating LQIP. You can generate as many transformation as you need from the same image:
+As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted that. You can generate as many transformation as you need from the same image:
 
 ```php
-$phone = flou()->image('01.jpg', ['w' => 500]);
-$tablet = flou()->image('01.jpg', ['w' => 900]);
-$desktop = flou()->image('01.jpg', ['w' => 1300]);
+$phone = $flou->image('01.jpg', ['w' => 500]);
+$tablet = $flou->image('01.jpg', ['w' => 900]);
+$desktop = $flou->image('01.jpg', ['w' => 1300]);
 ```
 
-If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#)).
+If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
 
-The `image()` method will return a `Image` object, from which you can access the information associated to the source images, and the cached (transformed) image:
+The `image()` method will return an `Image` object, from which you can access the information associated to the source images, and the transformed (cached) image:
 
 ```php 
+$image = $flou->image('01.jpg');
+
 # Source image data:
 echo $image->source()->url();       # /images/source/01.jpg
+echo $image->source()->path();      # /home/user/my-site.com/public/images/source/01.jpg
 echo $image->source()->width();     # 3840 
 echo $image->source()->height();    # 2160
 echo $image->source()->ratio();     # 1.7777777777777777
 
 # Transformed image data:
 echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg
+...
 ```
 
 
 #### Rendering single images
 
-The `render()` method on your image will return a `ImageRender` object, which is a basic helper to generate HTML suitable for the `vanilla-lazyload` library. Here's a basic example rendering an `<img>` element:
+The `render()` method on your image will return a `ImageRender` object, which can generate HTML suitable for the vanilla-lazyload library. Here's a basic example rendering an `img` element:
 
 ```php
-echo $image->render()->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+$image = $flou->image('01.jpg');
+
+echo $image
+        ->render()
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
 Output:
@@ -159,57 +156,11 @@ Output:
 >
 ```
 
-Any options passed into the `img()` method will be included as an HTML attribute on the element.
+Options passed into the `img()` method will be included as HTML attributes on the `img` element.
 
+The `ImageRender` object can be configured in a few ways to optimize the generated HTML:
 
-
-
-
-
-
-
-
-
-
-# Working with Image Sets (Responsive Images)
-
-
-
-
-
-
-
-# Examples
-
-
-
-
-
-
-
-
-==================================================
-
-## Single image rendering
-
-Basic example:
-
-```php
-$image = $flou->image('01.jpg');
-
-echo $image->render()->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-
-#  <img 
-#    class="lazyload w-full" 
-#    alt="Lorem ipsum" 
-#    src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
-#    data-src="/images/source/01.jpg" 
-#    width="3840" 
-#    height="2160"
-#  >
-```
-
-Aspect-ratio (prevent content shifting on load):
+- `useAspectRatio()`: Prevent content shifting when the image is loaded:
 
 ```php
 $image = $flou->image('01.jpg');
@@ -219,15 +170,26 @@ echo $image
         ->useAspectRatio()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 
-#  <img 
-#    class="lazyload w-full" 
-#    alt="Lorem ipsum" 
-#    style="aspect-ratio: 1.7777777777777777" 
-#    ...
-#  >
+# or use a custom aspect-ratio:
+
+echo $image
+        ->render()
+        ->useAspectRatio(16 / 9)
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
-Padding-top (workaround for older browsers):
+Output:
+
+```html
+<img 
+  class="lazyload w-full" 
+  alt="Lorem ipsum" 
+  style="aspect-ratio: 1.7777777777777777" 
+  ...
+>
+```
+
+- `usePaddingTop()`: A workaround for older browsers not supporting `aspect-ratio`:
 
 ```php
 $image = $flou->image('01.jpg');
@@ -237,20 +199,112 @@ echo $image
         ->usePaddingTop()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 
-#  <div class="lazyload-padding" style="position: relative; padding-top: 56.25%;">
-#    <img
-#      class="lazyload w-full"
-#      alt="Lorem ipsum" 
-#      style="position: absolute; top: 0; height:0; width: 100%; height: 100%; 
-#             object-fit: cover; object-position: center;"
-#      ...
-#  </div>
+# or use a custom aspect-ratio:
+
+echo $image
+        ->render()
+        ->usePaddingTop(16 / 9)
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
-Wrapper + fade-in (needs extra JS and CSS):
+Output:
 
 ```html
-<script src="https://unpkg.com/vanilla-lazyload@17.x"></script>
+<div class="lazyload-padding" style="position: relative; padding-top: 56.25%;">
+  <img
+    class="lazyload w-full"
+    alt="Lorem ipsum" 
+    style="position: absolute; top: 0; height:0; width: 100%; height: 100%; 
+           object-fit: cover; object-position: center;"
+    ...
+  >
+</div>
+```
+
+- `useWrapper()`: Wraps the `img` element with an extra `div`. This can be used to add a fade-in effect when the image is loaded. (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
+
+```php
+$image = $flou->image('01.jpg');
+
+echo $image
+        ->render()
+        ->useWrapper()
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+```
+
+Output:
+
+```html
+<div class="lazyload-wrapper">
+  <img 
+    class="lazyload w-full" 
+    alt="Lorem ipsum" 
+    style="aspect-ratio: 1.7777777777778;" 
+    ...
+  >
+  <img 
+    class="lazyload-lqip" 
+    src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg"
+  >
+</div>
+```
+
+
+## Working with Image Sets (Responsive Images)
+
+Use the `imageSet()` method to generate a responsive `img` element with the `srcset` attribute:
+
+```php
+$set = $flou->imageSet([
+    'image' => '01.jpg',
+    'sizes' => '(max-width: 500px) 100vw, 50vw',
+    'sources' => [
+        ['width' => '500'],
+        ['width' => '900'],
+        ['width' => '1300'],
+        ['width' => '1700'],
+    ],
+]);
+
+echo $set
+        ->render()
+        ->useAspectRatio()
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+```
+
+```html
+<img 
+  class="lazyload w-full" 
+  alt="Lorem ipsum" 
+  style="aspect-ratio: 1.7777777777777777;" 
+  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
+  data-src="/images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg" 
+  data-srcset="/images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg 500w, 
+               /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg 900w, 
+               /images/cache/01.jpg/1eac615f1a50f20c434e5944225bdd4f.jpg 1300w, 
+               /images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg 1700w" 
+  data-sizes="(max-width: 500px) 100vw, 50vw"
+  width="3840" 
+  height="2160" 
+>
+```
+
+The `render()` method can be chained with the same methods described above:
+
+- `useAspectRatio()`
+- `usePaddingTop()`
+- `useWrapper()`
+
+
+## Examples
+
+
+#### Fade-in image on load
+
+JS and CSS:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
 <script>
     /*
      * vanilla-lazyload API reference: 
@@ -295,79 +349,36 @@ Wrapper + fade-in (needs extra JS and CSS):
 </style>
 ```
 
-```php
-$image = $flou->image('01.jpg');
+PHP:
 
-echo $image
+```php
+echo $flou
+        ->image('01.jpg');
         ->render()
         ->useAspectRatio()
         ->useWrapper()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-
-#  <div class="lazyload-wrapper">
-#    <img 
-#      class="lazyload w-full" 
-#      alt="Lorem ipsum" 
-#      style="aspect-ratio: 1.7777777777778;" 
-#      ...
-#    >
-#    <img 
-#      class="lazyload-lqip" 
-#      src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg"
-#    >
-#  </div>
 ```
 
-## Responsive image set rendering
 
-```php
-$set = $flou->imageSet([
-    'image' => '01.jpg',
-    'sizes' => '(max-width: 500px) 100vw, 50vw',
-    'sources' => [
-        ['width' => '500'],
-        ['width' => '900'],
-        ['width' => '1300'],
-        ['width' => '1700'],
-    ],
-]);
+#### Art-directed `picture` element
 
-echo $set
-        ->render()
-        ->useAspectRatio()
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
 
-#  <img 
-#    class="lazyload w-full" 
-#    alt="Lorem ipsum" 
-#    style="aspect-ratio: 1.7777777777777777;" 
-#    src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
-#    data-src="/images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg" 
-#    data-srcset="/images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg 500w, 
-#                 /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg 900w, 
-#                 /images/cache/01.jpg/1eac615f1a50f20c434e5944225bdd4f.jpg 1300w, 
-#                 /images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg 1700w" 
-#    data-sizes="(max-width: 500px) 100vw, 50vw"
-#    width="3840" 
-#    height="2160" 
-#  >
-```
 
-## Image source and transformation
 
-```php
-# Transform an image using built-in LQIP settings:
-$image = $flou->image('01.jpg');
+#### Native lazy loading (no JS)
 
-# or using custom Glide params:
-$image = $flou->image('01.jpg', ['w' => 10, 'h' => 4]);
 
-# Source image data:
-echo $image->source()->url();       # /images/source/01.jpg
-echo $image->source()->width();     # 3840 
-echo $image->source()->height();    # 2160
-echo $image->source()->ratio();     # 1.7777777777777777
 
-# Transformed image data:
-echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg
-```
+
+#### Noscript fallback
+
+
+
+
+#### Laravel Facade
+
+
+
+
+

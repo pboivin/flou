@@ -3,9 +3,9 @@
 namespace Pboivin\Flou\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageSet;
 use Pboivin\Flou\ImageSetRender;
-use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\Tests\Helpers\Mocking;
 
 class ImageSetTest extends TestCase
