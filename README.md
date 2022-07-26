@@ -371,10 +371,6 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 
 <hr>
 
-#### Native lazy loading (no js)
-
-<hr>
-
 #### Noscript fallback
 
 *Extra CSS:*
@@ -402,6 +398,27 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
             ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
     ?>
 </noscript>
+```
+
+<hr>
+
+#### Native lazy loading (no JS)
+
+*Usage:*
+
+```php
+<?= ($image = $flou->image('01.jpg'))
+        ->render()
+        ->useAspectRatio()
+        ->noScript([
+            'class' => 'w-full', 
+            'alt' => 'Lorem ipsum',
+            'loading' => 'lazy',
+            'decoding' => 'async',
+            'style' => "background-image: url({$image->cached()->url()});
+                        background-size: cover;"
+        ]);
+?>
 ```
 
 <hr>
