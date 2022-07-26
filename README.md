@@ -6,15 +6,18 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 
 It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
 
-Features:
+**Features:**
+
 - Transforms images on initial page load — does not expose Glide URLs
 - Useable in static site generators and CLI scripts
 - Framework agnostic — a set of plain PHP classes
 
-Requirements:
+**Requirements:**
+
 - PHP >= 8.0
 
-Table of contents:
+**Table of contents:**
+
 - [Installing](#installing)
 - [Getting Started](#getting-started)
 - [Working with Single Images](#working-with-single-images)
@@ -32,7 +35,7 @@ composer require pboivin/flou
 
 This will also install Glide as a Composer dependency.
 
-You can pull-in the vanilla-lazyload library via a CDN:
+You can pull in the vanilla-lazyload library via a CDN:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
