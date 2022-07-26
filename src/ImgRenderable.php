@@ -4,6 +4,8 @@ namespace Pboivin\Flou;
 
 abstract class ImgRenderable
 {
+    use RendersHtml;
+
     protected $baseClass = 'lazyload';
 
     protected $wrapperClass = 'lazyload-wrapper';
@@ -77,8 +79,15 @@ abstract class ImgRenderable
         $style = [];
 
         if ($this->paddingTop && $this->aspectRatio) {
-            $style[] =
-                'position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;';
+            $style[] = $this->collectStyles([
+                'position' => 'absolute',
+                'top' => '0',
+                'left' => '0',
+                'width' => '100%',
+                'height' => '100%',
+                'object-fit' => 'cover',
+                'object-position' => 'center',
+            ]);
         } elseif ($this->aspectRatio) {
             $style[] = "aspect-ratio: {$this->aspectRatio};";
         }
@@ -100,53 +109,38 @@ abstract class ImgRenderable
 
     protected function renderImg(array $attributes = []): string
     {
-        $img = $this->imgTag($attributes);
+        $img = $this->htmlTag('img', $attributes);
 
         if ($this->paddingTop && $this->aspectRatio) {
             $padding = (1 / $this->aspectRatio) * 100;
-            $classAttr = 'class="' . $this->paddingClass . '"';
-            $styleAttr = 'style="position: relative; padding-top: ' . $padding . '%;"';
-            $img = "<div {$classAttr} {$styleAttr}>{$img}</div>";
+            $img = $this->htmlWrap(
+                'div',
+                [
+                    'class' => $this->paddingClass,
+                    'style' => "position: relative; padding-top: {$padding}%;",
+                ],
+                $img
+            );
         }
 
         if ($this->wrapper) {
-            return implode('', [
-                '<div class="' . $this->wrapperClass . '">',
-                $img,
-                $this->includeLqip
-                    ? $this->imgTag([
-                        'class' => $this->lqipClass,
-                        'src' => $this->lqip()->url(),
-                    ])
-                    : '',
-                '</div>',
-            ]);
+            return $this->htmlWrap(
+                'div',
+                [
+                    'class' => $this->wrapperClass,
+                ],
+                implode('', [
+                    $img,
+                    $this->includeLqip
+                        ? $this->htmlTag('img', [
+                            'class' => $this->lqipClass,
+                            'src' => $this->lqip()->url(),
+                        ])
+                        : '',
+                ])
+            );
         }
 
         return $img;
-    }
-
-    protected function imgTag(array $attributes = []): string
-    {
-        return $this->tag('img', $attributes);
-    }
-
-    protected function tag(string $tag, array $attributes = [], mixed $content = false): string
-    {
-        $attributesOutput = [];
-
-        foreach ($attributes as $key => $value) {
-            $attributesOutput[] = $key . '="' . $value . '"';
-        }
-
-        if ($content === false) {
-            return "<{$tag} " . implode(' ', $attributesOutput) . '>';
-        }
-
-        if ($content === true) {
-            return "<{$tag} " . implode(' ', $attributesOutput) . ' />';
-        }
-
-        return "<{$tag} " . implode(' ', $attributesOutput) . ">{$content}<{$tag}>";
     }
 }
