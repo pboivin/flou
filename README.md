@@ -106,7 +106,7 @@ $image = $flou->image('01.jpg', ['w' => 10, 'h' => 4]);
 
 You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
 
-As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted that. You can generate as many transformation as you need from the same image:
+As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to that. You can generate as many transformation as you need from the same image:
 
 ```php
 $phone = $flou->image('01.jpg', ['w' => 500]);
@@ -116,7 +116,7 @@ $desktop = $flou->image('01.jpg', ['w' => 1300]);
 
 If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
 
-The `image()` method will return an `Image` object, from which you can access the information associated to the source images, and the transformed (cached) image:
+The `image()` method will return an `Image` object, from which you can conveniently access the source image file and the transformed (cached) image file:
 
 ```php 
 $image = $flou->image('01.jpg');
@@ -304,7 +304,7 @@ The `render()` method can be chained with the same methods described above:
 
 #### Fade-in image on load
 
-JS and CSS:
+**JS and CSS:**
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
@@ -352,7 +352,7 @@ JS and CSS:
 </style>
 ```
 
-PHP:
+**Usage:**
 
 ```php
 echo $flou
@@ -381,7 +381,63 @@ echo $flou
 
 #### Laravel Facade
 
+**`config/flou.php`:**
 
+```php
+<?php
 
+return [
+    "sourcePath" => base_path('public/images/source'),
+    "cachePath" => base_path('public/images/cache'),
+    "sourceUrlBase" => '/images/source',
+    "cacheUrlBase" => '/images/cache',
+];
+```
 
+**`app/Providers/AppServiceProvider.php`:**
 
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Pboivin\Flou\ImageFactory;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->app->singleton('flou', function ($app) {
+            return new ImageFactory(config('flou'));
+        });
+    }
+}
+```
+
+**`app/Facades/Flou.php`:**
+
+```php
+<?php
+
+namespace App\Facades;
+
+use Illuminate\Support\Facades\Facade;
+
+class Flou extends Facade
+{
+    protected static function getFacadeAccessor() {
+        return 'flou';
+    }
+}
+```
+
+**Usage in views:**
+
+```php
+use App\Facades\Flou;
+
+$image = Flou::image('01.jpg');
+
+...
+```
