@@ -29,17 +29,20 @@ trait RendersHtml
             $output[] = $key . '="' . $value . '"';
         }
 
-        return implode(' ', $output);
+        return implode(' ', array_filter($output));
     }
 
     protected function collectStyles(array $styles = [])
     {
-        $output = [];
-
         foreach ($styles as $key => $value) {
             $output[] = "{$key}: {$value};";
         }
 
-        return implode(' ', $output);
+        return implode(' ', array_filter($output));
+    }
+
+    protected function collectClasses(array $classes = [])
+    {
+        return implode(' ', array_filter($classes));
     }
 }

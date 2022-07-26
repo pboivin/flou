@@ -89,7 +89,9 @@ abstract class ImgRenderable
                 'object-position' => 'center',
             ]);
         } elseif ($this->aspectRatio) {
-            $style[] = "aspect-ratio: {$this->aspectRatio};";
+            $style[] = $this->collectStyles([
+                'aspect-ratio' => $this->aspectRatio,
+            ]);
         }
 
         if ($attributes['style'] ?? false) {
@@ -100,7 +102,10 @@ abstract class ImgRenderable
             $attributes['style'] = implode(' ', $style);
         }
 
-        $attributes['class'] = implode(' ', [$this->baseClass, $attributes['class'] ?? '']);
+        $attributes['class'] = $this->collectClasses([
+            $this->baseClass,
+            $attributes['class'] ?? '',
+        ]);
 
         $attributes['alt'] = $attributes['alt'] ?? '';
 
@@ -117,7 +122,10 @@ abstract class ImgRenderable
                 'div',
                 [
                     'class' => $this->paddingClass,
-                    'style' => "position: relative; padding-top: {$padding}%;",
+                    'style' => $this->collectStyles([
+                        'position' => 'relative',
+                        'padding-top' => "{$padding}%",
+                    ]),
                 ],
                 $img
             );
