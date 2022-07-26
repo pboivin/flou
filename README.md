@@ -365,16 +365,15 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 ?>
 ```
 
+<hr>
 
 #### Art-directed `picture` element
 
-
-
+<hr>
 
 #### Native lazy loading (no js)
 
-
-
+<hr>
 
 #### Noscript fallback
 
@@ -405,6 +404,7 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 </noscript>
 ```
 
+<hr>
 
 #### Laravel integration
 
