@@ -305,7 +305,7 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 
 #### Fade-in image on load
 
-*JS and CSS:*
+*Extra JS and CSS:*
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
@@ -377,7 +377,32 @@ echo $flou
 
 #### Noscript fallback
 
+*Extra CSS:*
 
+```html
+<noscript>
+    <style>
+        .lazyload {
+            display: none;
+        }
+    </style>
+</noscript>
+```
+
+*Usage:*
+
+```php
+<?= $image->render()
+        ->useAspectRatio()
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
+?>
+<noscript>
+    <?= $image->render()
+            ->useAspectRatio()
+            ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
+    ?>
+</noscript>
+```
 
 
 #### Laravel integration
