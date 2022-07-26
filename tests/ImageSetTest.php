@@ -3,10 +3,10 @@
 namespace Pboivin\Flou\Tests;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageSet;
 use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\Tests\Helpers\Mocking;
+use PHPUnit\Framework\TestCase;
 
 class ImageSetTest extends TestCase
 {

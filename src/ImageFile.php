@@ -46,7 +46,7 @@ class ImageFile
 
     protected function size(string $param): int
     {
-        if (!$this->size) {
+        if (! $this->size) {
             $this->size = $this->inspector->getSize($this->path);
         }
 

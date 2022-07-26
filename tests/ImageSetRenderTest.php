@@ -2,9 +2,9 @@
 
 namespace Pboivin\Flou\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\Tests\Helpers\Mocking;
+use PHPUnit\Framework\TestCase;
 
 class ImageSetRenderTest extends TestCase
 {

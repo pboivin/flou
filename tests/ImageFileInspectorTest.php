@@ -2,9 +2,9 @@
 
 namespace Pboivin\Flou\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageFileInspector;
 use Pboivin\Flou\Tests\Helpers\Mocking;
+use PHPUnit\Framework\TestCase;
 
 class ImageFileInspectorTest extends TestCase
 {

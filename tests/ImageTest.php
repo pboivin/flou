@@ -2,11 +2,11 @@
 
 namespace Pboivin\Flou\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\Image;
 use Pboivin\Flou\ImageFile;
 use Pboivin\Flou\ImageRender;
 use Pboivin\Flou\Tests\Helpers\Mocking;
+use PHPUnit\Framework\TestCase;
 
 class ImageTest extends TestCase
 {
