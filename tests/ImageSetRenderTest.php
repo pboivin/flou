@@ -95,6 +95,29 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_using_noscript_variation()
+    {
+        [$imageSetRender, $lqip] = $this->prepareImageSetRender();
+
+        $lqip
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender
+            ->usePaddingTop()
+            ->useWrapper()
+            ->noScript([
+                'class' => 'test',
+                'alt' => 'This is a test',
+            ]);
+
+        $this->assertEquals(
+            '<div class="lazyload-wrapper-noscript"><div class="lazyload-padding-noscript" style="position: relative; padding-top: 100%;"><img class="lazyload-noscript test" alt="This is a test" style="position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;" width="4000" height="3000" src="cached2.jpg" srcset="cached1.jpg 500w, cached2.jpg 1000w" sizes="50vw"></div></div>',
+            $output
+        );
+    }
+
     protected function prepareImageSetRender()
     {
         ($image1 = $this->getImage())
