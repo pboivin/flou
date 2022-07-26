@@ -50,7 +50,7 @@ Consult the [vanilla-lazyload documentation](https://github.com/verlok/vanilla-l
 
 ## Getting Started
 
-First, initialize the `LazyLoad` JS object. This can be done by adding the following script at the end of your `body` element:
+First, initialize the `LazyLoad` JS object. This can be done by adding the following script in your page template:
 
 ```html
 <script>
@@ -88,7 +88,7 @@ If you're using a framework like Laravel, you can register the `$flou` instance 
 ## Working with Single Images
 
 
-#### Transforming source images
+#### Transforming Source Images
 
 To load a source image and generate a low-quality image placeholder (LQIP):
 
@@ -132,7 +132,7 @@ echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79
 ```
 
 
-#### Rendering single images
+#### Rendering Single Images
 
 The `render()` method on your image will return a `ImageRender` object, which can generate HTML suitable for the vanilla-lazyload library. Here's a basic example rendering an `img` element:
 
@@ -300,7 +300,7 @@ The `render()` method can be chained with the same methods described above:
 ## Examples
 
 
-#### Fade-in image on load
+#### Fade-in Image on Load
 
 **JS and CSS:**
 
@@ -362,17 +362,17 @@ echo $flou
 ```
 
 
-#### Art-directed `picture` element
+#### Art-directed `picture` Element
 
 
 
 
-#### Native lazy loading (no JS)
+#### Native Lazy Loading (No JS)
 
 
 
 
-#### Noscript fallback
+#### Noscript Fallback
 
 
 
