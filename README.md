@@ -186,10 +186,10 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 
     ```html
     <img 
-    class="lazyload w-full" 
-    alt="Lorem ipsum" 
-    style="aspect-ratio: 1.7777777777777777" 
-    ...
+      class="lazyload w-full" 
+      alt="Lorem ipsum" 
+      style="aspect-ratio: 1.7777777777777777" 
+      ...
     >
     ```
 
@@ -215,13 +215,13 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 
     ```html
     <div class="lazyload-padding" style="position: relative; padding-top: 56.25%;">
-    <img
+      <img
         class="lazyload w-full"
         alt="Lorem ipsum" 
         style="position: absolute; top: 0; height:0; width: 100%; height: 100%; 
-            object-fit: cover; object-position: center;"
+               object-fit: cover; object-position: center;"
         ...
-    >
+      >
     </div>
     ```
 
@@ -240,23 +240,23 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 
     ```html
     <div class="lazyload-wrapper">
-    <img 
+      <img 
         class="lazyload w-full" 
         alt="Lorem ipsum" 
         style="aspect-ratio: 1.7777777777778;" 
         ...
-    >
-    <img 
+      >
+      <img 
         class="lazyload-lqip" 
         src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg"
-    >
+      >
     </div>
     ```
 
 
 ## Working with Image Sets (Responsive Images)
 
-Use the `imageSet()` method to generate a responsive `img` element with the `srcset` attribute:
+Use the `imageSet()` method to transform a source image into a set of responsive images. Then, use the `render()` method of the `ImageSet` to render a lazy-loaded `img` element with the `sizes` and `srcset` attributes:
 
 ```php
 $set = $flou->imageSet([
@@ -293,7 +293,7 @@ echo $set
 >
 ```
 
-The `render()` method can be chained with the same methods described above:
+Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 
 - `useAspectRatio()`
 - `usePaddingTop()`
