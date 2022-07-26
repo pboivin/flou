@@ -356,12 +356,13 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 *Usage:*
 
 ```php
-echo $flou
+<?= $flou
         ->image('01.jpg')
         ->render()
         ->useAspectRatio()
         ->useWrapper()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+?>
 ```
 
 
@@ -392,13 +393,13 @@ echo $flou
 *Usage:*
 
 ```php
-<?= $image->render()
-        ->useAspectRatio()
+<?= $image
+        ->render()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
 ?>
 <noscript>
-    <?= $image->render()
-            ->useAspectRatio()
+    <?= $image
+            ->render()
             ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
     ?>
 </noscript>
@@ -460,10 +461,13 @@ class Flou extends Facade
 
 *Usage in views:*
 
-```php
+```blade
+@php
 use App\Facades\Flou;
+@endphp
 
-$image = Flou::image('01.jpg');
-
-...
+{!! Flou::image('01.jpg')
+        ->render()
+        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+!!}
 ```
