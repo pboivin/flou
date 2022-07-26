@@ -163,92 +163,92 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 
 - `useAspectRatio()`: Prevent content shifting when the image is loaded:
 
-```php
-$image = $flou->image('01.jpg');
+    ```php
+    $image = $flou->image('01.jpg');
 
-echo $image
-        ->render()
-        ->useAspectRatio()
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+    echo $image
+            ->render()
+            ->useAspectRatio()
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 
-# or use a custom aspect-ratio:
+    # or use a custom aspect-ratio:
 
-echo $image
-        ->render()
-        ->useAspectRatio(16 / 9)
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-```
+    echo $image
+            ->render()
+            ->useAspectRatio(16 / 9)
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+    ```
 
-Output:
+    Output:
 
-```html
-<img 
-  class="lazyload w-full" 
-  alt="Lorem ipsum" 
-  style="aspect-ratio: 1.7777777777777777" 
-  ...
->
-```
+    ```html
+    <img 
+    class="lazyload w-full" 
+    alt="Lorem ipsum" 
+    style="aspect-ratio: 1.7777777777777777" 
+    ...
+    >
+    ```
 
 - `usePaddingTop()`: A workaround for older browsers not supporting `aspect-ratio`:
 
-```php
-$image = $flou->image('01.jpg');
+    ```php
+    $image = $flou->image('01.jpg');
 
-echo $image
-        ->render()
-        ->usePaddingTop()
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+    echo $image
+            ->render()
+            ->usePaddingTop()
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 
-# or use a custom aspect-ratio:
+    # or use a custom aspect-ratio:
 
-echo $image
-        ->render()
-        ->usePaddingTop(16 / 9)
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-```
+    echo $image
+            ->render()
+            ->usePaddingTop(16 / 9)
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+    ```
 
-Output:
+    Output:
 
-```html
-<div class="lazyload-padding" style="position: relative; padding-top: 56.25%;">
-  <img
-    class="lazyload w-full"
-    alt="Lorem ipsum" 
-    style="position: absolute; top: 0; height:0; width: 100%; height: 100%; 
-           object-fit: cover; object-position: center;"
-    ...
-  >
-</div>
-```
+    ```html
+    <div class="lazyload-padding" style="position: relative; padding-top: 56.25%;">
+    <img
+        class="lazyload w-full"
+        alt="Lorem ipsum" 
+        style="position: absolute; top: 0; height:0; width: 100%; height: 100%; 
+            object-fit: cover; object-position: center;"
+        ...
+    >
+    </div>
+    ```
 
 - `useWrapper()`: Wraps the `img` element with an extra `div`. This can be used to add a fade-in effect when the image is loaded. (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
-```php
-$image = $flou->image('01.jpg');
+    ```php
+    $image = $flou->image('01.jpg');
 
-echo $image
-        ->render()
-        ->useWrapper()
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-```
+    echo $image
+            ->render()
+            ->useWrapper()
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+    ```
 
-Output:
+    Output:
 
-```html
-<div class="lazyload-wrapper">
-  <img 
-    class="lazyload w-full" 
-    alt="Lorem ipsum" 
-    style="aspect-ratio: 1.7777777777778;" 
-    ...
-  >
-  <img 
-    class="lazyload-lqip" 
-    src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg"
-  >
-</div>
-```
+    ```html
+    <div class="lazyload-wrapper">
+    <img 
+        class="lazyload w-full" 
+        alt="Lorem ipsum" 
+        style="aspect-ratio: 1.7777777777778;" 
+        ...
+    >
+    <img 
+        class="lazyload-lqip" 
+        src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg"
+    >
+    </div>
+    ```
 
 
 ## Working with Image Sets (Responsive Images)
