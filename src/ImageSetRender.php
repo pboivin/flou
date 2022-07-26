@@ -35,6 +35,26 @@ class ImageSetRender extends ImgRenderable
         return $this->renderImg($attributes);
     }
 
+    public function noScript(array $attributes = []): string
+    {
+        $noScript = clone $this;
+
+        $noScript->baseClass = $noScript->baseClass . '-noscript';
+        $noScript->wrapperClass = $noScript->wrapperClass . '-noscript';
+        $noScript->paddingClass = $noScript->paddingClass . '-noscript';
+        $noScript->includeLqip = false;
+
+        $attributes = $noScript->prepareAttributes($attributes);
+
+        $attributes['width'] = $noScript->source()->width();
+        $attributes['height'] = $noScript->source()->height();
+        $attributes['src'] = $noScript->getSrc();
+        $attributes['srcset'] = $noScript->getSrcset();
+        $attributes['sizes'] = $noScript->data['sizes'];
+
+        return $noScript->renderImg($attributes);
+    }
+
     protected function getSrcset(): string
     {
         $srcset = [];

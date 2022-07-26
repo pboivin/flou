@@ -18,6 +18,8 @@ abstract class ImgRenderable
 
     protected $wrapper = false;
 
+    protected $includeLqip = true;
+
     public function setBaseClass(string $cls): self
     {
         $this->baseClass = $cls;
@@ -68,12 +70,15 @@ abstract class ImgRenderable
 
     abstract public function img(array $attributes = []): string;
 
+    abstract public function noScript(array $attributes = []): string;
+
     protected function prepareAttributes(array $attributes = []): array
     {
         $style = [];
 
         if ($this->paddingTop && $this->aspectRatio) {
-            $style[] = "position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;";
+            $style[] =
+                'position: absolute; top: 0; height:0; width: 100%; height: 100%; object-fit: cover; object-position: center;';
         } elseif ($this->aspectRatio) {
             $style[] = "aspect-ratio: {$this->aspectRatio};";
         }
@@ -98,23 +103,22 @@ abstract class ImgRenderable
         $img = $this->imgTag($attributes);
 
         if ($this->paddingTop && $this->aspectRatio) {
-            $padding = 1 / $this->aspectRatio * 100;
-
-            $img = implode('', [
-                '<div class="' . $this->paddingClass . '" style="position: relative; padding-top: ' . $padding . '%;">',
-                $img,
-                '</div>',
-            ]);
+            $padding = (1 / $this->aspectRatio) * 100;
+            $classAttr = 'class="' . $this->paddingClass . '"';
+            $styleAttr = 'style="position: relative; padding-top: ' . $padding . '%;"';
+            $img = "<div {$classAttr} {$styleAttr}>{$img}</div>";
         }
 
         if ($this->wrapper) {
             return implode('', [
                 '<div class="' . $this->wrapperClass . '">',
                 $img,
-                $this->imgTag([
-                    'class' => $this->lqipClass,
-                    'src' => $this->lqip()->url(),
-                ]),
+                $this->includeLqip
+                    ? $this->imgTag([
+                        'class' => $this->lqipClass,
+                        'src' => $this->lqip()->url(),
+                    ])
+                    : '',
                 '</div>',
             ]);
         }
@@ -124,12 +128,25 @@ abstract class ImgRenderable
 
     protected function imgTag(array $attributes = []): string
     {
-        $output = [];
+        return $this->tag('img', $attributes);
+    }
+
+    protected function tag(string $tag, array $attributes = [], mixed $content = false): string
+    {
+        $attributesOutput = [];
 
         foreach ($attributes as $key => $value) {
-            $output[] = $key . '="' . $value . '"';
+            $attributesOutput[] = $key . '="' . $value . '"';
         }
 
-        return '<img ' . implode(' ', $output) . '>';
+        if ($content === false) {
+            return "<{$tag} " . implode(' ', $attributesOutput) . '>';
+        }
+
+        if ($content === true) {
+            return "<{$tag} " . implode(' ', $attributesOutput) . ' />';
+        }
+
+        return "<{$tag} " . implode(' ', $attributesOutput) . ">{$content}<{$tag}>";
     }
 }

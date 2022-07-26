@@ -29,4 +29,22 @@ class ImageRender extends ImgRenderable
 
         return $this->renderImg($attributes);
     }
+
+    public function noScript(array $attributes = []): string
+    {
+        $noScript = clone $this;
+
+        $noScript->baseClass = $noScript->baseClass . '-noscript';
+        $noScript->wrapperClass = $noScript->wrapperClass . '-noscript';
+        $noScript->paddingClass = $noScript->paddingClass . '-noscript';
+        $noScript->includeLqip = false;
+
+        $attributes = $noScript->prepareAttributes($attributes);
+
+        $attributes['src'] = $noScript->source()->url();
+        $attributes['width'] = $noScript->source()->width();
+        $attributes['height'] = $noScript->source()->height();
+
+        return $noScript->renderImg($attributes);
+    }
 }
