@@ -9,7 +9,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 **Features:**
 
 - Transforms images on initial page load — does not expose Glide URLs
-- Useable in static site generators and CLI scripts
+- Useable with static site generators and in CLI scripts
 - Framework agnostic — a set of plain PHP classes
 
 **Requirements:**
@@ -84,13 +84,13 @@ The options are:
 - `sourceUrlBase`: The base URL for the source images.
 - `cacheUrlBase`:  The base URL for the transformed images.
 
-If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images. ([See Laravel Facade example.](#))
+If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images. ([See Laravel Integration example.](#laravel-integration))
 
 
 ## Working with Single Images
 
 
-#### Transforming Source Images
+#### Transforming source images
 
 To load a source image and generate a low-quality image placeholder (LQIP):
 
@@ -130,13 +130,14 @@ echo $image->source()->ratio();     # 1.7777777777777777
 
 # Transformed image data:
 echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg
+
 ...
 ```
 
 
-#### Rendering Single Images
+#### Rendering single images
 
-The `render()` method on your image will return a `ImageRender` object, which can generate HTML suitable for the vanilla-lazyload library. Here's a basic example rendering an `img` element:
+The `render()` method on your image will return an `ImageRender` object, which can generate HTML suitable for the vanilla-lazyload library. Here's a basic example rendering an `img` element:
 
 ```php
 $image = $flou->image('01.jpg');
@@ -302,7 +303,7 @@ The `render()` method can be chained with the same methods described above:
 ## Examples
 
 
-#### Fade-in Image on Load
+#### Fade-in image on load
 
 *JS and CSS:*
 
@@ -364,22 +365,22 @@ echo $flou
 ```
 
 
-#### Art-directed `picture` Element
+#### Art-directed `picture` element
 
 
 
 
-#### Native Lazy Loading (No JS)
+#### Native lazy loading (no js)
 
 
 
 
-#### Noscript Fallback
+#### Noscript fallback
 
 
 
 
-#### Laravel Facade
+#### Laravel integration
 
 *`config/flou.php`:*
 
