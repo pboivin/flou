@@ -2,9 +2,7 @@
 
 (This is a draft.)
 
-Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries.
-
-It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
+Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries. It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
 
 **Features:**
 
