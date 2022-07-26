@@ -1,5 +1,7 @@
 # flou
 
+[![phpunit](https://github.com/pboivin/flou/actions/workflows/phpunit.yml/badge.svg)](https://github.com/pboivin/flou/actions/workflows/phpunit.yml)
+
 (This is a draft.)
 
 Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries. It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
@@ -302,7 +304,7 @@ The `render()` method can be chained with the same methods described above:
 
 #### Fade-in Image on Load
 
-**JS and CSS:**
+*JS and CSS:*
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
@@ -350,11 +352,11 @@ The `render()` method can be chained with the same methods described above:
 </style>
 ```
 
-**Usage:**
+*Usage:*
 
 ```php
 echo $flou
-        ->image('01.jpg');
+        ->image('01.jpg')
         ->render()
         ->useAspectRatio()
         ->useWrapper()
@@ -379,7 +381,7 @@ echo $flou
 
 #### Laravel Facade
 
-**`config/flou.php`:**
+*`config/flou.php`:*
 
 ```php
 <?php
@@ -392,7 +394,7 @@ return [
 ];
 ```
 
-**`app/Providers/AppServiceProvider.php`:**
+*`app/Providers/AppServiceProvider.php`:*
 
 ```php
 <?php
@@ -413,7 +415,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-**`app/Facades/Flou.php`:**
+*`app/Facades/Flou.php`:*
 
 ```php
 <?php
@@ -430,7 +432,7 @@ class Flou extends Facade
 }
 ```
 
-**Usage in views:**
+*Usage in views:*
 
 ```php
 use App\Facades\Flou;
