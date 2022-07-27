@@ -1,6 +1,6 @@
 # flou
 
-[![phpunit](https://github.com/pboivin/flou/actions/workflows/phpunit.yml/badge.svg)](https://github.com/pboivin/flou/actions/workflows/phpunit.yml)
+[![tests](https://github.com/pboivin/flou/actions/workflows/tests.yml/badge.svg)](https://github.com/pboivin/flou/actions/workflows/tests.yml)
 
 (This is a draft.)
 
@@ -23,6 +23,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 - [Working with Single Images](#working-with-single-images)
 - [Working with Image Sets (Responsive Images)](#working-with-image-sets-responsive-images)
 - [Examples](#examples)
+- [Development](#development)
 
 
 ## Installing 
@@ -164,7 +165,7 @@ Options passed into the `img()` method will be included as HTML attributes on th
 
 The `ImageRender` object can be configured in a few ways to optimize the generated HTML:
 
-- `useAspectRatio()`: Prevent content shifting when the image is loaded:
+- **`useAspectRatio()`:** Prevent content shifting when the image is loaded:
 
     ```php
     $image = $flou->image('01.jpg');
@@ -193,7 +194,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     >
     ```
 
-- `usePaddingTop()`: A workaround for older browsers not supporting `aspect-ratio`:
+- **`usePaddingTop()`:** A workaround for older browsers not supporting `aspect-ratio`:
 
     ```php
     $image = $flou->image('01.jpg');
@@ -225,7 +226,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     </div>
     ```
 
-- `useWrapper()`: Wraps the `img` element with an extra `div`. This can be used to add a fade-in effect when the image is loaded. (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
+- **`useWrapper()`:** Wraps the `img` element with an extra `div`. This can be used to add a fade-in effect when the image is loaded. (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
     ```php
     $image = $flou->image('01.jpg');
@@ -388,7 +389,7 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 *Usage:*
 
 ```php
-<?= $image
+<?= ($image = $flou->image('01.jpg'))
         ->render()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
 ?>
@@ -431,10 +432,10 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 <?php
 
 return [
-    "sourcePath" => base_path('public/images/source'),
-    "cachePath" => base_path('public/images/cache'),
-    "sourceUrlBase" => '/images/source',
-    "cacheUrlBase" => '/images/cache',
+    'sourcePath' => base_path('public/images/source'),
+    'cachePath' => base_path('public/images/cache'),
+    'sourceUrlBase' => '/images/source',
+    'cacheUrlBase' => '/images/cache',
 ];
 ```
 
@@ -470,7 +471,8 @@ use Illuminate\Support\Facades\Facade;
 
 class Flou extends Facade
 {
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor() 
+    {
         return 'flou';
     }
 }
@@ -479,9 +481,7 @@ class Flou extends Facade
 *Usage in views:*
 
 ```blade
-@php
-use App\Facades\Flou;
-@endphp
+@php use App\Facades\Flou; @endphp
 
 {!! Flou::image('01.jpg')
         ->render()
