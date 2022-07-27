@@ -247,8 +247,38 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     </div>
     ```
 
+#### Noscript variation
+
+Use the `noScript()` method of the `ImageRender` object to generate an `img` element without any lazy loading behavior:
+
+```php
+echo $image
+        ->render()
+        ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+```
+
+Output:
+
+```html
+<img 
+  class="lazyload-noscript w-full" 
+  alt="Lorem ipsum" 
+  src="/images/source/01.jpg" 
+  width="2932" 
+  height="2000"
+>
+```
+
+This can be used to implement a `noscript` image fallback. It can also be used to create customized variations of the source image with CSS classes and HTML attributes:
+
+- [Noscript fallback example](#noscript-fallback)
+- [Native lazy loading example](#native-lazy-loading-no-js-fallback)
+
 
 ## Working with Image Sets (Responsive Images)
+
+
+#### Single source
 
 Use the `imageSet()` method to transform a source image into a set of responsive images. Then, use the `render()` method of the `ImageSet` to render a lazy-loaded `img` element with the `sizes` and `srcset` attributes:
 
@@ -269,6 +299,8 @@ echo $imageSet
         ->useAspectRatio()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
+
+Output:
 
 ```html
 <img 
@@ -292,6 +324,60 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 - `useAspectRatio()`
 - `usePaddingTop()`
 - `useWrapper()`
+- `noScript()`
+
+
+#### Multiple sources (art-directed `picture` element)
+
+Use the `picture()` method of the `ImageSetRender` object to generate an `picture` element with multiple sources and media queries:
+
+```php
+$imageSet = $flou->imageSet([
+    'image' => '01.jpg',
+    'sizes' => '(max-width: 500px) 100vw, 50vw',
+    'sources' => [
+        [
+            'image' => '01.jpg',
+            'width' => '900',
+            'media' => '(max-width: 900px)',
+        ],
+        [
+            'image' => '02.jpg',
+            'width' => '1300',
+            'media' => '(min-width: 901px)',
+        ],
+    ],
+]);
+
+echo $imageSet
+        ->render()
+        ->picture(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+```
+
+Output:
+
+```html
+<picture>
+  <source 
+    media="(max-width: 900px)" 
+    data-srcset="/images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg"
+  >
+  <source 
+    media="(min-width: 901px)" 
+    data-srcset="/images/cache/02.jpg/1e147b93856eef676f00989ba28365f1.jpg"
+  >
+  <img 
+    class="lazyload my-image" 
+    alt="Lorem ipsum" 
+    src="/images/cache/02.jpg/23a733056cc32e360e9cdef3e0be8fb4.jpg" 
+    data-src="/images/cache/02.jpg/1e147b93856eef676f00989ba28365f1.jpg" 
+    width="3000" 
+    height="2000"
+  >
+</picture>
+```
+
+See also: [Art-directed `picture` element example](#art-directed-picture-element-manual)
 
 
 ## Examples
@@ -360,28 +446,31 @@ echo $flou
 
 <hr>
 
-#### Art-directed `picture` element
+#### Art-directed `picture` element (manual)
 
 *Usage:*
 
 ```php
-echo $flou
-        ->imageSet([
-            'sources' => [
-                [
-                    'image' => '01.jpg',
-                    'width' => '900',
-                    'media' => '(max-width: 900px)',
-                ],
-                [
-                    'image' => '02.jpg',
-                    'width' => '1300',
-                    'media' => '(min-width: 901px)',
-                ],
-            ],
-        ])
-        ->render()
-        ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
+<?php
+    $image1 = $flou->image('01.jpg', ['w' => 800]);
+    $image2 = $flou->image('02.jpg', ['w' => 1200]);
+    $lqip = $flou->image('02.jpg');
+?>
+
+<picture>
+    <source
+        media="(max-width: 800px)"
+        data-srcset="<?= $image1->cached()->url() ?>"
+    />
+    <img
+        class="lazyload"
+        alt="Lorem ipsum"
+        width="<?= $image2->source()->width() ?>"
+        height="<?= $image2->source()->height() ?>"
+        data-src="<?= $image2->source()->url() ?>"
+        src="<?= $lqip->cached()->url() ?>"
+    />
+</picture>
 ```
 
 <hr>
