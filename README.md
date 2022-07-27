@@ -92,6 +92,11 @@ The options are:
 If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images. ([See Laravel Integration example.](#laravel-integration))
 
 
+#### Extra JS and CSS
+
+Some examples below require additional JS and CSS. You'll find a more complete sample in the [assets directory](./assets).
+
+
 ## Working with Single Images
 
 
