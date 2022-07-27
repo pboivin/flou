@@ -370,6 +370,28 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 
 #### Art-directed `picture` element
 
+*Usage:*
+
+```php
+echo $flou
+        ->imageSet([
+            'sources' => [
+                [
+                    'image' => '01.jpg',
+                    'width' => '900',
+                    'media' => '(max-width: 900px)',
+                ],
+                [
+                    'image' => '02.jpg',
+                    'width' => '1300',
+                    'media' => '(min-width: 901px)',
+                ],
+            ],
+        ])
+        ->render()
+        ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
+```
+
 <hr>
 
 #### Noscript fallback
