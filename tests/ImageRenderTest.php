@@ -42,7 +42,7 @@ class ImageRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
             $output
         );
     }
@@ -60,11 +60,11 @@ class ImageRenderTest extends TestCase
             'class' => 'test',
             'alt' => 'This is a test',
             'data-custom' => 'custom',
-            'style' => 'object-fit: cover;',
+            'style' => 'border: 1px solid red;',
         ]);
 
         $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover; object-position: center; border: 1px solid red;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
             $output
         );
     }
@@ -88,7 +88,7 @@ class ImageRenderTest extends TestCase
             ]);
 
         $this->assertEquals(
-            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
             $output
         );
     }

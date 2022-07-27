@@ -98,6 +98,8 @@ abstract class ImgRenderable implements Stringable
         } elseif ($this->aspectRatio) {
             $style[] = $this->collectStyles([
                 'aspect-ratio' => $this->aspectRatio,
+                'object-fit' => 'cover',
+                'object-position' => 'center',
             ]);
         }
 
