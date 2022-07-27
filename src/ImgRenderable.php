@@ -122,10 +122,18 @@ abstract class ImgRenderable implements Stringable
     protected function renderImg(array $attributes = []): string
     {
         $img = $this->htmlTag('img', $attributes);
+        $img = $this->handlePaddingTop($img);
+        $img = $this->handleWrapper($img);
 
+        return $img;
+    }
+
+    protected function handlePaddingTop(string $input): string
+    {
         if ($this->paddingTop && $this->aspectRatio) {
             $padding = (1 / $this->aspectRatio) * 100;
-            $img = $this->htmlWrap(
+
+            return $this->htmlWrap(
                 'div',
                 [
                     'class' => $this->paddingClass,
@@ -134,10 +142,15 @@ abstract class ImgRenderable implements Stringable
                         'padding-top' => "{$padding}%",
                     ]),
                 ],
-                $img
+                $input
             );
         }
 
+        return $input;
+    }
+
+    protected function handleWrapper(string $input): string
+    {
         if ($this->wrapper) {
             return $this->htmlWrap(
                 'div',
@@ -145,7 +158,7 @@ abstract class ImgRenderable implements Stringable
                     'class' => $this->wrapperClass,
                 ],
                 implode('', [
-                    $img,
+                    $input,
                     $this->includeLqip
                         ? $this->htmlTag('img', [
                             'class' => $this->lqipClass,
@@ -156,6 +169,6 @@ abstract class ImgRenderable implements Stringable
             );
         }
 
-        return $img;
+        return $input;
     }
 }

@@ -21,6 +21,41 @@ class ImageSetRender extends ImgRenderable
         return $this->data['lqip']->cached();
     }
 
+    public function picture(array $attributes = []): string
+    {
+        $attributes = $this->prepareAttributes($attributes);
+
+        $attributes['src'] = $this->lqip()->url();
+        $attributes['data-src'] = $this->getSrc();
+        $attributes['width'] = $this->source()->width();
+        $attributes['height'] = $this->source()->height();
+
+        $srcset = $this->data['srcset'];
+
+        $sources = [];
+        $end = end($srcset);
+        $endWidth = 0;
+
+        foreach ($srcset as $src) {
+            $sources[] = $this->htmlTag('source', [
+                'media' =>
+                    $src === $end
+                        ? "(min-width: {$endWidth}px)"
+                        : "(max-width: {$src['width']}px)",
+                'data-srcset' => $src['image']->cached()->url(),
+            ]);
+
+            $endWidth = $src['width'] + 1;
+        }
+
+        $sources[] = $this->htmlTag('img', $attributes);
+        $picture = $this->htmlWrap('picture', [], implode('', $sources));
+        $picture = $this->handlePaddingTop($picture);
+        $picture = $this->handleWrapper($picture);
+
+        return $picture;
+    }
+
     public function img(array $attributes = []): string
     {
         $attributes = $this->prepareAttributes($attributes);
