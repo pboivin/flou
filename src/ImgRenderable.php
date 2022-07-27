@@ -2,7 +2,9 @@
 
 namespace Pboivin\Flou;
 
-abstract class ImgRenderable
+use Stringable;
+
+abstract class ImgRenderable implements Stringable
 {
     use RendersHtml;
 
@@ -21,6 +23,11 @@ abstract class ImgRenderable
     protected $wrapper = false;
 
     protected $includeLqip = true;
+
+    public function __toString(): string
+    {
+        return $this->img();
+    }
 
     public function setBaseClass(string $cls): self
     {
