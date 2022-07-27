@@ -1,16 +1,19 @@
 {
     "name": "pboivin/flou",
+    "description": "Implement image lazy loading on prototypes and static sites.",
+    "keywords": ["php", "images", "lazy", "loading", "lqip", "glide"],
+    "homepage": "https://github.com/pboivin/flou",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Pboivin\\Flou\\": "src/"
-        }
+    "support": {
+        "issues": "https://github.com/pboivin/flou/issues",
+        "source": "https://github.com/pboivin/flou"
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Pboivin\\Flou\\Tests\\": "tests/"
+    "authors": [
+        {
+            "name": "Patrick Boivin",
+            "email": "pboivin@gmail.com"
         }
-    },
+    ],
     "require": {
         "php": ">=8.0",
         "league/glide": "^2.2"
@@ -20,6 +23,16 @@
         "mockery/mockery": "^1.5",
         "laravel/pint": "^1.1",
         "phpstan/phpstan": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pboivin\\Flou\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pboivin\\Flou\\Tests\\": "tests/"
+        }
     },
     "scripts": {
         "test": [

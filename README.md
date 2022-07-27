@@ -2,8 +2,6 @@
 
 [![tests](https://github.com/pboivin/flou/actions/workflows/tests.yml/badge.svg)](https://github.com/pboivin/flou/actions/workflows/tests.yml)
 
-(This is a draft.)
-
 Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries. It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
 
 **Features:**
@@ -24,6 +22,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 - [Working with Image Sets (Responsive Images)](#working-with-image-sets-responsive-images)
 - [Examples](#examples)
 - [Development](#development)
+- [License](#license)
 
 
 ## Installing 
@@ -508,6 +507,25 @@ class Flou extends Facade
 
 ## Development
 
-- Test suite: `composer run test`
-- Static analysis: `composer run analyse`
-- Code formatting: `composer run format`
+#### Test suite ([phpunit](https://phpunit.de/))
+
+```
+composer run test
+```
+
+#### Static analysis ([phpstan](https://phpstan.org/))
+
+```
+composer run analyse
+```
+
+#### Code formatting ([pint](https://laravel.com/docs/9.x/pint))
+
+```
+composer run test
+```
+
+
+## License
+
+Flou is open-sourced software licensed under the [MIT license](LICENSE.md).
