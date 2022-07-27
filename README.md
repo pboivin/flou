@@ -168,8 +168,6 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 - **`useAspectRatio()`:** Prevent content shifting when the image is loaded:
 
     ```php
-    $image = $flou->image('01.jpg');
-
     echo $image
             ->render()
             ->useAspectRatio()
@@ -197,8 +195,6 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 - **`usePaddingTop()`:** A workaround for older browsers not supporting `aspect-ratio`:
 
     ```php
-    $image = $flou->image('01.jpg');
-
     echo $image
             ->render()
             ->usePaddingTop()
@@ -229,8 +225,6 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 - **`useWrapper()`:** Wraps the `img` element with an extra `div`. This can be used to add a fade-in effect when the image is loaded. (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
     ```php
-    $image = $flou->image('01.jpg');
-
     echo $image
             ->render()
             ->useWrapper()
@@ -260,7 +254,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 Use the `imageSet()` method to transform a source image into a set of responsive images. Then, use the `render()` method of the `ImageSet` to render a lazy-loaded `img` element with the `sizes` and `srcset` attributes:
 
 ```php
-$set = $flou->imageSet([
+$imageSet = $flou->imageSet([
     'image' => '01.jpg',
     'sizes' => '(max-width: 500px) 100vw, 50vw',
     'sources' => [
@@ -271,7 +265,7 @@ $set = $flou->imageSet([
     ],
 ]);
 
-echo $set
+echo $imageSet
         ->render()
         ->useAspectRatio()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
@@ -357,13 +351,12 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 *Usage:*
 
 ```php
-<?= $flou
+echo $flou
         ->image('01.jpg')
         ->render()
         ->useAspectRatio()
         ->useWrapper()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-?>
 ```
 
 <hr>
@@ -411,16 +404,18 @@ echo $flou
 *Usage:*
 
 ```php
-<?= ($image = $flou->image('01.jpg'))
-        ->render()
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
-?>
-<noscript>
-    <?= $image
+<div>
+    <?= ($image = $flou->image('01.jpg'))
             ->render()
-            ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
     ?>
-</noscript>
+    <noscript>
+        <?= $image
+                ->render()
+                ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum'])
+        ?>
+    </noscript>
+</div>
 ```
 
 <hr>
@@ -430,7 +425,7 @@ echo $flou
 *Usage:*
 
 ```php
-<?= ($image = $flou->image('01.jpg'))
+echo ($image = $flou->image('01.jpg'))
         ->render()
         ->useAspectRatio()
         ->noScript([
@@ -441,7 +436,6 @@ echo $flou
             'style' => "background-image: url({$image->cached()->url()});
                         background-size: cover;"
         ]);
-?>
 ```
 
 <hr>
