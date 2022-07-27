@@ -20,5 +20,16 @@
         "mockery/mockery": "^1.5",
         "laravel/pint": "^1.1",
         "phpstan/phpstan": "^1.8"
+    },
+    "scripts": {
+        "test": [
+            "@php vendor/bin/phpunit"
+        ],
+        "analyse": [
+            "@php vendor/bin/phpstan analyse"
+        ],
+        "format": [
+            "@php vendor/bin/pint"
+        ]
     }
 }

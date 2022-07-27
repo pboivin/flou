@@ -488,3 +488,10 @@ use App\Facades\Flou;
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 !!}
 ```
+
+
+## Development
+
+- Test suite: `composer run test`
+- Static analysis: `composer run analyse`
+- Code formatting: `composer run format`
