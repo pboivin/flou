@@ -24,7 +24,7 @@ class ImageFactory
 
     protected $inspector;
 
-    public function __construct(array $config = [])
+    final public function __construct(array $config = [])
     {
         if ($config) {
             $this->acceptConfig($config);

@@ -34,6 +34,8 @@ trait RendersHtml
 
     protected function collectStyles(array $styles = [])
     {
+        $output = [];
+
         foreach ($styles as $key => $value) {
             $output[] = "{$key}: {$value};";
         }

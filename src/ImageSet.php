@@ -42,6 +42,7 @@ class ImageSet
     {
         $sizes = $this->sizes ?: static::DEFAULT_SIZES_VALUE;
         $srcset = [];
+        $sourceImage = '';
 
         foreach ($this->sources as $source) {
             if (! isset($source['width'])) {
