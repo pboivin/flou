@@ -118,6 +118,50 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_picture()
+    {
+        [$imageSetRender, $lqip] = $this->prepareImageSetRender();
+
+        $lqip
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender->picture([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<picture ><source media="(max-width: 500px)" data-srcset="cached1.jpg"><source media="(min-width: 501px)" data-srcset="cached2.jpg"><img class="lazyload test" alt="This is a test" src="lqip.jpg" data-src="cached2.jpg" width="4000" height="3000"></picture>',
+            $output
+        );
+    }
+
+    public function test_can_render_picture_with_options()
+    {
+        [$imageSetRender, $lqip] = $this->prepareImageSetRender();
+
+        $lqip
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender
+            ->useAspectRatio()
+            ->usePaddingTop()
+            ->useWrapper()
+            ->picture([
+                'class' => 'test',
+                'alt' => 'This is a test',
+            ]);
+
+        $this->assertEquals(
+            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 100%;"><picture ><source media="(max-width: 500px)" data-srcset="cached1.jpg"><source media="(min-width: 501px)" data-srcset="cached2.jpg"><img class="lazyload test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="lqip.jpg" data-src="cached2.jpg" width="4000" height="3000"></picture></div><img class="lazyload-lqip" src="lqip.jpg"></div>',
+            $output
+        );
+    }
+
     protected function prepareImageSetRender()
     {
         ($image1 = $this->getImage())
