@@ -1,6 +1,11 @@
 # flou
 
-[![tests](https://github.com/pboivin/flou/actions/workflows/tests.yml/badge.svg)](https://github.com/pboivin/flou/actions/workflows/tests.yml)
+<p>
+<a href="https://github.com/pboivin/flou/actions"><img src="https://github.com/pboivin/flou/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/pboivin/flou"><img src="https://img.shields.io/packagist/v/pboivin/flou" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/pboivin/flou"><img src="https://img.shields.io/packagist/l/pboivin/flou" alt="License"></a>
+</p>
+
 
 Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries. It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
 
@@ -329,12 +334,10 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 
 #### Multiple sources (art-directed `picture` element)
 
-Use the `picture()` method of the `ImageSetRender` object to generate an `picture` element with multiple sources and media queries:
+Use the `picture()` method of the `ImageSetRender` object to generate a `picture` element with multiple sources and media queries:
 
 ```php
 $imageSet = $flou->imageSet([
-    'image' => '01.jpg',
-    'sizes' => '(max-width: 500px) 100vw, 50vw',
     'sources' => [
         [
             'image' => '01.jpg',
