@@ -1,0 +1,21 @@
+/* Example styles — adjust to taste */
+
+.lazyload-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.lazyload-wrapper .lazyload-lqip {
+    filter: blur(10px);
+    transform: scale(1.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.lazyload-wrapper.loaded .lazyload-lqip {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
