@@ -37,11 +37,11 @@ class ImageSetRender extends ImgRenderable
         $endWidth = 0;
 
         foreach ($srcset as $src) {
+            $media =
+                $src === $end ? "(min-width: {$endWidth}px)" : "(max-width: {$src['width']}px)";
+
             $sources[] = $this->htmlTag('source', [
-                'media' =>
-                    $src === $end
-                        ? "(min-width: {$endWidth}px)"
-                        : "(max-width: {$src['width']}px)",
+                'media' => $src['media'] ?? $media,
                 'data-srcset' => $src['image']->cached()->url(),
             ]);
 

@@ -138,6 +138,26 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_picture_with_custom_media()
+    {
+        [$imageSetRender, $lqip] = $this->prepareImageSetRender(true);
+
+        $lqip
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender->picture([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<picture ><source media="(min-width: 500px)" data-srcset="cached1.jpg"><source media="(min-width: 1000px)" data-srcset="cached2.jpg"><img class="lazyload test" alt="This is a test" src="lqip.jpg" data-src="cached2.jpg" width="4000" height="3000"></picture>',
+            $output
+        );
+    }
+
     public function test_can_render_picture_with_options()
     {
         [$imageSetRender, $lqip] = $this->prepareImageSetRender();
@@ -162,7 +182,7 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
-    protected function prepareImageSetRender()
+    protected function prepareImageSetRender($withMedia = false)
     {
         ($image1 = $this->getImage())
             ->cached()
@@ -192,10 +212,12 @@ class ImageSetRenderTest extends TestCase
                 [
                     'image' => $image1,
                     'width' => 500,
+                    'media' => $withMedia ? '(min-width: 500px)' : null,
                 ],
                 [
                     'image' => $image2,
                     'width' => 1000,
+                    'media' => $withMedia ? '(min-width: 1000px)' : null,
                 ],
             ],
             'lqip' => $lqip,
