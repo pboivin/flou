@@ -106,7 +106,11 @@ $image = $flou->image('01.jpg');
 You can also provide custom Glide parameters for your image transformation:
 
 ```php
-$image = $flou->image('01.jpg', ['w' => 10, 'h' => 4]);
+$image = $flou->image('01.jpg', [
+    'w' => 10,
+    'h' => 10,
+    'fit' => 'crop',
+]);
 ```
 
 You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
@@ -131,7 +135,7 @@ echo $image->source()->url();       # /images/source/01.jpg
 echo $image->source()->path();      # /home/user/my-site.com/public/images/source/01.jpg
 echo $image->source()->width();     # 3840 
 echo $image->source()->height();    # 2160
-echo $image->source()->ratio();     # 1.7777777777777777
+echo $image->source()->ratio();     # 1.77777778
 
 # Transformed image data:
 echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg
@@ -191,7 +195,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     <img 
       class="lazyload w-full" 
       alt="Lorem ipsum" 
-      style="aspect-ratio: 1.7777777777777777" 
+      style="aspect-ratio: 1.77777778; object-fit: cover; object-position: center;" 
       ...
     >
     ```
@@ -219,14 +223,16 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
       <img
         class="lazyload w-full"
         alt="Lorem ipsum" 
-        style="position: absolute; top: 0; height:0; width: 100%; height: 100%; 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
                object-fit: cover; object-position: center;"
         ...
       >
     </div>
     ```
 
-- **`useWrapper()`:** Wraps the `img` element with an extra `div`. This can be used to add a fade-in effect when the image is loaded. (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
+- **`useWrapper()`:** Wraps the `img` element with an extra `div` and separates the LQIP element form the main image element. This can be used to add a fade-in effect when the image is loaded.
+
+    (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
     ```php
     echo $image
@@ -242,7 +248,6 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
       <img 
         class="lazyload w-full" 
         alt="Lorem ipsum" 
-        style="aspect-ratio: 1.7777777777778;" 
         ...
       >
       <img 
@@ -311,7 +316,7 @@ Output:
 <img 
   class="lazyload w-full" 
   alt="Lorem ipsum" 
-  style="aspect-ratio: 1.7777777777777777;" 
+  style="aspect-ratio: 1.77777778; object-fit: cover; object-position: center;" 
   src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
   data-src="/images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg" 
   data-srcset="/images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg 500w, 
