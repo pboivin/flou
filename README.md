@@ -619,7 +619,7 @@ composer run analyse
 #### Code formatting ([pint](https://laravel.com/docs/9.x/pint))
 
 ```
-composer run test
+composer run format
 ```
 
 
