@@ -398,11 +398,12 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
 <script>
-    /*
+    /**
      * vanilla-lazyload API reference: 
      * https://github.com/verlok/vanilla-lazyload#options
      */
-    document.addEventListener("DOMContentLoaded", function(){
+
+    document.addEventListener("DOMContentLoaded", () => {
         new LazyLoad({
             elements_selector: ".lazyload",
 
