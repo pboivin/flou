@@ -237,7 +237,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
 
 - **`useWrapper()`:** Wraps the `img` element with an extra `div` and separates the LQIP element form the main image element. This can be used to add a fade-in effect when the image is loaded.
 
-    (Requires extra JS and CSS. [See fade-in example.](#fade-in-image-on-load))
+    (Requires additional JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
     ```php
     echo $image
@@ -286,8 +286,8 @@ Output:
 
 This can be used to implement a `noscript` image fallback. It can also be used to create customized variations of the source image with CSS classes and HTML attributes:
 
-- [Noscript fallback example](#noscript-fallback)
-- [Native lazy loading example](#native-lazy-loading-no-js-fallback)
+- [Noscript image fallback example](#noscript-fallback)
+- [Browser native lazy loading example](#native-lazy-loading-no-js-fallback)
 
 
 ## Working with Image Sets (Responsive Images)
@@ -364,7 +364,7 @@ $imageSet = $flou->imageSet([
 
 echo $imageSet
         ->render()
-        ->picture(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+        ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
 ```
 
 Output:
