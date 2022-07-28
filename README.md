@@ -35,7 +35,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 The package can be installed via Composer:
 
 ```
-composer require pboivin/flou
+composer require pboivin/flou:v1.0.0-beta
 ```
 
 This will also install Glide as a Composer dependency.
