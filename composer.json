@@ -1,25 +1,48 @@
 {
-    "name": "pboi20/flou",
+    "name": "pboivin/flou",
+    "description": "PHP image lazy loading toolbox for prototypes and static sites.",
+    "keywords": ["php", "images", "lazy", "loading", "lqip", "glide"],
+    "homepage": "https://github.com/pboivin/flou",
     "license": "MIT",
-    "scripts": {
-        "test": "phpunit -v tests",
-        "lint": "php-cs-fixer -vvv fix --dry-run --diff",
-        "lint-fix": "php-cs-fixer fix"
+    "support": {
+        "issues": "https://github.com/pboivin/flou/issues",
+        "source": "https://github.com/pboivin/flou"
+    },
+    "authors": [
+        {
+            "name": "Patrick Boivin",
+            "email": "pboivin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "league/glide": "^2.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.5",
+        "laravel/pint": "^1.1",
+        "phpstan/phpstan": "^1.8"
     },
     "autoload": {
         "psr-4": {
-            "Flou\\": "src/"
+            "Pboivin\\Flou\\": "src/"
         }
     },
-    "require-dev": {
-        "phpunit/phpunit": "^6",
-        "friendsofphp/php-cs-fixer": "^2.13",
-        "intervention/image": "^2.5"
+    "autoload-dev": {
+        "psr-4": {
+            "Pboivin\\Flou\\Tests\\": "tests/"
+        }
     },
-    "require": {
-        "imagine/imagine": "^1.1"
-    },
-    "suggest": {
-        "intervention/image": "An alternative to imagine/imagine for image processing"
+    "scripts": {
+        "test": [
+            "@php vendor/bin/phpunit"
+        ],
+        "analyse": [
+            "@php vendor/bin/phpstan analyse"
+        ],
+        "format": [
+            "@php vendor/bin/pint"
+        ]
     }
 }
