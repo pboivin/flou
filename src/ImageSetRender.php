@@ -13,7 +13,9 @@ class ImageSetRender extends ImgRenderable
 
     public function source(): ImageFile
     {
-        return $this->data['lqip']->source();
+        $source = end($this->data['srcset']);
+
+        return $source['image']->cached();
     }
 
     public function lqip(): ImageFile
@@ -26,7 +28,7 @@ class ImageSetRender extends ImgRenderable
         $attributes = $this->prepareAttributes($attributes);
 
         $attributes['src'] = $this->lqip()->url();
-        $attributes['data-src'] = $this->getSrc();
+        $attributes['data-src'] = $this->source()->url();
         $attributes['width'] = $this->source()->width();
         $attributes['height'] = $this->source()->height();
 
@@ -63,7 +65,7 @@ class ImageSetRender extends ImgRenderable
         $attributes['src'] = $this->lqip()->url();
         $attributes['width'] = $this->source()->width();
         $attributes['height'] = $this->source()->height();
-        $attributes['data-src'] = $this->getSrc();
+        $attributes['data-src'] = $this->source()->url();
         $attributes['data-srcset'] = $this->getSrcset();
         $attributes['data-sizes'] = $this->data['sizes'];
 
@@ -83,7 +85,7 @@ class ImageSetRender extends ImgRenderable
 
         $attributes['width'] = $noScript->source()->width();
         $attributes['height'] = $noScript->source()->height();
-        $attributes['src'] = $noScript->getSrc();
+        $attributes['src'] = $noScript->source()->url();
         $attributes['srcset'] = $noScript->getSrcset();
         $attributes['sizes'] = $noScript->data['sizes'];
 
@@ -102,12 +104,5 @@ class ImageSetRender extends ImgRenderable
         }
 
         return implode(', ', $srcset);
-    }
-
-    protected function getSrc(): string
-    {
-        $source = end($this->data['srcset']);
-
-        return $source['image']->cached()->url();
     }
 }
