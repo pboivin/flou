@@ -235,7 +235,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     </div>
     ```
 
-- **`useWrapper()`:** Wraps the `img` element with an extra `div` and separates the LQIP element form the main image element. This can be used to add a fade-in effect when the image is loaded.
+- **`useWrapper()`:** Wraps the image with an extra `div` and separates the LQIP `img` element from the main `img` element. This can be used to add a fade-in effect when the image is loaded.
 
     (Requires additional JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
@@ -479,9 +479,9 @@ echo $flou
     <img
         class="lazyload"
         alt="Lorem ipsum"
-        width="<?= $image2->source()->width() ?>"
-        height="<?= $image2->source()->height() ?>"
-        data-src="<?= $image2->source()->url() ?>"
+        width="<?= $image2->cached()->width() ?>"
+        height="<?= $image2->cached()->height() ?>"
+        data-src="<?= $image2->cached()->url() ?>"
         src="<?= $lqip->cached()->url() ?>"
     />
 </picture>
