@@ -20,7 +20,7 @@ class ImageSet
     {
         $this->acceptConfig($config);
 
-        if (! $this->sources) {
+        if (!$this->sources) {
             throw new InvalidArgumentException("'sources' is not set.");
         }
 
@@ -45,11 +45,11 @@ class ImageSet
         $sourceImage = '';
 
         foreach ($this->sources as $source) {
-            if (! isset($source['width'])) {
+            if (!isset($source['width'])) {
                 throw new InvalidArgumentException("Source is missing required 'width' option.");
             }
 
-            if (! isset($source['image']) && ! $this->image) {
+            if (!isset($source['image']) && !$this->image) {
                 throw new InvalidArgumentException(
                     "Missing required 'image' option on source or imageset."
                 );
