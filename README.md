@@ -358,13 +358,13 @@ $imageSet = $flou->imageSet([
     'sources' => [
         [
             'image' => '01.jpg',
-            'width' => '900',
-            'media' => '(max-width: 900px)',
+            'width' => '768',
+            'media' => '(max-width: 768px)',
         ],
         [
             'image' => '02.jpg',
             'width' => '1300',
-            'media' => '(min-width: 901px)',
+            'media' => '(min-width: 769px)',
         ],
     ],
 ]);
@@ -476,36 +476,54 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 
 #### Art-directed `picture` element
 
+*CSS:*
+
+```html
+<style>
+    .my-image {
+        max-width: 1300px;
+        width: 100%;
+        height: auto;
+        aspect-ratio: calc(3 / 4);
+        object-fit: cover;
+        object-position: center;
+    }
+
+    @media screen and (min-width: 769px) {
+        .my-image {
+            aspect-ratio: calc(16 / 9);
+        }
+    }
+</style>
+```
+
 *Usage:*
 
 ```php
-<?php
-    $image1 = $flou->image('01.jpg', ['w' => 800]);
-    $image2 = $flou->image('02.jpg', ['w' => 1200]);
-    $lqip = $flou->image('02.jpg');
+<?= $flou->imageSet([
+        'sources' => [
+            [
+                'image' => '01.jpg',
+                'width' => '768',
+                'media' => '(max-width: 768px)',
+            ],
+            [
+                'image' => '02.jpg',
+                'width' => '1300',
+                'media' => '(min-width: 769px)',
+            ],
+        ],
+    ])
+    ->render()
+    ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
 ?>
-
-<picture>
-    <source
-        media="(max-width: 800px)"
-        data-srcset="<?= $image1->cached()->url() ?>"
-    />
-    <img
-        class="lazyload"
-        alt="Lorem ipsum"
-        width="<?= $image2->cached()->width() ?>"
-        height="<?= $image2->cached()->height() ?>"
-        data-src="<?= $image2->cached()->url() ?>"
-        src="<?= $lqip->cached()->url() ?>"
-    />
-</picture>
 ```
 
 <hr>
 
 #### Noscript fallback
 
-*Extra CSS:*
+*CSS:*
 
 ```html
 <noscript>
