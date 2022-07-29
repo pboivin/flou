@@ -59,7 +59,7 @@ abstract class ImgRenderable implements Stringable
 
     public function useAspectRatio(?float $value = null): self
     {
-        $this->aspectRatio = is_null($value) ? $this->source()->ratio() : $value;
+        $this->aspectRatio = is_null($value) ? $this->main()->ratio() : $value;
 
         return $this;
     }
@@ -73,7 +73,7 @@ abstract class ImgRenderable implements Stringable
         return $this;
     }
 
-    abstract public function source(): ImageFile;
+    abstract public function main(): ImageFile;
 
     abstract public function lqip(): ImageFile;
 

@@ -8,7 +8,7 @@ class ImageRender extends ImgRenderable
     {
     }
 
-    public function source(): ImageFile
+    public function main(): ImageFile
     {
         return $this->image->source();
     }
@@ -23,9 +23,9 @@ class ImageRender extends ImgRenderable
         $attributes = $this->prepareAttributes($attributes);
 
         $attributes['src'] = $this->lqip()->url();
-        $attributes['data-src'] = $this->source()->url();
-        $attributes['width'] = $this->source()->width();
-        $attributes['height'] = $this->source()->height();
+        $attributes['data-src'] = $this->main()->url();
+        $attributes['width'] = $this->main()->width();
+        $attributes['height'] = $this->main()->height();
 
         return $this->renderImg($attributes);
     }
@@ -41,9 +41,9 @@ class ImageRender extends ImgRenderable
 
         $attributes = $noScript->prepareAttributes($attributes);
 
-        $attributes['src'] = $noScript->source()->url();
-        $attributes['width'] = $noScript->source()->width();
-        $attributes['height'] = $noScript->source()->height();
+        $attributes['src'] = $noScript->main()->url();
+        $attributes['width'] = $noScript->main()->width();
+        $attributes['height'] = $noScript->main()->height();
 
         return $noScript->renderImg($attributes);
     }

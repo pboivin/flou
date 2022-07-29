@@ -11,7 +11,7 @@ class ImageSetRender extends ImgRenderable
         $this->data = $this->imageSet->toArray();
     }
 
-    public function source(): ImageFile
+    public function main(): ImageFile
     {
         $source = end($this->data['srcset']);
 
@@ -28,9 +28,9 @@ class ImageSetRender extends ImgRenderable
         $attributes = $this->prepareAttributes($attributes);
 
         $attributes['src'] = $this->lqip()->url();
-        $attributes['data-src'] = $this->source()->url();
-        $attributes['width'] = $this->source()->width();
-        $attributes['height'] = $this->source()->height();
+        $attributes['data-src'] = $this->main()->url();
+        $attributes['width'] = $this->main()->width();
+        $attributes['height'] = $this->main()->height();
 
         $srcset = $this->data['srcset'];
 
@@ -63,9 +63,9 @@ class ImageSetRender extends ImgRenderable
         $attributes = $this->prepareAttributes($attributes);
 
         $attributes['src'] = $this->lqip()->url();
-        $attributes['width'] = $this->source()->width();
-        $attributes['height'] = $this->source()->height();
-        $attributes['data-src'] = $this->source()->url();
+        $attributes['width'] = $this->main()->width();
+        $attributes['height'] = $this->main()->height();
+        $attributes['data-src'] = $this->main()->url();
         $attributes['data-srcset'] = $this->getSrcset();
         $attributes['data-sizes'] = $this->data['sizes'];
 
@@ -83,9 +83,9 @@ class ImageSetRender extends ImgRenderable
 
         $attributes = $noScript->prepareAttributes($attributes);
 
-        $attributes['width'] = $noScript->source()->width();
-        $attributes['height'] = $noScript->source()->height();
-        $attributes['src'] = $noScript->source()->url();
+        $attributes['width'] = $noScript->main()->width();
+        $attributes['height'] = $noScript->main()->height();
+        $attributes['src'] = $noScript->main()->url();
         $attributes['srcset'] = $noScript->getSrcset();
         $attributes['sizes'] = $noScript->data['sizes'];
 
