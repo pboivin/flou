@@ -31,11 +31,13 @@ class ImageTest extends TestCase
     {
         $image = new Image($this->mockImageFile(), $this->mockImageFile());
 
+        // @phpstan-ignore-next-line
         $image
             ->source()
             ->shouldReceive('toArray')
             ->andReturn(['(source)']);
 
+        // @phpstan-ignore-next-line
         $image
             ->cached()
             ->shouldReceive('toArray')
