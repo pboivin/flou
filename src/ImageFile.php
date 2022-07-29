@@ -52,4 +52,16 @@ class ImageFile
 
         return $this->size[$param];
     }
+
+    public function toArray(): array
+    {
+        return [
+            'fileName' => $this->fileName(),
+            'path' => $this->path(),
+            'url' => $this->url(),
+            'width' => $this->width(),
+            'height' => $this->height(),
+            'ratio' => $this->ratio(),
+        ];
+    }
 }

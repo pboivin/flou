@@ -22,4 +22,12 @@ class Image
     {
         return new ImageRender($this);
     }
+
+    public function toArray(): array
+    {
+        return [
+            'source' => $this->source()->toArray(),
+            'cached' => $this->cached()->toArray(),
+        ];
+    }
 }

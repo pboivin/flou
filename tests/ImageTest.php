@@ -26,4 +26,27 @@ class ImageTest extends TestCase
 
         $this->assertTrue($image->render() instanceof ImageRender);
     }
+
+    public function test_can_export_to_array()
+    {
+        $image = new Image($this->mockImageFile(), $this->mockImageFile());
+
+        $image
+            ->source()
+            ->shouldReceive('toArray')
+            ->andReturn(['(source)']);
+
+        $image
+            ->cached()
+            ->shouldReceive('toArray')
+            ->andReturn(['(cached)']);
+
+        $this->assertEquals(
+            [
+                'source' => ['(source)'],
+                'cached' => ['(cached)'],
+            ],
+            $image->toArray()
+        );
+    }
 }

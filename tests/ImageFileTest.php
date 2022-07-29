@@ -28,4 +28,28 @@ class ImageFileTest extends TestCase
         $this->assertEquals(123, $imageFile->height());
         $this->assertEquals(1, $imageFile->ratio());
     }
+
+    public function test_can_export_to_array()
+    {
+        $imageFile = new ImageFile(
+            'my-image.jpg',
+            '/path/to/my-image.jpg',
+            '/url/to/my-image.jpg',
+            ($inspector = $this->mockInspector())
+        );
+
+        $inspector->shouldReceive('getSize')->andReturn(['width' => 123, 'height' => 123]);
+
+        $this->assertEquals(
+            [
+                'fileName' => 'my-image.jpg',
+                'path' => '/path/to/my-image.jpg',
+                'url' => '/url/to/my-image.jpg',
+                'width' => 123,
+                'height' => 123,
+                'ratio' => 1,
+            ],
+            $imageFile->toArray()
+        );
+    }
 }
