@@ -38,7 +38,7 @@ The package can be installed via Composer:
 composer require pboivin/flou:v1.0.0-beta
 ```
 
-This will also install Glide as a Composer dependency.
+This also installs Glide as a Composer dependency.
 
 You can pull in the vanilla-lazyload library via a CDN:
 
@@ -57,7 +57,7 @@ Consult the [vanilla-lazyload documentation](https://github.com/verlok/vanilla-l
 
 ## Getting Started
 
-First, initialize the `LazyLoad` JS object. This can be done by adding the following script in your page template:
+First, initialize the `LazyLoad` JS object. Add the following script in your page template:
 
 ```html
 <script>
@@ -69,7 +69,7 @@ First, initialize the `LazyLoad` JS object. This can be done by adding the follo
 </script>
 ```
 
-Then, setup the `ImageFactory` PHP object with your project-specific configuration:
+Then, initialize the `ImageFactory` PHP object with your project-specific configuration:
 
 ```php
 use Pboivin\Flou\ImageFactory;
@@ -84,7 +84,7 @@ $flou = new ImageFactory([
 
 The options are:
 
-- `sourcePath`: The full path to your source images.
+- `sourcePath`: The full path to the source images.
 - `cachePath`: The full path where Glide will store the image transformations.
 - `sourceUrlBase`: The base URL for the source images.
 - `cacheUrlBase`:  The base URL for the transformed images.
@@ -102,13 +102,13 @@ Some examples below require additional JS and CSS. You'll find a more complete s
 
 #### Transforming source images
 
-To load a source image and generate a low-quality image placeholder (LQIP):
+Use the `image()` method to transform a single image into a low-quality image placeholder (LQIP):
 
 ```php
 $image = $flou->image('01.jpg');
 ```
 
-You can also provide custom Glide parameters for your image transformation:
+You can also provide custom Glide parameters for the image transformation:
 
 ```php
 $image = $flou->image('01.jpg', [
@@ -120,7 +120,7 @@ $image = $flou->image('01.jpg', [
 
 You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
 
-As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to that. You can generate as many transformation as you need from the same image:
+As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to that. You may generate as many transformation as you need from the source image:
 
 ```php
 $phone = $flou->image('01.jpg', ['w' => 500]);
@@ -130,7 +130,10 @@ $desktop = $flou->image('01.jpg', ['w' => 1300]);
 
 If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
 
-The `image()` method will return an `Image` object, from which you can conveniently access the source image file and the transformed (cached) image file:
+
+#### Image objects
+
+The `image()` method returns an [`Image`](./src/Image.php) object, from which you can conveniently access the source image file and the transformed (cached) image file:
 
 ```php 
 $image = $flou->image('01.jpg');
@@ -151,7 +154,7 @@ echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79
 
 #### Rendering single images
 
-The `render()` method on your image will return an `ImageRender` object, which can generate HTML suitable for the vanilla-lazyload library. Here's a basic example rendering an `img` element:
+The `render()` method on the image returns an [`ImageRender`](./src/ImageRender.php) object, which prepares HTML suitable for the vanilla-lazyload library. Then, `img()` is used to render an `img` element:
 
 ```php
 $image = $flou->image('01.jpg');
@@ -174,11 +177,11 @@ Output:
 >
 ```
 
-Options passed into the `img()` method will be included as HTML attributes on the `img` element.
+Options passed into `img()` are included as HTML attributes on the element.
 
-The `ImageRender` object can be configured in a few ways to optimize the generated HTML:
+The `ImageRender` object can be configured to optimize the HTML output:
 
-- **`useAspectRatio()`:** Prevent content shifting when the image is loaded:
+- **`useAspectRatio()`:** Prevents content shifting when the LQIP is replaced with the source image:
 
     ```php
     echo $image
@@ -205,7 +208,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     >
     ```
 
-- **`usePaddingTop()`:** A workaround for older browsers not supporting `aspect-ratio`:
+- **`usePaddingTop()`:** A workaround for older browsers not supporting the `aspect-ratio` CSS property:
 
     ```php
     echo $image
@@ -235,7 +238,7 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     </div>
     ```
 
-- **`useWrapper()`:** Wraps the image with an extra `div` and separates the LQIP `img` element from the main `img` element. This can be used to add a fade-in effect when the image is loaded.
+- **`useWrapper()`:** Wraps the image with an extra `div` and separates the LQIP element from the main `img` element. This is used to add a fade-in effect when the image is loaded.
 
     (Requires additional JS and CSS. [See fade-in example.](#fade-in-image-on-load))
 
@@ -262,9 +265,10 @@ The `ImageRender` object can be configured in a few ways to optimize the generat
     </div>
     ```
 
+
 #### Noscript variation
 
-Use the `noScript()` method of the `ImageRender` object to generate an `img` element without any lazy loading behavior:
+Use the `noScript()` method to render an `img` element without any lazy loading behavior:
 
 ```php
 echo $image
@@ -284,18 +288,17 @@ Output:
 >
 ```
 
-This can be used to implement a `noscript` image fallback. It can also be used to create customized variations of the source image with CSS classes and HTML attributes:
+This is used to add a `noscript` image fallback. ([See Noscript image fallback example](#noscript-fallback))
 
-- [Noscript image fallback example](#noscript-fallback)
-- [Browser native lazy loading example](#native-lazy-loading-no-js-fallback)
+It can also be used creatively to work on the source image with CSS classes and HTML attributes. ([See Browser native lazy loading example](#native-lazy-loading-example))
 
 
 ## Working with Image Sets (Responsive Images)
 
 
-#### Single source
+#### Single source (`img` element)
 
-Use the `imageSet()` method to transform a source image into a set of responsive images. Then, use the `render()` method of the `ImageSet` to render a lazy-loaded `img` element with the `sizes` and `srcset` attributes:
+Use the `imageSet()` method to transform a source image into a set of responsive images:
 
 ```php
 $imageSet = $flou->imageSet([
@@ -308,7 +311,11 @@ $imageSet = $flou->imageSet([
         ['width' => '1700'],
     ],
 ]);
+```
 
+This returns an [`ImageSet`](./src/ImageSet.php) object, which prepares all variations of the source image. The `render()` method on the image set returns a [`ImageSetRender`](./src/ImageSetRender.php) instance, as seen before with single images:
+
+```php
 echo $imageSet
         ->render()
         ->useAspectRatio()
@@ -334,7 +341,7 @@ Output:
 >
 ```
 
-Just like `Image`, you can optimize `ImageSet` rendering with the same options:
+Like `ImageRender`, you can optimize `ImageSetRender` with the same methods:
 
 - `useAspectRatio()`
 - `usePaddingTop()`
@@ -342,9 +349,9 @@ Just like `Image`, you can optimize `ImageSet` rendering with the same options:
 - `noScript()`
 
 
-#### Multiple sources (art-directed `picture` element)
+#### Multiple sources (`picture` element)
 
-Use the `picture()` method of the `ImageSetRender` object to generate a `picture` element with multiple sources and media queries:
+With a tweak in configuration, `imageSet()` can handle multiple source images:
 
 ```php
 $imageSet = $flou->imageSet([
@@ -361,9 +368,14 @@ $imageSet = $flou->imageSet([
         ],
     ],
 ]);
+```
 
+Then, the `picture()` method is used to render a `picture` element:
+
+```php
 echo $imageSet
         ->render()
+        ->useAspectRatio()
         ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
 ```
 
@@ -382,6 +394,7 @@ Output:
   <img 
     class="lazyload my-image" 
     alt="Lorem ipsum" 
+    style="aspect-ratio: 1.77777778; object-fit: cover; object-position: center;" 
     src="/images/cache/02.jpg/23a733056cc32e360e9cdef3e0be8fb4.jpg" 
     data-src="/images/cache/02.jpg/1e147b93856eef676f00989ba28365f1.jpg" 
     width="3000" 
@@ -390,7 +403,7 @@ Output:
 </picture>
 ```
 
-See also: [Art-directed `picture` element example](#art-directed-picture-element-manual)
+See also: [Art-directed `picture` element example](#art-directed-picture-element)
 
 
 ## Examples
@@ -450,17 +463,18 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 *Usage:*
 
 ```php
-echo $flou
+<?= $flou
         ->image('01.jpg')
         ->render()
         ->useAspectRatio()
         ->useWrapper()
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+?>
 ```
 
 <hr>
 
-#### Art-directed `picture` element (manual)
+#### Art-directed `picture` element
 
 *Usage:*
 
@@ -522,12 +536,13 @@ echo $flou
 
 <hr>
 
-#### Native lazy loading (no JS)
+<a name="native-lazy-loading-example"></a>
+#### Native lazy loading (no JS, with LQIP)
 
 *Usage:*
 
 ```php
-echo ($image = $flou->image('01.jpg'))
+<?= ($image = $flou->image('01.jpg'))
         ->render()
         ->useAspectRatio()
         ->noScript([
@@ -538,6 +553,7 @@ echo ($image = $flou->image('01.jpg'))
             'style' => "background-image: url({$image->cached()->url()});
                         background-size: cover;"
         ]);
+?>
 ```
 
 <hr>
