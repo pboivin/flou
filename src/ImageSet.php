@@ -72,21 +72,21 @@ class ImageSet
         ];
     }
 
-    public function setImage(string $sourceFileName): self
+    protected function setImage(string $sourceFileName): self
     {
         $this->image = $sourceFileName;
 
         return $this;
     }
 
-    public function setSizes(string $sizes): self
+    protected function setSizes(string $sizes): self
     {
         $this->sizes = $sizes;
 
         return $this;
     }
 
-    public function setSources(array $sources): self
+    protected function setSources(array $sources): self
     {
         $this->sources = $sources;
 
