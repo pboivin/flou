@@ -4,10 +4,13 @@
 
 #### Added
 
+- Add `data()` method (`ImageSet`)
 - Add `toArray()` methods (`Image` and `ImageFile`)
 
 #### Changed
 
+- Export plain array from `toArray()` method (`ImageSet`)
+- Change internal setter methods from public to protected (`ImageSet`)
 - Rename `source()` to `main()` to improve clarity (`ImgRenderable`)
 - Get dimensions from last source item instead of original file (`ImageSetRender`)
 
