@@ -190,7 +190,7 @@ class ImageFactory
         return new ImageSet($config, $this);
     }
 
-    public function sourceImageFile($fileName): ImageFile
+    public function sourceImageFile(string $fileName): ImageFile
     {
         return new ImageFile(
             $fileName,
@@ -200,7 +200,7 @@ class ImageFactory
         );
     }
 
-    public function cachedImageFile($fileName): ImageFile
+    public function cachedImageFile(string $fileName): ImageFile
     {
         return new ImageFile(
             $fileName,
