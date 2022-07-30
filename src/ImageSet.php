@@ -14,7 +14,7 @@ class ImageSet
 
     protected $sources;
 
-    protected $preparedOutput;
+    protected $data;
 
     public function __construct(protected array $config, protected ImageFactory $factory)
     {
@@ -24,7 +24,7 @@ class ImageSet
             throw new InvalidArgumentException("'sources' is not set.");
         }
 
-        $this->prepareOutput();
+        $this->prepareData();
     }
 
     protected function acceptConfig(array $config): void
@@ -38,7 +38,7 @@ class ImageSet
         }
     }
 
-    protected function prepareOutput()
+    protected function prepareData()
     {
         $sizes = $this->sizes ?: static::DEFAULT_SIZES_VALUE;
         $srcset = [];
@@ -65,7 +65,7 @@ class ImageSet
             ];
         }
 
-        $this->preparedOutput = [
+        $this->data = [
             'sizes' => $sizes,
             'srcset' => $srcset,
             'lqip' => $this->factory->image($sourceImage),
@@ -93,9 +93,21 @@ class ImageSet
         return $this;
     }
 
+    public function data(): array
+    {
+        return $this->data;
+    }
+
     public function toArray(): array
     {
-        return $this->preparedOutput;
+        return [
+            'sizes' => $this->data['sizes'],
+            'srcset' => array_map(function ($item) {
+                $item['image'] = $item['image']->toArray();
+                return $item;
+            }, $this->data['srcset']),
+            'lqip' => $this->data['lqip']->toArray(),
+        ];
     }
 
     public function render(): ImageSetRender

@@ -45,7 +45,7 @@ class ImageSetTest extends TestCase
             $this->mockFactory()
         );
 
-        $set->toArray();
+        $set->data();
     }
 
     public function test_throws_exception_for_missing_image()
@@ -64,7 +64,7 @@ class ImageSetTest extends TestCase
             $this->mockFactory()
         );
 
-        $set->toArray();
+        $set->data();
     }
 
     public function test_has_default_sizes()
@@ -88,7 +88,7 @@ class ImageSetTest extends TestCase
             $factory
         );
 
-        $data = $set->toArray();
+        $data = $set->data();
 
         $this->assertEquals('100vw', $data['sizes']);
     }
@@ -115,7 +115,7 @@ class ImageSetTest extends TestCase
             $factory
         );
 
-        $data = $set->toArray();
+        $data = $set->data();
 
         $this->assertEquals('(max-width: 800px) 100vw, 50vw', $data['sizes']);
     }
@@ -141,7 +141,7 @@ class ImageSetTest extends TestCase
             $factory
         );
 
-        $data = $set->toArray();
+        $data = $set->data();
 
         $this->assertEquals(3, count($data['srcset']));
 
@@ -204,7 +204,7 @@ class ImageSetTest extends TestCase
             $factory
         );
 
-        $data = $set->toArray();
+        $data = $set->data();
 
         $this->assertEquals(3, count($data['srcset']));
 
@@ -245,5 +245,51 @@ class ImageSetTest extends TestCase
         );
 
         $this->assertTrue($set->render() instanceof ImageSetRender);
+    }
+
+    public function test_can_export_to_array()
+    {
+        ($image = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
+
+        $image
+            ->cached()
+            ->shouldReceive('toArray')
+            ->andReturn(['_cached' => true]);
+
+        $image
+            ->source()
+            ->shouldReceive('toArray')
+            ->andReturn(['_source' => true]);
+
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+
+        $set = new ImageSet(
+            [
+                'image' => 'source.jpg',
+                'sources' => [['width' => 400], ['width' => 800], ['width' => 1200]],
+            ],
+            $factory
+        );
+
+        $imageData = [
+            'source' => ['_source' => true],
+            'cached' => ['_cached' => true],
+        ];
+
+        $this->assertEquals(
+            [
+                'sizes' => '100vw',
+                'srcset' => [
+                    ['image' => $imageData, 'width' => 400],
+                    ['image' => $imageData, 'width' => 800],
+                    ['image' => $imageData, 'width' => 1200],
+                ],
+                'lqip' => $imageData,
+            ],
+            $set->toArray()
+        );
     }
 }

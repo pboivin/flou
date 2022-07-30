@@ -184,7 +184,7 @@ class ImageSetRenderTest extends TestCase
             ->shouldReceive('url')
             ->andReturn('lqip.jpg');
 
-        ($set = $this->mockImageSet())->shouldReceive('toArray')->andReturn([
+        ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
             'sizes' => '50vw',
             'srcset' => [
                 [

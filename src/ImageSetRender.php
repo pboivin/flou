@@ -8,7 +8,7 @@ class ImageSetRender extends ImgRenderable
 
     public function __construct(protected ImageSet $imageSet)
     {
-        $this->data = $this->imageSet->toArray();
+        $this->data = $this->imageSet->data();
     }
 
     public function main(): ImageFile
