@@ -12,6 +12,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 **Features:**
 
 - Transforms images on initial page load — does not expose Glide URLs
+- Generates simple markup for `img` and `picture` HTML elements
 - Useable with static site generators and in CLI scripts
 - Framework agnostic — a set of plain PHP classes
 
