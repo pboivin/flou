@@ -29,24 +29,20 @@ class ImageTest extends TestCase
 
     public function test_can_export_to_array()
     {
-        $image = new Image($this->mockImageFile(), $this->mockImageFile());
-
-        // @phpstan-ignore-next-line
-        $image
-            ->source()
+        ($source = $this->mockImageFile())
             ->shouldReceive('toArray')
-            ->andReturn(['(source)']);
+            ->andReturn(['_source' => true]);
 
-        // @phpstan-ignore-next-line
-        $image
-            ->cached()
+        ($cached = $this->mockImageFile())
             ->shouldReceive('toArray')
-            ->andReturn(['(cached)']);
+            ->andReturn(['_cached' => true]);
+
+        $image = new Image($source, $cached);
 
         $this->assertEquals(
             [
-                'source' => ['(source)'],
-                'cached' => ['(cached)'],
+                'source' => ['_source' => true],
+                'cached' => ['_cached' => true],
             ],
             $image->toArray()
         );

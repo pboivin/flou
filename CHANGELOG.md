@@ -13,7 +13,6 @@
 
 #### Chores
 
-- Ignore phpstan errors regarding mock objects in tests
 - Update lint config and reformat
 - Update README examples
 
