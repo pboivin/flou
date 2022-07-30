@@ -147,10 +147,29 @@ echo $image->source()->ratio();     # 1.77777778
 
 # Transformed image data:
 echo $image->cached()->url();       # /images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg
-
 ...
 ```
 
+Use the `toArray()` method to export the image to a plain array:
+
+```php
+$data = $image->toArray();
+
+# [
+#     "source" => [
+#         "url" => "/images/source/01.jpg",
+#         "path" => "/home/user/my-site.com/public/images/source/01.jpg",
+#         "fileName" => "01.jpg",
+#         "width" => 3840,
+#         "height" => 2160,
+#         "ratio" => 1.77777778,
+#     ],
+#     "cached" => [
+#         "url" => "/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg",
+#         ...
+#     ],
+# ]
+```
 
 #### Rendering single images
 
