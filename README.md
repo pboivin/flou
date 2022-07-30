@@ -357,14 +357,14 @@ With a tweak in configuration, `imageSet()` can handle multiple source images:
 $imageSet = $flou->imageSet([
     'sources' => [
         [
-            'image' => '01.jpg',
-            'width' => '768',
-            'media' => '(max-width: 768px)',
+            'image' => 'portrait.jpg',
+            'width' => '1023',
+            'media' => '(max-width: 1023px)',
         ],
         [
-            'image' => '02.jpg',
-            'width' => '1300',
-            'media' => '(min-width: 769px)',
+            'image' => 'landscape.jpg',
+            'width' => '1024',
+            'media' => '(min-width: 1024px)',
         ],
     ],
 ]);
@@ -384,21 +384,21 @@ Output:
 ```html
 <picture>
   <source 
-    media="(max-width: 900px)" 
-    data-srcset="/images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg"
+    media="(max-width: 1023px)" 
+    data-srcset="/images/cache/portrait.jpg/1422c06dea2257858f6437b9675fba1c.jpg"
   >
   <source 
-    media="(min-width: 901px)" 
-    data-srcset="/images/cache/02.jpg/1e147b93856eef676f00989ba28365f1.jpg"
+    media="(min-width: 1024px)" 
+    data-srcset="/images/cache/landscape.jpg/1e147b93856eef676f00989ba28365f1.jpg"
   >
   <img 
     class="lazyload my-image" 
     alt="Lorem ipsum" 
     style="aspect-ratio: 1.77777778; object-fit: cover; object-position: center;" 
-    src="/images/cache/02.jpg/23a733056cc32e360e9cdef3e0be8fb4.jpg" 
-    data-src="/images/cache/02.jpg/1e147b93856eef676f00989ba28365f1.jpg" 
-    width="3000" 
-    height="2000"
+    src="/images/cache/landscape.jpg/23a733056cc32e360e9cdef3e0be8fb4.jpg" 
+    data-src="/images/cache/landscape.jpg/1e147b93856eef676f00989ba28365f1.jpg" 
+    width="1024" 
+    height="576"
   >
 </picture>
 ```
@@ -481,7 +481,7 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 ```html
 <style>
     .my-image {
-        max-width: 1300px;
+        max-width: 1024px;
         width: 100%;
         height: auto;
         aspect-ratio: calc(3 / 4);
@@ -489,7 +489,7 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
         object-position: center;
     }
 
-    @media screen and (min-width: 769px) {
+    @media screen and (min-width: 1024px) {
         .my-image {
             aspect-ratio: calc(16 / 9);
         }
@@ -503,14 +503,14 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 <?= $flou->imageSet([
         'sources' => [
             [
-                'image' => '01.jpg',
-                'width' => '768',
-                'media' => '(max-width: 768px)',
+                'image' => 'portrait.jpg',
+                'width' => '1023',
+                'media' => '(max-width: 1023px)',
             ],
             [
-                'image' => '02.jpg',
-                'width' => '1300',
-                'media' => '(min-width: 769px)',
+                'image' => 'landscape.jpg',
+                'width' => '1024',
+                'media' => '(min-width: 1024px)',
             ],
         ],
     ])
