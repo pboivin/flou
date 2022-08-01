@@ -1,6 +1,6 @@
 # Release Notes
 
-## [unreleased](https://github.com/pboivin/flou/compare/v1.0.0-beta...main) - 
+## [v1.0.0](https://github.com/pboivin/flou/compare/v1.0.0-beta...v1.0.0) - 2022-08-01
 
 #### Added
 

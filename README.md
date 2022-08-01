@@ -32,7 +32,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 
 **Demo project:**
 
-See the [`flou-jigsaw-demo`](https://github.com/pboivin/flou-jigsaw-demo) repository for an example project integrating Flou with the [Jigsaw](https://github.com/tighten/jigsaw) PHP static site generator.
+See the [flou-jigsaw-demo](https://github.com/pboivin/flou-jigsaw-demo) repository for an example project integrating Flou with the [Jigsaw](https://github.com/tighten/jigsaw) PHP static site generator.
 
 
 ## Installing 
@@ -40,7 +40,7 @@ See the [`flou-jigsaw-demo`](https://github.com/pboivin/flou-jigsaw-demo) reposi
 The package can be installed via Composer:
 
 ```
-composer require pboivin/flou:v1.0.0-beta
+composer require pboivin/flou
 ```
 
 This also installs Glide as a Composer dependency.
