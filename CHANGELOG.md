@@ -1,5 +1,12 @@
 # Release Notes
 
+## [v1.0.1](https://github.com/pboivin/flou/compare/v1.0.0...v1.0.1) - 2022-08-04
+
+#### Fixed
+
+- Update glide version constraints to allow installation on a wider range of projects
+
+
 ## [v1.0.0](https://github.com/pboivin/flou/compare/v1.0.0-beta...v1.0.0) - 2022-08-01
 
 #### Added
