@@ -34,6 +34,10 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 
 See the [flou-jigsaw-demo](https://github.com/pboivin/flou-jigsaw-demo) repository for an example project integrating Flou with the [Jigsaw](https://github.com/tighten/jigsaw) PHP static site generator.
 
+**Laravel integration:**
+
+See the [flou-laravel](https://github.com/pboivin/flou-laravel) repository.
+
 
 ## Installing 
 
@@ -94,7 +98,12 @@ The options are:
 - `sourceUrlBase`: The base URL for the source images.
 - `cacheUrlBase`:  The base URL for the transformed images.
 
-If you're using a framework like Laravel, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images. ([See Laravel Integration example.](#laravel-integration))
+
+#### Framework Integration
+
+If you're using a framework with a Service Container, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images.
+
+If you're using Laravel, have a look at the [flou-laravel](https://github.com/pboivin/flou-laravel) companion repository. It registers a singleton instance for you and provides a `Flou` facade class.
 
 
 #### Extra JS and CSS
@@ -596,73 +605,6 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
                         background-size: cover;"
         ]);
 ?>
-```
-
-<hr>
-
-#### Laravel integration
-
-*`config/flou.php`:*
-
-```php
-<?php
-
-return [
-    'sourcePath' => base_path('public/images/source'),
-    'cachePath' => base_path('public/images/cache'),
-    'sourceUrlBase' => '/images/source',
-    'cacheUrlBase' => '/images/cache',
-];
-```
-
-*`app/Providers/AppServiceProvider.php`:*
-
-```php
-<?php
-
-namespace App\Providers;
-
-use Illuminate\Support\ServiceProvider;
-use Pboivin\Flou\ImageFactory;
-
-class AppServiceProvider extends ServiceProvider
-{
-    public function register()
-    {
-        $this->app->singleton('flou', function ($app) {
-            return new ImageFactory(config('flou'));
-        });
-    }
-}
-```
-
-*`app/Facades/Flou.php`:*
-
-```php
-<?php
-
-namespace App\Facades;
-
-use Illuminate\Support\Facades\Facade;
-
-class Flou extends Facade
-{
-    protected static function getFacadeAccessor() 
-    {
-        return 'flou';
-    }
-}
-```
-
-*Usage in views:*
-
-```blade
-@php use App\Facades\Flou; @endphp
-
-{!! Flou::image('01.jpg')
-        ->render()
-        ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
-!!}
 ```
 
 
