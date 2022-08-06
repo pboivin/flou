@@ -1,6 +1,6 @@
 <?php
 
-namespace Pboivin\Flou\Tests\Helpers;
+namespace Pboivin\Flou\Tests\Concerns;
 
 use League\Glide\Server;
 use Mockery;

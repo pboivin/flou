@@ -3,13 +3,10 @@
 namespace Pboivin\Flou\Tests;
 
 use Pboivin\Flou\ImageFileInspector;
-use Pboivin\Flou\Tests\Helpers\Mocking;
 use PHPUnit\Framework\TestCase;
 
 class ImageFileInspectorTest extends TestCase
 {
-    use Mocking;
-
     public function test_can_inspect_size()
     {
         $inspector = new ImageFileInspector();

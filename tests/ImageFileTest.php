@@ -3,7 +3,7 @@
 namespace Pboivin\Flou\Tests;
 
 use Pboivin\Flou\ImageFile;
-use Pboivin\Flou\Tests\Helpers\Mocking;
+use Pboivin\Flou\Tests\Concerns\Mocking;
 use PHPUnit\Framework\TestCase;
 
 class ImageFileTest extends TestCase
