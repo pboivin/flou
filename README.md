@@ -145,6 +145,21 @@ $desktop = $flou->image('01.jpg', ['w' => 1300]);
 If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
 
 
+#### Default Glide parameters
+
+You can customize the default Glide parameters in the `ImageFactory` configuration:
+
+```php
+    $flou = new ImageFactory([
+        // ...
+        'glideParams' => [
+            'h' => 10,
+            'fm' => 'gif',
+        ],
+    ]);
+```
+
+
 #### Image objects
 
 The `image()` method returns an [`Image`](./src/Image.php) object, from which you can conveniently access the source image file and the transformed (cached) image file:

@@ -8,7 +8,7 @@ use League\Glide\ServerFactory;
 
 class ImageFactory
 {
-    public const DEFAULT_GLIDE_PARAMS = ['h' => 10];
+    public const DEFAULT_GLIDE_PARAMS = ['h' => 10, 'fm' => 'gif'];
 
     protected $sourcePath;
 
