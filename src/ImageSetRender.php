@@ -27,7 +27,7 @@ class ImageSetRender extends ImgRenderable
     {
         $attributes = $this->prepareAttributes($attributes);
 
-        $attributes['src'] = $this->lqip()->url();
+        $attributes['src'] = $this->lqipUrl();
         $attributes['data-src'] = $this->main()->url();
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
@@ -62,7 +62,7 @@ class ImageSetRender extends ImgRenderable
     {
         $attributes = $this->prepareAttributes($attributes);
 
-        $attributes['src'] = $this->lqip()->url();
+        $attributes['src'] = $this->lqipUrl();
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
         $attributes['data-src'] = $this->main()->url();

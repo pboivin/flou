@@ -29,4 +29,13 @@ class ImageFileInspector
 
         return $values;
     }
+
+    public function base64Encode(string $file): string
+    {
+        $type = pathinfo($file, PATHINFO_EXTENSION);
+
+        $data = file_get_contents($file);
+
+        return 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
 }

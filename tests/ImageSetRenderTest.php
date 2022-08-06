@@ -30,7 +30,9 @@ class ImageSetRenderTest extends TestCase
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender->useAspectRatio()->img([
             'class' => 'test',
@@ -48,7 +50,9 @@ class ImageSetRenderTest extends TestCase
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender
             ->useAspectRatio()
@@ -69,7 +73,9 @@ class ImageSetRenderTest extends TestCase
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender
             ->usePaddingTop()
@@ -90,7 +96,9 @@ class ImageSetRenderTest extends TestCase
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender
             ->usePaddingTop()
@@ -106,11 +114,37 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_using_base64_lqip()
+    {
+        [$imageSetRender, $src, $lqip] = $this->prepareImageSetRender();
+
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $lqip
+            ->cached()
+            ->shouldReceive('toBase64String')
+            ->andReturn('_some_base64_encoded_string_');
+
+        $output = $imageSetRender->useBase64Lqip()->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" src="_some_base64_encoded_string_" width="1000" height="1000" data-src="cached2.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
+            $output
+        );
+    }
+
     public function test_can_render_picture()
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender->picture([
             'class' => 'test',
@@ -127,7 +161,9 @@ class ImageSetRenderTest extends TestCase
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender(true);
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender->picture([
             'class' => 'test',
@@ -144,7 +180,9 @@ class ImageSetRenderTest extends TestCase
     {
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
-        $this->expectRatio($src);
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
 
         $output = $imageSetRender
             ->useAspectRatio()
@@ -173,7 +211,8 @@ class ImageSetRenderTest extends TestCase
             ->shouldReceive('url')
             ->andReturn('cached2.jpg');
 
-        ($src = $image2->cached())
+        $image2
+            ->cached()
             ->shouldReceive('width')
             ->andReturn(1000)
             ->shouldReceive('height')
@@ -203,13 +242,6 @@ class ImageSetRenderTest extends TestCase
 
         $imageSetRender = new ImageSetRender($set);
 
-        return [$imageSetRender, $src];
-    }
-
-    protected function expectRatio($src)
-    {
-        $src
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        return [$imageSetRender, $image2, $lqip];
     }
 }

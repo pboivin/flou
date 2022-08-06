@@ -24,6 +24,8 @@ abstract class ImgRenderable implements Stringable
 
     protected $includeLqip = true;
 
+    protected $base64Lqip = false;
+
     public function __toString(): string
     {
         return $this->img();
@@ -71,6 +73,22 @@ abstract class ImgRenderable implements Stringable
         $this->paddingTop = true;
 
         return $this;
+    }
+
+    public function useBase64Lqip(bool $value = true): self
+    {
+        $this->base64Lqip = $value;
+
+        return $this;
+    }
+
+    public function lqipUrl(): string
+    {
+        if ($this->base64Lqip) {
+            return $this->lqip()->toBase64String();
+        }
+
+        return $this->lqip()->url();
     }
 
     abstract public function main(): ImageFile;

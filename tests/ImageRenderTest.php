@@ -140,6 +140,31 @@ class ImageRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_using_base64_lqip()
+    {
+        [$imageRender, $image] = $this->prepareImageRender();
+
+        $image
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $image
+            ->cached()
+            ->shouldReceive('toBase64String')
+            ->andReturn('_some_base64_encoded_string_');
+
+        $output = $imageRender->useBase64Lqip()->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" src="_some_base64_encoded_string_" data-src="/source.jpg" width="800" height="600">',
+            $output
+        );
+    }
+
     protected function prepareImageRender()
     {
         $imageRender = new ImageRender(($image = $this->getImage()));
