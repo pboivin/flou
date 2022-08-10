@@ -298,6 +298,29 @@ The `ImageRender` object can be configured to optimize the HTML output:
     </div>
     ```
 
+- **`useBase64Lqip()`:** Inlines a Base64 version of the LQIP in the `src` attribute of the `img` element. This reduces the number of HTTP requests needed to display a page, at the cost of making the HTML a bit heavier.
+
+    ```php
+    echo $image
+            ->render()
+            ->useBase64Lqip()
+            ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
+    ```
+
+    Output:
+
+    ```html
+
+    <img 
+      class="lazyload w-full" 
+      alt="Lorem ipsum" 
+      src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA7Q1JFQ..." 
+      data-src="/images/source/01.jpg" 
+      width="2932" 
+      height="2000"
+    >
+    ```
+
 
 #### Noscript variation
 
