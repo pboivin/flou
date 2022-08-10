@@ -1,5 +1,21 @@
 # Release Notes
 
+## [v1.1.0](https://github.com/pboivin/flou/compare/v1.0.1...v1.1.0) - 2022-08-10
+
+#### Added
+
+- Add option to use Base64 encoded URL as LQIP
+
+#### Changed
+
+- Use GIF format for LQIP in default Glide parameters
+
+#### Chores
+
+- Update README examples and presentation
+- Update test helpers
+
+
 ## [v1.0.1](https://github.com/pboivin/flou/compare/v1.0.0...v1.0.1) - 2022-08-04
 
 #### Fixed
