@@ -3,7 +3,7 @@
 namespace Pboivin\Flou\Tests;
 
 use Pboivin\Flou\ImageRender;
-use Pboivin\Flou\Tests\Helpers\Mocking;
+use Pboivin\Flou\Tests\Concerns\Mocking;
 use PHPUnit\Framework\TestCase;
 
 class ImageRenderTest extends TestCase
@@ -136,6 +136,31 @@ class ImageRenderTest extends TestCase
 
         $this->assertEquals(
             '<div class="lazyload-wrapper-noscript"><div class="lazyload-padding-noscript" style="position: relative; padding-top: 100%;"><img class="lazyload-noscript test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/source.jpg" width="800" height="600"></div></div>',
+            $output
+        );
+    }
+
+    public function test_can_render_using_base64_lqip()
+    {
+        [$imageRender, $image] = $this->prepareImageRender();
+
+        $image
+            ->source()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $image
+            ->cached()
+            ->shouldReceive('toBase64String')
+            ->andReturn('_some_base64_encoded_string_');
+
+        $output = $imageRender->useBase64Lqip()->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" src="_some_base64_encoded_string_" data-src="/source.jpg" width="800" height="600">',
             $output
         );
     }

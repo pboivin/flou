@@ -64,4 +64,9 @@ class ImageFile
             'ratio' => $this->ratio(),
         ];
     }
+
+    public function toBase64String(): string
+    {
+        return $this->inspector->base64Encode($this->path);
+    }
 }

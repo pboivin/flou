@@ -3,7 +3,7 @@
 namespace Pboivin\Flou\Tests;
 
 use Pboivin\Flou\ImageFile;
-use Pboivin\Flou\Tests\Helpers\Mocking;
+use Pboivin\Flou\Tests\Concerns\Mocking;
 use PHPUnit\Framework\TestCase;
 
 class ImageFileTest extends TestCase
@@ -50,6 +50,23 @@ class ImageFileTest extends TestCase
                 'ratio' => 1,
             ],
             $imageFile->toArray()
+        );
+    }
+
+    public function test_can_encode_to_base64()
+    {
+        $imageFile = new ImageFile(
+            'my-image.jpg',
+            '/path/to/my-image.jpg',
+            '/url/to/my-image.jpg',
+            ($inspector = $this->mockInspector())
+        );
+
+        $inspector->shouldReceive('base64Encode')->andReturn('_some_base64_encoded_string_');
+
+        $this->assertEquals(
+            '_some_base64_encoded_string_',
+            $imageFile->toBase64String()
         );
     }
 }
