@@ -91,7 +91,7 @@ $flou = new ImageFactory([
 ]);
 ```
 
-The options are:
+The required options are:
 
 - `sourcePath`: The full path to the source images.
 - `cachePath`: The full path where Glide will store the image transformations.
