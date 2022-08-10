@@ -197,7 +197,8 @@ echo $image
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
-Output:
+<details>
+<summary>See HTML Output</summary>
 
 ```html
 <img 
@@ -209,6 +210,8 @@ Output:
   height="2160"
 >
 ```
+</details>
+<br>
 
 Options passed into `img()` are included as HTML attributes on the element.
 
@@ -230,8 +233,9 @@ The `ImageRender` object can be configured to optimize the HTML output:
             ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
     ```
 
-    Output:
-
+    <details>
+    <summary>See HTML Output</summary>
+    
     ```html
     <img 
       class="lazyload w-full" 
@@ -240,6 +244,8 @@ The `ImageRender` object can be configured to optimize the HTML output:
       ...
     >
     ```
+    </details>
+    <br>
 
 - **`usePaddingTop()`:** A workaround for older browsers not supporting the `aspect-ratio` CSS property:
 
@@ -257,8 +263,9 @@ The `ImageRender` object can be configured to optimize the HTML output:
             ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
     ```
 
-    Output:
-
+    <details>
+    <summary>See HTML Output</summary>
+    
     ```html
     <div class="lazyload-padding" style="position: relative; padding-top: 56.25%;">
       <img
@@ -270,6 +277,8 @@ The `ImageRender` object can be configured to optimize the HTML output:
       >
     </div>
     ```
+    </details>
+    <br>
 
 - **`useWrapper()`:** Wraps the image with an extra `div` and separates the LQIP element from the main `img` element. This is used to add a fade-in effect when the image is loaded.
 
@@ -282,8 +291,10 @@ The `ImageRender` object can be configured to optimize the HTML output:
             ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
     ```
 
-    Output:
 
+    <details>
+    <summary>See HTML Output</summary>
+    
     ```html
     <div class="lazyload-wrapper">
       <img 
@@ -297,6 +308,8 @@ The `ImageRender` object can be configured to optimize the HTML output:
       >
     </div>
     ```
+    </details>
+    <br>
 
 - **`useBase64Lqip()`:** Inlines a Base64 version of the LQIP in the `src` attribute of the `img` element. This reduces the number of HTTP requests needed to display a page, at the cost of making the HTML a bit heavier.
 
@@ -307,10 +320,10 @@ The `ImageRender` object can be configured to optimize the HTML output:
             ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
     ```
 
-    Output:
-
+    <details>
+    <summary>See HTML Output</summary>
+    
     ```html
-
     <img 
       class="lazyload w-full" 
       alt="Lorem ipsum" 
@@ -320,6 +333,8 @@ The `ImageRender` object can be configured to optimize the HTML output:
       height="2000"
     >
     ```
+    </details>
+    <br>
 
 
 #### Noscript variation
@@ -332,7 +347,8 @@ echo $image
         ->noScript(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
-Output:
+<details>
+<summary>See HTML Output</summary>
 
 ```html
 <img 
@@ -343,6 +359,8 @@ Output:
   height="2000"
 >
 ```
+</details>
+<br>
 
 This is used to add a `noscript` image fallback. ([See Noscript image fallback example](#noscript-fallback))
 
@@ -378,7 +396,9 @@ echo $imageSet
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
-Output:
+
+<details>
+<summary>See HTML Output</summary>
 
 ```html
 <img 
@@ -396,6 +416,8 @@ Output:
   height="2160" 
 >
 ```
+</details>
+<br>
 
 Like `ImageRender`, you can optimize `ImageSetRender` with the same methods:
 
@@ -435,7 +457,8 @@ echo $imageSet
         ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
 ```
 
-Output:
+<details>
+<summary>See HTML Output</summary>
 
 ```html
 <picture>
@@ -458,6 +481,8 @@ Output:
   >
 </picture>
 ```
+</details>
+<br>
 
 See also: [Art-directed `picture` element example](#art-directed-picture-element)
 
