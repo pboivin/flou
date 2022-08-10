@@ -439,6 +439,7 @@ Like `ImageRender`, you can optimize `ImageSetRender` with the same methods:
 - `useAspectRatio()`
 - `usePaddingTop()`
 - `useWrapper()`
+- `useBase64Lqip()`
 - `noScript()`
 
 
