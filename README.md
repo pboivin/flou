@@ -91,7 +91,7 @@ $flou = new ImageFactory([
 ]);
 ```
 
-The options are:
+The required options are:
 
 - `sourcePath`: The full path to the source images.
 - `cachePath`: The full path where Glide will store the image transformations.
@@ -143,6 +143,21 @@ $desktop = $flou->image('01.jpg', ['w' => 1300]);
 ```
 
 If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
+
+
+#### Default Glide parameters
+
+You can customize the default Glide parameters in the `ImageFactory` configuration:
+
+```php
+    $flou = new ImageFactory([
+        // ...
+        'glideParams' => [
+            'h' => 10,
+            'fm' => 'gif',
+        ],
+    ]);
+```
 
 
 #### Image objects
