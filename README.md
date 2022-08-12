@@ -671,6 +671,46 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 ?>
 ```
 
+<hr>
+
+#### CLI script
+
+*Preprocess all images in a source directory and prepare a JSON inventory file:*
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$flou = new Pboivin\Flou\ImageFactory([
+    'sourcePath' => './public/images/source',
+    'cachePath' => './public/images/cache',
+    'sourceUrlBase' => '/images/source',
+    'cacheUrlBase' => '/images/cache',
+]);
+
+$data = [];
+
+foreach (glob('./public/images/source/*.jpg') as $path) {
+    $file = basename($path);
+
+    echo "Processing image: $file\n";
+
+    $data[$file] = [
+        'source' => $flou->image($file)->source()->toArray(),
+        'lqip' => $flou->image($file)->cached()->toArray(),
+        'responsive' => array_map(
+            fn ($width) => $flou->image($file, ['w' => $width])->cached()->toArray(),
+            [500, 900, 1300, 1700]
+        ),
+    ];
+}
+
+file_put_contents('./data/images.json', json_encode($data, JSON_PRETTY_PRINT));
+
+echo "Done!\n";
+```
+
 
 ## Development
 
