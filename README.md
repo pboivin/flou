@@ -150,13 +150,13 @@ If you're interested in responsive images with `srcset`, have a look at the next
 You can customize the default Glide parameters in the `ImageFactory` configuration:
 
 ```php
-    $flou = new ImageFactory([
-        // ...
-        'glideParams' => [
-            'h' => 10,
-            'fm' => 'gif',
-        ],
-    ]);
+$flou = new ImageFactory([
+    // ...
+    'glideParams' => [
+        'h' => 10,
+        'fm' => 'gif',
+    ],
+]);
 ```
 
 
@@ -188,7 +188,6 @@ $data = $image->toArray();
 #     "source" => [
 #         "url" => "/images/source/01.jpg",
 #         "path" => "/home/user/my-site.com/public/images/source/01.jpg",
-#         "fileName" => "01.jpg",
 #         "width" => 3840,
 #         "height" => 2160,
 #         "ratio" => 1.77777778,
