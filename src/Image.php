@@ -4,6 +4,8 @@ namespace Pboivin\Flou;
 
 class Image
 {
+    protected $renderClass = ImageRender::class;
+
     public function __construct(protected ImageFile $source, protected ImageFile $cached)
     {
     }
@@ -18,9 +20,14 @@ class Image
         return $this->cached;
     }
 
+    public function setRenderClass(string $cls)
+    {
+        $this->renderClass = $cls;
+    }
+
     public function render(): ImageRender
     {
-        return new ImageRender($this);
+        return new ($this->renderClass)($this);
     }
 
     public function toArray(): array

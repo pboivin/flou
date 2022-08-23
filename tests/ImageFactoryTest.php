@@ -4,8 +4,12 @@ namespace Pboivin\Flou\Tests;
 
 use InvalidArgumentException;
 use Pboivin\Flou\ImageFactory;
+use Pboivin\Flou\ImageRender;
 use Pboivin\Flou\ImageSet;
+use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\Tests\Concerns\Mocking;
+use Pboivin\Flou\Tests\Fixtures\TestImageRender;
+use Pboivin\Flou\Tests\Fixtures\TestImageSetRender;
 use PHPUnit\Framework\TestCase;
 
 class ImageFactoryTest extends TestCase
@@ -55,6 +59,8 @@ class ImageFactoryTest extends TestCase
             'sourceUrlBase' => '/images/source',
             'cacheUrlBase' => '/images/cache',
             'glideParams' => ['h' => 123],
+            'imageRenderClass' => TestImageRender::class,
+            'imageSetRenderClass' => TestImageSetRender::class,
         ]);
 
         $this->assertEquals('/path/to/image/source', $flou->sourcePath());
@@ -86,7 +92,7 @@ class ImageFactoryTest extends TestCase
         $this->assertEquals('/images/cache', $flou->cacheUrlBase());
     }
 
-    public function test_generates_image_with_default_glide_params()
+    public function test_generates_image_with_default_params()
     {
         $flou = $this->getFactory();
 
@@ -100,6 +106,8 @@ class ImageFactoryTest extends TestCase
 
         $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
         $this->assertEquals('/images/source/source.jpg', $image->source()->url());
+
+        $this->assertTrue($image->render() instanceof ImageRender);
     }
 
     public function test_generates_image_with_inline_glide_params()
@@ -137,5 +145,57 @@ class ImageFactoryTest extends TestCase
         ]);
 
         $this->assertTrue($set instanceof ImageSet);
+
+        $this->assertTrue($set->render() instanceof ImageSetRender);
+    }
+
+    public function test_generates_image_with_custom_render_class()
+    {
+        $flou = $this->getFactory([
+            'sourcePath' => '/path/to/image/source',
+            'cachePath' => '/path/to/image/cache',
+            'sourceUrlBase' => '/images/source',
+            'cacheUrlBase' => '/images/cache',
+            'imageRenderClass' => TestImageRender::class,
+        ]);
+
+        $flou
+            ->glideServer()
+            ->shouldReceive('makeImage')
+            ->with('source.jpg', ['h' => 123])
+            ->andReturn('cached.jpg');
+
+        $image = $flou->image('source.jpg', ['h' => 123]);
+
+        $this->assertTrue($image->render() instanceof TestImageRender);
+    }
+
+    public function test_generates_imageset_with_custom_render_class()
+    {
+        $flou = $this->getFactory([
+            'sourcePath' => '/path/to/image/source',
+            'cachePath' => '/path/to/image/cache',
+            'sourceUrlBase' => '/images/source',
+            'cacheUrlBase' => '/images/cache',
+            'imageSetRenderClass' => TestImageSetRender::class,
+        ]);
+
+        $flou
+            ->glideServer()
+            ->shouldReceive('makeImage')
+            ->andReturn('cached.jpg');
+
+        $set = $flou->imageSet([
+            'image' => 'source.jpg',
+            'sources' => [
+                'sm' => ['width' => 400],
+                'md' => ['width' => 800],
+                'lg' => ['width' => 1200],
+            ],
+        ]);
+
+        $this->assertTrue($set instanceof ImageSet);
+
+        $this->assertTrue($set->render() instanceof TestImageSetRender);
     }
 }
