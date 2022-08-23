@@ -14,9 +14,9 @@ class GlideTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sourcePath = __DIR__ . '/fixtures/source';
+        $this->sourcePath = __DIR__ . '/Fixtures/source';
 
-        $this->cachePath = __DIR__ . '/fixtures/__cache__';
+        $this->cachePath = __DIR__ . '/Fixtures/__cache__';
 
         $this->factory = new ImageFactory([
             'sourcePath' => $this->sourcePath,
