@@ -2,9 +2,10 @@
 
 namespace Pboivin\Flou\Tests;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\Tests\Concerns\Mocking;
-use PHPUnit\Framework\TestCase;
 
 class ImageSetRenderTest extends TestCase
 {
@@ -199,7 +200,68 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
-    protected function prepareImageSetRender($withMedia = false)
+    public function test_rejects_invalid_options()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Invalid option 'test'.");
+
+        [$imageSetRender] = $this->prepareImageSetRender(false, ['test' => 'test']);
+    }
+
+    public function test_accepts_valid_options()
+    {
+        [$imageSetRender] = $this->prepareImageSetRender(false, [
+            'baseClass' => 'base',
+            'wrapperClass' => 'wrapper',
+            'lqipClass' => 'lqip',
+            'paddingClass' => 'padding',
+            'aspectRatio' => 16 / 9,
+            'paddingTop' => 16 / 9,
+            'wrapper' => true,
+            'base64Lqip' => true,
+        ]);
+
+        $this->assertTrue(!!$imageSetRender);
+    }
+
+    public function test_can_render_picture_using_options_array()
+    {
+        [$imageSetRender, $src, $lqip] = $this->prepareImageSetRender(false, [
+            'baseClass' => 'base',
+            'wrapperClass' => 'wrapper',
+            'lqipClass' => 'lqip',
+            'paddingClass' => 'padding',
+            'aspectRatio' => 16 / 9,
+            'paddingTop' => 16 / 9,
+            'wrapper' => true,
+            'base64Lqip' => true,
+        ]);
+
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $lqip
+            ->cached()
+            ->shouldReceive('toBase64String')
+            ->andReturn('_some_base64_encoded_string_');
+
+        $output = $imageSetRender
+            ->useAspectRatio()
+            ->usePaddingTop()
+            ->useWrapper()
+            ->picture([
+                'class' => 'test',
+                'alt' => 'This is a test',
+            ]);
+
+        $this->assertEquals(
+            '<div class="wrapper"><div class="padding" style="position: relative; padding-top: 100%;"><picture ><source media="(max-width: 500px)" data-srcset="cached1.jpg"><source media="(min-width: 501px)" data-srcset="cached2.jpg"><img class="base test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="_some_base64_encoded_string_" data-src="cached2.jpg" width="1000" height="1000"></picture></div><img class="lqip" src="_some_base64_encoded_string_"></div>',
+            $output
+        );
+    }
+
+    protected function prepareImageSetRender($withMedia = false, $options = [])
     {
         ($image1 = $this->getImage())
             ->cached()
@@ -240,7 +302,7 @@ class ImageSetRenderTest extends TestCase
             'lqip' => $lqip,
         ]);
 
-        $imageSetRender = new ImageSetRender($set);
+        $imageSetRender = new ImageSetRender($set, $options);
 
         return [$imageSetRender, $image2, $lqip];
     }

@@ -10,6 +10,8 @@ class ImageSet
 
     protected $renderClass = ImageSetRender::class;
 
+    protected $renderOptions = [];
+
     protected $image;
 
     protected $sizes;
@@ -112,13 +114,18 @@ class ImageSet
         ];
     }
 
-    public function setRenderClass(string $cls)
+    public function setRenderClass(string $cls): void
     {
         $this->renderClass = $cls;
     }
 
+    public function setRenderOptions(array $options): void
+    {
+        $this->renderOptions = $options;
+    }
+
     public function render(): ImageSetRender
     {
-        return new ($this->renderClass)($this);
+        return new ($this->renderClass)($this, $this->renderOptions);
     }
 }

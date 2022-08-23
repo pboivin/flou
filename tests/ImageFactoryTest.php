@@ -61,6 +61,7 @@ class ImageFactoryTest extends TestCase
             'glideParams' => ['h' => 123],
             'imageRenderClass' => TestImageRender::class,
             'imageSetRenderClass' => TestImageSetRender::class,
+            'renderOptions' => ['baseClass' => 'test'],
         ]);
 
         $this->assertEquals('/path/to/image/source', $flou->sourcePath());

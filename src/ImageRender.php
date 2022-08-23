@@ -4,8 +4,11 @@ namespace Pboivin\Flou;
 
 class ImageRender extends ImgRenderable
 {
-    public function __construct(protected Image $image)
+    public function __construct(protected Image $image, protected array $config = [])
     {
+        if ($config) {
+            $this->acceptConfig($config);
+        }
     }
 
     public function main(): ImageFile

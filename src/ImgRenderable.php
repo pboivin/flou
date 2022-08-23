@@ -2,6 +2,7 @@
 
 namespace Pboivin\Flou;
 
+use InvalidArgumentException;
 use Stringable;
 
 abstract class ImgRenderable implements Stringable
@@ -22,9 +23,23 @@ abstract class ImgRenderable implements Stringable
 
     protected $wrapper = false;
 
+    protected $base64Lqip = false;
+
+    /* Internal */
     protected $includeLqip = true;
 
-    protected $base64Lqip = false;
+    protected function acceptConfig(array $config): void
+    {
+        foreach ($config as $key => $value) {
+            if (method_exists($this, $method = "set{$key}")) {
+                $this->$method($value);
+            } elseif (method_exists($this, $method = "use{$key}")) {
+                $this->$method($value);
+            } else {
+                throw new InvalidArgumentException("Invalid option '$key'.");
+            }
+        }
+    }
 
     public function __toString(): string
     {
@@ -66,18 +81,24 @@ abstract class ImgRenderable implements Stringable
         return $this;
     }
 
-    public function useAspectRatio(?float $value = null): self
+    public function useAspectRatio(mixed $value = true): self
     {
-        $this->aspectRatio = is_null($value) ? $this->main()->ratio() : $value;
+        if ($value === true) {
+            $this->aspectRatio = $this->main()->ratio();
+        } elseif ($value === false) {
+            $this->aspectRatio = false;
+        } else {
+            $this->aspectRatio = $value;
+        }
 
         return $this;
     }
 
-    public function usePaddingTop(?float $value = null): self
+    public function usePaddingTop(mixed $value = true): self
     {
         $this->useAspectRatio($value);
 
-        $this->paddingTop = true;
+        $this->paddingTop = !!$value;
 
         return $this;
     }

@@ -28,6 +28,8 @@ class ImageFactory
 
     protected $imageSetRenderClass;
 
+    protected $renderOptions;
+
     final public function __construct(array $config = [])
     {
         if ($config) {
@@ -185,6 +187,11 @@ class ImageFactory
         $this->imageSetRenderClass = $cls;
     }
 
+    public function setRenderOptions(array $options): void
+    {
+        $this->renderOptions = $options;
+    }
+
     public function image(string $sourceFileName, ?array $glideParams = null): Image
     {
         $glideParams ??= $this->glideParams();
@@ -202,6 +209,10 @@ class ImageFactory
             $image->setRenderClass($this->imageRenderClass);
         }
 
+        if ($this->renderOptions) {
+            $image->setRenderOptions($this->renderOptions);
+        }
+
         return $image;
     }
 
@@ -211,6 +222,10 @@ class ImageFactory
 
         if ($this->imageSetRenderClass) {
             $set->setRenderClass($this->imageSetRenderClass);
+        }
+
+        if ($this->renderOptions) {
+            $set->setRenderOptions($this->renderOptions);
         }
 
         return $set;

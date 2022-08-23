@@ -6,9 +6,13 @@ class ImageSetRender extends ImgRenderable
 {
     protected $data;
 
-    public function __construct(protected ImageSet $imageSet)
+    public function __construct(protected ImageSet $imageSet, protected array $config = [])
     {
         $this->data = $this->imageSet->data();
+
+        if ($config) {
+            $this->acceptConfig($config);
+        }
     }
 
     public function main(): ImageFile
