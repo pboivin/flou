@@ -182,7 +182,7 @@ abstract class ImgRenderable implements Stringable
                     $this->includeLqip
                         ? $this->htmlTag('img', [
                             'class' => $this->lqipClass,
-                            'src' => $this->lqip()->url(),
+                            'src' => $this->lqipUrl(),
                         ])
                         : '',
                 ])
