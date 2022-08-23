@@ -31,30 +31,30 @@ abstract class ImgRenderable implements Stringable
         return $this->img();
     }
 
-    public function setBaseClass(string $cls): self
+    public function setBaseClass(string $cssClass): self
     {
-        $this->baseClass = $cls;
+        $this->baseClass = $cssClass;
 
         return $this;
     }
 
-    public function setWrapperClass(string $cls): self
+    public function setWrapperClass(string $cssClass): self
     {
-        $this->wrapperClass = $cls;
+        $this->wrapperClass = $cssClass;
 
         return $this;
     }
 
-    public function setLqipClass(string $cls): self
+    public function setLqipClass(string $cssClass): self
     {
-        $this->lqipClass = $cls;
+        $this->lqipClass = $cssClass;
 
         return $this;
     }
 
-    public function setPaddingClass(string $cls): self
+    public function setPaddingClass(string $cssClass): self
     {
-        $this->paddingClass = $cls;
+        $this->paddingClass = $cssClass;
 
         return $this;
     }
