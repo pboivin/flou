@@ -52,6 +52,13 @@ abstract class ImgRenderable implements Stringable
         return $this;
     }
 
+    public function setPaddingClass(string $cls): self
+    {
+        $this->paddingClass = $cls;
+
+        return $this;
+    }
+
     public function useWrapper(bool $value = true): self
     {
         $this->wrapper = $value;
