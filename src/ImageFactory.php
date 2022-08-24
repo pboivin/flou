@@ -24,10 +24,6 @@ class ImageFactory
 
     protected $inspector;
 
-    protected $imageRenderClass;
-
-    protected $imageSetRenderClass;
-
     protected $renderOptions;
 
     final public function __construct(array $config = [])
@@ -177,16 +173,6 @@ class ImageFactory
         return $this;
     }
 
-    public function setImageRenderClass(string $cls): void
-    {
-        $this->imageRenderClass = $cls;
-    }
-
-    public function setImageSetRenderClass(string $cls): void
-    {
-        $this->imageSetRenderClass = $cls;
-    }
-
     public function setRenderOptions(array $options): void
     {
         $this->renderOptions = $options;
@@ -205,10 +191,6 @@ class ImageFactory
             $this->cachedImageFile($cachedFileName)
         );
 
-        if ($this->imageRenderClass) {
-            $image->setRenderClass($this->imageRenderClass);
-        }
-
         if ($this->renderOptions) {
             $image->setRenderOptions($this->renderOptions);
         }
@@ -219,10 +201,6 @@ class ImageFactory
     public function imageSet(array $config): ImageSet
     {
         $set = new ImageSet($config, $this);
-
-        if ($this->imageSetRenderClass) {
-            $set->setRenderClass($this->imageSetRenderClass);
-        }
 
         if ($this->renderOptions) {
             $set->setRenderOptions($this->renderOptions);
