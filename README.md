@@ -91,6 +91,9 @@ $flou = new ImageFactory([
 ]);
 ```
 
+
+#### Configuration
+
 The required options are:
 
 | Name | Type | Description |
@@ -100,15 +103,12 @@ The required options are:
 | `sourceUrlBase` | string | The base URL for the source images. |
 | `cacheUrlBase` | string | The base URL for the transformed images. |
 
-<details>
-<summary>See Other Options</summary>
+Other options:
 
 | Name | Type | Description |
 |---|---|---|
 | `glideParams` | array | [Default Glide parameters for LQIP elements.](#default-glide-parameters) |
 | `renderOptions` | array | [Default render options for all images.](#default-render-options) |
-</details>
-<br>
 
 
 #### Framework Integration
