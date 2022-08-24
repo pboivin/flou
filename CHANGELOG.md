@@ -1,5 +1,21 @@
 # Release Notes
 
+## [v1.2.0](https://github.com/pboivin/flou/compare/v1.1.0...v1.2.0) - 2022-08-24
+
+#### Added
+
+- Accept render options as array (`ImageFactory`)
+- Add missing setter for padding element CSS class (`ImgRenderable`)
+
+#### Changed
+
+- Ensure base64 LQIP is usable with wrapper option (`ImgRenderable`)
+
+#### Chores
+
+- Document various configuration options
+
+
 ## [v1.1.0](https://github.com/pboivin/flou/compare/v1.0.1...v1.1.0) - 2022-08-10
 
 #### Added
