@@ -6,6 +6,7 @@ use Pboivin\Flou\Image;
 use Pboivin\Flou\ImageFile;
 use Pboivin\Flou\ImageRender;
 use Pboivin\Flou\Tests\Concerns\Mocking;
+use Pboivin\Flou\Tests\Fixtures\TestImageRender;
 use PHPUnit\Framework\TestCase;
 
 class ImageTest extends TestCase
@@ -25,6 +26,15 @@ class ImageTest extends TestCase
         $image = new Image($this->mockImageFile(), $this->mockImageFile());
 
         $this->assertTrue($image->render() instanceof ImageRender);
+    }
+
+    public function test_can_configure_render_class()
+    {
+        $image = new Image($this->mockImageFile(), $this->mockImageFile());
+
+        $image->setRenderClass(TestImageRender::class);
+
+        $this->assertTrue($image->render() instanceof TestImageRender);
     }
 
     public function test_can_export_to_array()

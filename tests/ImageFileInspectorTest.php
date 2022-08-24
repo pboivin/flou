@@ -11,7 +11,7 @@ class ImageFileInspectorTest extends TestCase
     {
         $inspector = new ImageFileInspector();
 
-        $size = $inspector->getSize(__DIR__ . '/fixtures/source/square.jpg');
+        $size = $inspector->getSize(__DIR__ . '/Fixtures/source/square.jpg');
 
         $this->assertEquals(100, $size['width']);
         $this->assertEquals(100, $size['height']);
@@ -21,7 +21,7 @@ class ImageFileInspectorTest extends TestCase
     {
         $inspector = new ImageFileInspector();
 
-        $base64 = $inspector->base64Encode(__DIR__ . '/fixtures/source/pixel.gif');
+        $base64 = $inspector->base64Encode(__DIR__ . '/Fixtures/source/pixel.gif');
 
         $this->assertEquals(
             'data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH+EUNyZWF0ZWQgd2l0aCBHSU1QACwAAAAAAQABAAACAkQBADs=',

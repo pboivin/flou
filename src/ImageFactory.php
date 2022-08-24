@@ -24,6 +24,8 @@ class ImageFactory
 
     protected $inspector;
 
+    protected $renderOptions;
+
     final public function __construct(array $config = [])
     {
         if ($config) {
@@ -171,6 +173,11 @@ class ImageFactory
         return $this;
     }
 
+    public function setRenderOptions(array $options): void
+    {
+        $this->renderOptions = $options;
+    }
+
     public function image(string $sourceFileName, ?array $glideParams = null): Image
     {
         $glideParams ??= $this->glideParams();
@@ -179,15 +186,27 @@ class ImageFactory
 
         $cachedFileName = $server->makeImage($sourceFileName, $glideParams);
 
-        return new Image(
+        $image = new Image(
             $this->sourceImageFile($sourceFileName),
             $this->cachedImageFile($cachedFileName)
         );
+
+        if ($this->renderOptions) {
+            $image->setRenderOptions($this->renderOptions);
+        }
+
+        return $image;
     }
 
     public function imageSet(array $config): ImageSet
     {
-        return new ImageSet($config, $this);
+        $set = new ImageSet($config, $this);
+
+        if ($this->renderOptions) {
+            $set->setRenderOptions($this->renderOptions);
+        }
+
+        return $set;
     }
 
     public function sourceImageFile(string $fileName): ImageFile

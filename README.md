@@ -91,12 +91,24 @@ $flou = new ImageFactory([
 ]);
 ```
 
+
+#### Configuration
+
 The required options are:
 
-- `sourcePath`: The full path to the source images.
-- `cachePath`: The full path where Glide will store the image transformations.
-- `sourceUrlBase`: The base URL for the source images.
-- `cacheUrlBase`:  The base URL for the transformed images.
+| Name | Type | Description |
+|---|---|---|
+| `sourcePath` | string | The full path to the source images. |
+| `cachePath` | string | The full path where Glide will store the image transformations. |
+| `sourceUrlBase` | string | The base URL for the source images. |
+| `cacheUrlBase` | string | The base URL for the transformed images. |
+
+Other options:
+
+| Name | Type | Description |
+|---|---|---|
+| `glideParams` | array | [Default Glide parameters for LQIP elements.](#default-glide-parameters) |
+| `renderOptions` | array | [Default render options for all images.](#default-render-options) |
 
 
 #### Framework Integration
@@ -349,6 +361,39 @@ The `ImageRender` object can be configured to optimize the HTML output:
     ```
     </details>
     <br>
+
+
+#### Default render options
+
+You can customize the default render options for all images in the `ImageFactory` configuration:
+
+```php
+$flou = new ImageFactory([
+    // ...
+    'renderOptions' => [
+        'aspectRatio' => 16 / 9,
+        'wrapper' => true,
+        'base64Lqip' => true,
+        // ...
+    ],
+]);
+```
+
+<details>
+<summary>See Available Options</summary>
+
+| Name | Type | Description |
+|---|---|---|
+| `baseClass` | string | CSS class for `img` element. Default: `'lazyload'` |
+| `wrapperClass` | string | CSS class for wrapper element. Default: `'lazyload-wrapper'` |
+| `lqipClass` | string | CSS class for LQIP element. Default: `'lazyload-lqip'` |
+| `paddingClass` | string | CSS class for padding-specific wrapper element. Default: `'lazyload-padding'` |
+| `aspectRatio` | boolean or number | Use aspect ratio. Default: `false` |
+| `paddingTop` | boolean or number | Use padding-top workaround. Default: `false` |
+| `wrapper` | boolean | Use wrapper element. Default: `false` |
+| `base64Lqip` | boolean | Use Base64 LQIP value. Default: `false` |
+</details>
+<br>
 
 
 #### Noscript variation

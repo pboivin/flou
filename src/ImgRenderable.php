@@ -2,6 +2,7 @@
 
 namespace Pboivin\Flou;
 
+use InvalidArgumentException;
 use Stringable;
 
 abstract class ImgRenderable implements Stringable
@@ -22,32 +23,53 @@ abstract class ImgRenderable implements Stringable
 
     protected $wrapper = false;
 
+    protected $base64Lqip = false;
+
+    /* Internal */
     protected $includeLqip = true;
 
-    protected $base64Lqip = false;
+    protected function acceptRenderConfig(array $config): void
+    {
+        foreach ($config as $key => $value) {
+            if (method_exists($this, $method = "set{$key}")) {
+                $this->$method($value);
+            } elseif (method_exists($this, $method = "use{$key}")) {
+                $this->$method($value);
+            } else {
+                throw new InvalidArgumentException("Invalid option '$key'.");
+            }
+        }
+    }
 
     public function __toString(): string
     {
         return $this->img();
     }
 
-    public function setBaseClass(string $cls): self
+    public function setBaseClass(string $cssClass): self
     {
-        $this->baseClass = $cls;
+        $this->baseClass = $cssClass;
 
         return $this;
     }
 
-    public function setWrapperClass(string $cls): self
+    public function setWrapperClass(string $cssClass): self
     {
-        $this->wrapperClass = $cls;
+        $this->wrapperClass = $cssClass;
 
         return $this;
     }
 
-    public function setLqipClass(string $cls): self
+    public function setLqipClass(string $cssClass): self
     {
-        $this->lqipClass = $cls;
+        $this->lqipClass = $cssClass;
+
+        return $this;
+    }
+
+    public function setPaddingClass(string $cssClass): self
+    {
+        $this->paddingClass = $cssClass;
 
         return $this;
     }
@@ -59,18 +81,24 @@ abstract class ImgRenderable implements Stringable
         return $this;
     }
 
-    public function useAspectRatio(?float $value = null): self
+    public function useAspectRatio(mixed $value = true): self
     {
-        $this->aspectRatio = is_null($value) ? $this->main()->ratio() : $value;
+        if ($value === true) {
+            $this->aspectRatio = $this->main()->ratio();
+        } elseif ($value === false) {
+            $this->aspectRatio = false;
+        } else {
+            $this->aspectRatio = $value;
+        }
 
         return $this;
     }
 
-    public function usePaddingTop(?float $value = null): self
+    public function usePaddingTop(mixed $value = true): self
     {
         $this->useAspectRatio($value);
 
-        $this->paddingTop = true;
+        $this->paddingTop = !!$value;
 
         return $this;
     }
@@ -182,7 +210,7 @@ abstract class ImgRenderable implements Stringable
                     $this->includeLqip
                         ? $this->htmlTag('img', [
                             'class' => $this->lqipClass,
-                            'src' => $this->lqip()->url(),
+                            'src' => $this->lqipUrl(),
                         ])
                         : '',
                 ])

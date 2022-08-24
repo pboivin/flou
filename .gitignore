@@ -2,7 +2,7 @@
 *.swp
 
 /__tmp__
-/tests/fixtures/__cache__
+/tests/Fixtures/__cache__
 /vendor
 /composer.lock
 /.php_cs.cache

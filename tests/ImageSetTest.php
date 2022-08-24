@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use Pboivin\Flou\ImageSet;
 use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\Tests\Concerns\Mocking;
+use Pboivin\Flou\Tests\Fixtures\TestImageSetRender;
 use PHPUnit\Framework\TestCase;
 
 class ImageSetTest extends TestCase
@@ -245,6 +246,32 @@ class ImageSetTest extends TestCase
         );
 
         $this->assertTrue($set->render() instanceof ImageSetRender);
+    }
+
+    public function test_can_configure_render_class()
+    {
+        ($image = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
+
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+
+        $set = new ImageSet(
+            [
+                'image' => 'source.jpg',
+                'sources' => [
+                    'sm' => ['width' => 400],
+                    'md' => ['width' => 800],
+                    'lg' => ['width' => 1200],
+                ],
+            ],
+            $factory
+        );
+
+        $set->setRenderClass(TestImageSetRender::class);
+
+        $this->assertTrue($set->render() instanceof TestImageSetRender);
     }
 
     public function test_can_export_to_array()

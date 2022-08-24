@@ -8,6 +8,10 @@ class ImageSet
 {
     public const DEFAULT_SIZES_VALUE = '100vw';
 
+    protected $renderClass = ImageSetRender::class;
+
+    protected $renderOptions = [];
+
     protected $image;
 
     protected $sizes;
@@ -110,8 +114,18 @@ class ImageSet
         ];
     }
 
+    public function setRenderClass(string $cls): void
+    {
+        $this->renderClass = $cls;
+    }
+
+    public function setRenderOptions(array $options): void
+    {
+        $this->renderOptions = $options;
+    }
+
     public function render(): ImageSetRender
     {
-        return new ImageSetRender($this);
+        return new ($this->renderClass)($this, $this->renderOptions);
     }
 }
