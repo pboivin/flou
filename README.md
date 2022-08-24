@@ -162,13 +162,13 @@ If you're interested in responsive images with `srcset`, have a look at the next
 You can customize the default Glide parameters in the `ImageFactory` configuration:
 
 ```php
-    $flou = new ImageFactory([
-        // ...
-        'glideParams' => [
-            'h' => 10,
-            'fm' => 'gif',
-        ],
-    ]);
+$flou = new ImageFactory([
+    // ...
+    'glideParams' => [
+        'h' => 10,
+        'fm' => 'gif',
+    ],
+]);
 ```
 
 
@@ -369,15 +369,15 @@ The `ImageRender` object can be configured to optimize the HTML output:
 You can customize the default render options for all images in the `ImageFactory` configuration:
 
 ```php
-    $flou = new ImageFactory([
+$flou = new ImageFactory([
+    // ...
+    'renderOptions' => [
+        'aspectRatio' => 16 / 9,
+        'wrapper' => true,
+        'base64Lqip' => true,
         // ...
-        'renderOptions' => [
-            'aspectRatio' => 16 / 9,
-            'wrapper' => true,
-            'base64Lqip' => true,
-            // ...
-        ],
-    ]);
+    ],
+]);
 ```
 
 <details>
