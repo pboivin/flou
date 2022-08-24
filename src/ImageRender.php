@@ -7,7 +7,7 @@ class ImageRender extends ImgRenderable
     public function __construct(protected Image $image, protected array $config = [])
     {
         if ($config) {
-            $this->acceptConfig($config);
+            $this->acceptRenderConfig($config);
         }
     }
 

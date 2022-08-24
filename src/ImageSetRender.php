@@ -11,7 +11,7 @@ class ImageSetRender extends ImgRenderable
         $this->data = $this->imageSet->data();
 
         if ($config) {
-            $this->acceptConfig($config);
+            $this->acceptRenderConfig($config);
         }
     }
 

@@ -28,7 +28,7 @@ abstract class ImgRenderable implements Stringable
     /* Internal */
     protected $includeLqip = true;
 
-    protected function acceptConfig(array $config): void
+    protected function acceptRenderConfig(array $config): void
     {
         foreach ($config as $key => $value) {
             if (method_exists($this, $method = "set{$key}")) {
