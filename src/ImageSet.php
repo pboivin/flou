@@ -97,6 +97,13 @@ class ImageSet
         return $this;
     }
 
+    protected function setWidths(array $widths): self
+    {
+        $this->sources = array_map(fn ($i) => ['width' => (int) $i], $widths);
+
+        return $this;
+    }
+
     public function data(): array
     {
         return $this->data;
