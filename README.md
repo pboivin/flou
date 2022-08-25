@@ -437,12 +437,7 @@ Use the `imageSet()` method to transform a source image into a set of responsive
 $imageSet = $flou->imageSet([
     'image' => '01.jpg',
     'sizes' => '(max-width: 500px) 100vw, 50vw',
-    'sources' => [
-        ['width' => '500'],
-        ['width' => '900'],
-        ['width' => '1300'],
-        ['width' => '1700'],
-    ],
+    'widths' => [500, 900, 1300, 1700],
 ]);
 ```
 
