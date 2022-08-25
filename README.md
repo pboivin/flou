@@ -211,6 +211,7 @@ $data = $image->toArray();
 # ]
 ```
 
+
 #### Rendering single images
 
 The `render()` method on the image returns an [`ImageRender`](./src/ImageRender.php) object, which prepares HTML suitable for the vanilla-lazyload library. Then, `img()` is used to render an `img` element:
