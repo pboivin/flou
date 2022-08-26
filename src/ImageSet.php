@@ -45,18 +45,12 @@ class ImageSet
     protected function prepareData()
     {
         $sizes = $this->sizes ?: static::DEFAULT_SIZES_VALUE;
-        $preparedSources = [];
-        $imageForLqip = '';
-
-        foreach ($this->sources as $source) {
-            $preparedSources[] = (new ImageSetSource($source, $this))->data();
-            $imageForLqip = $source['image'] ?? $this->image;
-        }
+        $sources = new ImageSetSources($this->sources, $this);
 
         $this->data = [
             'sizes' => $sizes,
-            'srcset' => $preparedSources,
-            'lqip' => $this->factory->image($imageForLqip),
+            'srcset' => $sources->all(),
+            'lqip' => $sources->lqip(),
         ];
     }
 
