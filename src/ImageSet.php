@@ -45,35 +45,29 @@ class ImageSet
     protected function prepareData()
     {
         $sizes = $this->sizes ?: static::DEFAULT_SIZES_VALUE;
-        $srcset = [];
-        $sourceImage = '';
+        $preparedSources = [];
+        $imageForLqip = '';
 
         foreach ($this->sources as $source) {
-            if (!isset($source['width'])) {
-                throw new InvalidArgumentException("Source is missing required 'width' option.");
-            }
-
-            if (!isset($source['image']) && !$this->image) {
-                throw new InvalidArgumentException(
-                    "Missing required 'image' option on source or imageset."
-                );
-            }
-
-            $sourceImage = $source['image'] ?? $this->image;
-
-            $srcset[] = [
-                'image' => $this->factory->image($sourceImage, [
-                    'w' => $source['width'],
-                ]),
-                'width' => "{$source['width']}",
-            ];
+            $preparedSources[] = (new ImageSetSource($source, $this))->data();
+            $imageForLqip = $source['image'] ?? $this->image;
         }
 
         $this->data = [
             'sizes' => $sizes,
-            'srcset' => $srcset,
-            'lqip' => $this->factory->image($sourceImage),
+            'srcset' => $preparedSources,
+            'lqip' => $this->factory->image($imageForLqip),
         ];
+    }
+
+    public function factory()
+    {
+        return $this->factory;
+    }
+
+    public function image()
+    {
+        return $this->image;
     }
 
     protected function setImage(string $sourceFileName): self
