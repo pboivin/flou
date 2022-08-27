@@ -372,7 +372,7 @@ You can customize the default render options for all images in the `ImageFactory
 $flou = new ImageFactory([
     // ...
     'renderOptions' => [
-        'aspectRatio' => 16 / 9,
+        'aspectRatio' => true,
         'wrapper' => true,
         'base64Lqip' => true,
         // ...
