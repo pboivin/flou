@@ -1,5 +1,12 @@
 # Release Notes
 
+## [unreleased](https://github.com/pboivin/flou/compare/v1.2.0...main) - next
+
+#### Added
+
+- Add shortcut for single image widths configuration (`ImageSet`)
+
+
 ## [v1.2.0](https://github.com/pboivin/flou/compare/v1.1.0...v1.2.0) - 2022-08-24
 
 #### Added
