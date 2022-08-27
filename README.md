@@ -211,6 +211,7 @@ $data = $image->toArray();
 # ]
 ```
 
+
 #### Rendering single images
 
 The `render()` method on the image returns an [`ImageRender`](./src/ImageRender.php) object, which prepares HTML suitable for the vanilla-lazyload library. Then, `img()` is used to render an `img` element:
@@ -437,12 +438,7 @@ Use the `imageSet()` method to transform a source image into a set of responsive
 $imageSet = $flou->imageSet([
     'image' => '01.jpg',
     'sizes' => '(max-width: 500px) 100vw, 50vw',
-    'sources' => [
-        ['width' => '500'],
-        ['width' => '900'],
-        ['width' => '1300'],
-        ['width' => '1700'],
-    ],
+    'widths' => [500, 900, 1300, 1700],
 ]);
 ```
 

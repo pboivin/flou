@@ -161,6 +161,42 @@ class ImageSetTest extends TestCase
         $this->assertEquals('cached3.jpg', $data['lqip']->cached()->url());
     }
 
+    public function test_can_use_shortcut_for_single_images()
+    {
+        ($image = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
+
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+
+        $set = new ImageSet(
+            [
+                'image' => 'source.jpg',
+                'widths' => [400, 800, 1200],
+            ],
+            $factory
+        );
+
+        $data = $set->data();
+
+        $this->assertEquals(3, count($data['srcset']));
+
+        $source = $data['srcset'][0];
+        $this->assertEquals('cached1.jpg', $source['image']->cached()->url());
+        $this->assertEquals(400, $source['width']);
+
+        $source = $data['srcset'][1];
+        $this->assertEquals('cached2.jpg', $source['image']->cached()->url());
+        $this->assertEquals(800, $source['width']);
+
+        $source = $data['srcset'][2];
+        $this->assertEquals('cached3.jpg', $source['image']->cached()->url());
+        $this->assertEquals(1200, $source['width']);
+
+        $this->assertEquals('cached3.jpg', $data['lqip']->cached()->url());
+    }
+
     public function test_can_prepare_sources_with_multiple_images()
     {
         ($image = $this->getImage())
