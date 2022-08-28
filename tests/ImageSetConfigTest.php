@@ -2,11 +2,45 @@
 
 namespace Pboivin\Flou\Tests;
 
-use Pboivin\Flou\ImageSetConfig;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Pboivin\Flou\ImageSetConfig;
 
 class ImageSetConfigTest extends TestCase
 {
+    public function test_throws_exception_for_missing_image()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid ImageSet configuration — missing image.');
+
+        new ImageSetConfig([]);
+    }
+
+    public function test_throws_exception_for_missing_widths()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Missing required 'widths' argument for single image.");
+
+        new ImageSetConfig(['image' => 'test.jpg']);
+    }
+
+    public function test_throws_exception_for_missing_media()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Missing required 'media' argument for multiple images.");
+
+        new ImageSetConfig([
+            [
+                'image' => '01.jpg',
+                'widths' => [400, 800],
+            ],
+            [
+                'image' => '02.jpg',
+                'widths' => [1200, 1600],
+            ],
+        ]);
+    }
+
     public function test_accepts_single_image_config()
     {
         $imageSetConfig = new ImageSetConfig([
