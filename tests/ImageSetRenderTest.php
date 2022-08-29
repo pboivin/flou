@@ -13,7 +13,7 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_img()
     {
-        [$imageSetRender] = $this->prepareImageSetRender();
+        [$imageSetRender] = $this->prepareForImg();
 
         $output = $imageSetRender->img([
             'class' => 'test',
@@ -29,7 +29,7 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_aspect_ratio()
     {
-        [$imageSetRender, $src] = $this->prepareImageSetRender();
+        [$imageSetRender, $src] = $this->prepareForImg();
 
         $src->cached()
             ->shouldReceive('ratio')
@@ -49,7 +49,7 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_wrapper_element()
     {
-        [$imageSetRender, $src] = $this->prepareImageSetRender();
+        [$imageSetRender, $src] = $this->prepareForImg();
 
         $src->cached()
             ->shouldReceive('ratio')
@@ -72,7 +72,7 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_padding_top_strategy()
     {
-        [$imageSetRender, $src] = $this->prepareImageSetRender();
+        [$imageSetRender, $src] = $this->prepareForImg();
 
         $src->cached()
             ->shouldReceive('ratio')
@@ -95,7 +95,7 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_noscript_variation()
     {
-        [$imageSetRender, $src] = $this->prepareImageSetRender();
+        [$imageSetRender, $src] = $this->prepareForImg();
 
         $src->cached()
             ->shouldReceive('ratio')
@@ -117,7 +117,7 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_base64_lqip()
     {
-        [$imageSetRender, $src, $lqip] = $this->prepareImageSetRender();
+        [$imageSetRender, $src, $lqip] = $this->prepareForImg();
 
         $src->cached()
             ->shouldReceive('ratio')
@@ -141,6 +141,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_picture()
     {
+
+
+        die("HERE");
+
+
         [$imageSetRender, $src] = $this->prepareImageSetRender();
 
         $src->cached()
@@ -261,6 +266,51 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    protected function prepareForImg()
+    {
+        ($image1 = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg');
+
+        ($image2 = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached2.jpg');
+
+        $image2
+            ->cached()
+            ->shouldReceive('width')
+            ->andReturn(1000)
+            ->shouldReceive('height')
+            ->andReturn(1000);
+
+        ($lqip = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('lqip.jpg');
+
+        ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
+            'sources' => [
+                [
+                    'image' => 'source.jpg',
+                    'widths' => [500, 1000],
+                    'sizes' => '50vw',
+                    'srcset' => [
+                        ['image' => $image1, 'width' => 500],
+                        ['image' => $image2, 'width' => 1000],
+                    ],
+                ],
+            ],
+            'lqip' => $lqip,
+        ]);
+
+        $imageSetRender = new ImageSetRender($set);
+
+        return [$imageSetRender, $image2, $lqip];
+    }
+
+    /*
     protected function prepareImageSetRender($withMedia = false, $options = [])
     {
         ($image1 = $this->getImage())
@@ -286,7 +336,7 @@ class ImageSetRenderTest extends TestCase
             ->andReturn('lqip.jpg');
 
         ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
-            'sizes' => '50vw',
+            'sources' => [],
             'srcset' => [
                 [
                     'image' => $image1,
@@ -306,4 +356,5 @@ class ImageSetRenderTest extends TestCase
 
         return [$imageSetRender, $image2, $lqip];
     }
+    */
 }

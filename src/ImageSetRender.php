@@ -17,9 +17,11 @@ class ImageSetRender extends ImgRenderable
 
     public function main(): ImageFile
     {
-        $source = end($this->data['srcset']);
+        $source = end($this->data['sources']);
 
-        return $source['image']->cached();
+        $item = end($source['srcset']);
+
+        return $item['image']->cached();
     }
 
     public function lqip(): ImageFile
@@ -70,8 +72,8 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
         $attributes['data-src'] = $this->main()->url();
-        $attributes['data-srcset'] = $this->getSrcset();
-        $attributes['data-sizes'] = $this->data['sizes'];
+        $attributes['data-srcset'] = $this->getSrcset($this->data['sources'][0]);
+        $attributes['data-sizes'] = $this->getSizes($this->data['sources'][0]);
 
         return $this->renderImg($attributes);
     }
@@ -90,23 +92,28 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $noScript->main()->width();
         $attributes['height'] = $noScript->main()->height();
         $attributes['src'] = $noScript->main()->url();
-        $attributes['srcset'] = $noScript->getSrcset();
-        $attributes['sizes'] = $noScript->data['sizes'];
+        $attributes['srcset'] = $this->getSrcset($this->data['sources'][0]);
+        $attributes['sizes'] = $this->getSizes($this->data['sources'][0]);
 
         return $noScript->renderImg($attributes);
     }
 
-    protected function getSrcset(): string
+    protected function getSrcset($source): string
     {
         $srcset = [];
 
-        foreach ($this->data['srcset'] as $source) {
-            $url = $source['image']->cached()->url();
-            $width = $source['width'];
+        foreach ($source['srcset'] as $item) {
+            $url = $item['image']->cached()->url();
+            $width = $item['width'];
 
             $srcset[] = "{$url} {$width}w";
         }
 
         return implode(', ', $srcset);
+    }
+
+    protected function getSizes($source): string
+    {
+        return $source['sizes'] ?? ImageSet::DEFAULT_SIZES_VALUE;
     }
 }
