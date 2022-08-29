@@ -2,8 +2,6 @@
 
 namespace Pboivin\Flou;
 
-use InvalidArgumentException;
-
 class ImageSet
 {
     public const DEFAULT_SIZES_VALUE = '100vw';
@@ -12,100 +10,28 @@ class ImageSet
 
     protected $renderOptions = [];
 
-    protected $image;
-
-    protected $sizes;
-
     protected $sources;
-
-    protected $data;
 
     public function __construct(protected array $config, protected ImageFactory $factory)
     {
-        $this->acceptConfig($config);
+        $preparedConfig = (new ImageSetConfig($config))->get();
 
-        if (!$this->sources) {
-            throw new InvalidArgumentException("'sources' is not set.");
-        }
-
-        $this->prepareData();
-    }
-
-    protected function acceptConfig(array $config): void
-    {
-        foreach ($config as $key => $value) {
-            if (method_exists($this, $method = "set{$key}")) {
-                $this->$method($value);
-            } else {
-                throw new InvalidArgumentException("Invalid option '$key'.");
-            }
-        }
-    }
-
-    protected function prepareData()
-    {
-        $sizes = $this->sizes ?: static::DEFAULT_SIZES_VALUE;
-        $sources = new ImageSetSources($this->sources, $this);
-
-        $this->data = [
-            'sizes' => $sizes,
-            'srcset' => $sources->all(),
-            'lqip' => $sources->lqip(),
-        ];
-    }
-
-    public function factory()
-    {
-        return $this->factory;
-    }
-
-    public function image()
-    {
-        return $this->image;
-    }
-
-    protected function setImage(string $sourceFileName): self
-    {
-        $this->image = $sourceFileName;
-
-        return $this;
-    }
-
-    protected function setSizes(string $sizes): self
-    {
-        $this->sizes = $sizes;
-
-        return $this;
-    }
-
-    protected function setSources(array $sources): self
-    {
-        $this->sources = $sources;
-
-        return $this;
-    }
-
-    protected function setWidths(array $widths): self
-    {
-        $this->sources = array_map(fn ($i) => ['width' => (int) $i], $widths);
-
-        return $this;
+        $this->sources = new ImageSetSources($preparedConfig, $factory);
     }
 
     public function data(): array
     {
-        return $this->data;
+        return [
+            'sources' => $this->sources->get(),
+            'lqip' => $this->sources->lqip(),
+        ];
     }
 
     public function toArray(): array
     {
         return [
-            'sizes' => $this->data['sizes'],
-            'srcset' => array_map(function ($item) {
-                $item['image'] = $item['image']->toArray();
-                return $item;
-            }, $this->data['srcset']),
-            'lqip' => $this->data['lqip']->toArray(),
+            'sources' => $this->sources->toArray(),
+            'lqip' => $this->sources->lqip()->toArray(),
         ];
     }
 
