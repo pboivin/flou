@@ -22,7 +22,7 @@ class ImageSetConfig
         if (isset($config['image'])) {
             return $this->acceptConfig([
                 'image' => $config['image'],
-                'widths' => array_map(fn($i) => (int) $i['width'], $config['sources']),
+                'widths' => array_map(fn ($i) => (int) $i['width'], $config['sources']),
             ]);
         }
 
@@ -39,7 +39,11 @@ class ImageSetConfig
     {
         if (isset($config['image'])) {
             return $this->validateItems([$config]);
-        } elseif (is_array($config[0] ?? false)) {
+        }
+
+        $first = array_values($config)[0] ?? null;
+
+        if (is_array($first)) {
             return $this->validateItems($config);
         }
 
