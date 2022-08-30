@@ -38,26 +38,27 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
 
-        $srcset = $this->data['srcset'];
+        $output = [];
 
-        $sources = [];
-        $end = end($srcset);
-        $endWidth = 0;
+        foreach ($this->data['sources'] as $source) {
+            $attrs = [];
 
-        foreach ($srcset as $src) {
-            $media =
-                $src === $end ? "(min-width: {$endWidth}px)" : "(max-width: {$src['width']}px)";
+            if ($source['media'] ?? false) {
+                $attrs['media'] = $source['media'];
+            }
 
-            $sources[] = $this->htmlTag('source', [
-                'media' => $src['media'] ?? $media,
-                'data-srcset' => $src['image']->cached()->url(),
-            ]);
+            if ($source['sizes'] ?? false) {
+                $attrs['data-sizes'] = $source['sizes'];
+            }
 
-            $endWidth = $src['width'] + 1;
+            $attrs['data-srcset'] = $this->getSrcset($source);
+
+            $output[] = $this->htmlTag('source', $attrs);
         }
 
-        $sources[] = $this->htmlTag('img', $attributes);
-        $picture = $this->htmlWrap('picture', [], implode('', $sources));
+        $output[] = $this->htmlTag('img', $attributes);
+
+        $picture = $this->htmlWrap('picture', [], implode('', $output));
         $picture = $this->handlePaddingTop($picture);
         $picture = $this->handleWrapper($picture);
 
@@ -100,13 +101,15 @@ class ImageSetRender extends ImgRenderable
 
     protected function getSrcset($source): string
     {
+        $includeWidth = count($source['srcset']) > 1;
+
         $srcset = [];
 
         foreach ($source['srcset'] as $item) {
             $url = $item['image']->cached()->url();
             $width = $item['width'];
 
-            $srcset[] = "{$url} {$width}w";
+            $srcset[] = "{$url}" . ($includeWidth ? " {$width}w" : '');
         }
 
         return implode(', ', $srcset);
