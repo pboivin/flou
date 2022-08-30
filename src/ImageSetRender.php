@@ -93,8 +93,8 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $noScript->main()->width();
         $attributes['height'] = $noScript->main()->height();
         $attributes['src'] = $noScript->main()->url();
-        $attributes['srcset'] = $this->getSrcset($this->data['sources'][0]);
-        $attributes['sizes'] = $this->getSizes($this->data['sources'][0]);
+        $attributes['srcset'] = $noScript->getSrcset($noScript->data['sources'][0]);
+        $attributes['sizes'] = $noScript->getSizes($noScript->data['sources'][0]);
 
         return $noScript->renderImg($attributes);
     }
