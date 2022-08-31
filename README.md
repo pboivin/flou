@@ -372,7 +372,7 @@ You can customize the default render options for all images in the `ImageFactory
 $flou = new ImageFactory([
     // ...
     'renderOptions' => [
-        'aspectRatio' => 16 / 9,
+        'aspectRatio' => true,
         'wrapper' => true,
         'base64Lqip' => true,
         // ...
@@ -467,8 +467,8 @@ echo $imageSet
                /images/cache/01.jpg/1eac615f1a50f20c434e5944225bdd4f.jpg 1300w, 
                /images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg 1700w" 
   data-sizes="(max-width: 500px) 100vw, 50vw"
-  width="3840" 
-  height="2160" 
+  width="1700" 
+  height="956" 
 >
 ```
 </details>
@@ -489,17 +489,17 @@ With a tweak in configuration, `imageSet()` can handle multiple source images:
 
 ```php
 $imageSet = $flou->imageSet([
-    'sources' => [
-        [
-            'image' => 'portrait.jpg',
-            'width' => '1023',
-            'media' => '(max-width: 1023px)',
-        ],
-        [
-            'image' => 'landscape.jpg',
-            'width' => '1024',
-            'media' => '(min-width: 1024px)',
-        ],
+    [
+        'image' => 'portrait.jpg',
+        'media' => '(max-width: 1023px)',
+        'sizes' => '100vw',
+        'widths' => [400, 800, 1200],
+    ],
+    [
+        'image' => 'landscape.jpg',
+        'media' => '(min-width: 1024px)',
+        'sizes' => '66vw',
+        'widths' => [800, 1200, 1600],
     ],
 ]);
 ```
@@ -509,7 +509,6 @@ Then, the `picture()` method is used to render a `picture` element:
 ```php
 echo $imageSet
         ->render()
-        ->useAspectRatio()
         ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
 ```
 
@@ -518,22 +517,27 @@ echo $imageSet
 
 ```html
 <picture>
-  <source 
-    media="(max-width: 1023px)" 
-    data-srcset="/images/cache/portrait.jpg/1422c06dea2257858f6437b9675fba1c.jpg"
+  <source
+    media="(max-width: 1023px)"
+    data-sizes="100vw"
+    data-srcset="/images/cache/portrait.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg 400w,
+                 /images/cache/portrait.jpg/1422c06dea2257858f6437b9675fba1c.jpg 800w,
+                 /images/cache/portrait.jpg/de828e8798017be816f79e131e41dcc9.jpg 1200w"
   >
   <source 
     media="(min-width: 1024px)" 
-    data-srcset="/images/cache/landscape.jpg/1e147b93856eef676f00989ba28365f1.jpg"
+    data-sizes="66vw" 
+    data-srcset="/images/cache/landscape.jpg/c6f9c52bea237b64cc98fc9f5f3f15c6.jpg 800w,
+                 /images/cache/landscape.jpg/fcc882305b523e823c7a24df05045c5a.jpg 1200w,
+                 /images/cache/landscape.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg 1600w"
   >
-  <img 
-    class="lazyload my-image" 
-    alt="Lorem ipsum" 
-    style="aspect-ratio: 1.77777778; object-fit: cover; object-position: center;" 
-    src="/images/cache/landscape.jpg/23a733056cc32e360e9cdef3e0be8fb4.jpg" 
-    data-src="/images/cache/landscape.jpg/1e147b93856eef676f00989ba28365f1.jpg" 
-    width="1024" 
-    height="576"
+  <img
+    class="lazyload my-image"
+    alt="Lorem ipsum"
+    src="/images/cache/landscape.jpg/66d1d4a938d99f2b0234e08008af09a8.gif"
+    data-src="/images/cache/landscape.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg"
+    width="1600"
+    height="900"
   >
 </picture>
 ```
@@ -618,7 +622,6 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 ```html
 <style>
     .my-image {
-        max-width: 1024px;
         width: 100%;
         height: auto;
         aspect-ratio: calc(3 / 4);
@@ -628,6 +631,7 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 
     @media screen and (min-width: 1024px) {
         .my-image {
+            max-width: 66vw;
             aspect-ratio: calc(16 / 9);
         }
     }
@@ -638,17 +642,17 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 
 ```php
 <?= $flou->imageSet([
-        'sources' => [
-            [
-                'image' => 'portrait.jpg',
-                'width' => '1023',
-                'media' => '(max-width: 1023px)',
-            ],
-            [
-                'image' => 'landscape.jpg',
-                'width' => '1024',
-                'media' => '(min-width: 1024px)',
-            ],
+        [
+            'image' => 'portrait.jpg',
+            'media' => '(max-width: 1023px)',
+            'sizes' => '100vw',
+            'widths' => [400, 800, 1200],
+        ],
+        [
+            'image' => 'landscape.jpg',
+            'media' => '(min-width: 1024px)',
+            'sizes' => '66vw',
+            'widths' => [800, 1200, 1600],
         ],
     ])
     ->render()
