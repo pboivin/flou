@@ -352,55 +352,6 @@ class ImageSetRenderTest extends TestCase
         return [$imageSetRender, $image2, $lqip];
     }
 
-    protected function prepareForPictureWithSizes($options = [])
-    {
-        ($image1 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached1.jpg');
-
-        ($image2 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached2.jpg');
-
-        $image2
-            ->cached()
-            ->shouldReceive('width')
-            ->andReturn(1000)
-            ->shouldReceive('height')
-            ->andReturn(1000);
-
-        ($lqip = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('lqip.jpg');
-
-        ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
-            'sources' => [
-                [
-                    'image' => '01.jpg',
-                    'widths' => [500],
-                    'sizes' => '50vw',
-                    'media' => '(max-width: 500px)',
-                    'srcset' => [['image' => $image1, 'width' => 500]],
-                ],
-                [
-                    'image' => 'source.jpg',
-                    'widths' => [1000],
-                    'sizes' => '50vw',
-                    'media' => '(min-width: 501px)',
-                    'srcset' => [['image' => $image2, 'width' => 1000]],
-                ],
-            ],
-            'lqip' => $lqip,
-        ]);
-
-        $imageSetRender = new ImageSetRender($set, $options);
-
-        return [$imageSetRender, $image2, $lqip];
-    }
-
     protected function prepareForPictureWidths($options = [])
     {
         ($image1 = $this->getImage())
