@@ -17,9 +17,11 @@ class ImageSetRender extends ImgRenderable
 
     public function main(): ImageFile
     {
-        $source = end($this->data['srcset']);
+        $source = end($this->data['sources']);
 
-        return $source['image']->cached();
+        $item = end($source['srcset']);
+
+        return $item['image']->cached();
     }
 
     public function lqip(): ImageFile
@@ -36,26 +38,27 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
 
-        $srcset = $this->data['srcset'];
+        $output = [];
 
-        $sources = [];
-        $end = end($srcset);
-        $endWidth = 0;
+        foreach ($this->data['sources'] as $source) {
+            $attrs = [];
 
-        foreach ($srcset as $src) {
-            $media =
-                $src === $end ? "(min-width: {$endWidth}px)" : "(max-width: {$src['width']}px)";
+            if ($source['media'] ?? false) {
+                $attrs['media'] = $source['media'];
+            }
 
-            $sources[] = $this->htmlTag('source', [
-                'media' => $src['media'] ?? $media,
-                'data-srcset' => $src['image']->cached()->url(),
-            ]);
+            if ($source['sizes'] ?? false) {
+                $attrs['data-sizes'] = $source['sizes'];
+            }
 
-            $endWidth = $src['width'] + 1;
+            $attrs['data-srcset'] = $this->getSrcset($source);
+
+            $output[] = $this->htmlTag('source', $attrs);
         }
 
-        $sources[] = $this->htmlTag('img', $attributes);
-        $picture = $this->htmlWrap('picture', [], implode('', $sources));
+        $output[] = $this->htmlTag('img', $attributes);
+
+        $picture = $this->htmlWrap('picture', [], implode('', $output));
         $picture = $this->handlePaddingTop($picture);
         $picture = $this->handleWrapper($picture);
 
@@ -70,8 +73,8 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
         $attributes['data-src'] = $this->main()->url();
-        $attributes['data-srcset'] = $this->getSrcset();
-        $attributes['data-sizes'] = $this->data['sizes'];
+        $attributes['data-srcset'] = $this->getSrcset($this->data['sources'][0]);
+        $attributes['data-sizes'] = $this->getSizes($this->data['sources'][0]);
 
         return $this->renderImg($attributes);
     }
@@ -90,23 +93,30 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $noScript->main()->width();
         $attributes['height'] = $noScript->main()->height();
         $attributes['src'] = $noScript->main()->url();
-        $attributes['srcset'] = $noScript->getSrcset();
-        $attributes['sizes'] = $noScript->data['sizes'];
+        $attributes['srcset'] = $noScript->getSrcset($noScript->data['sources'][0]);
+        $attributes['sizes'] = $noScript->getSizes($noScript->data['sources'][0]);
 
         return $noScript->renderImg($attributes);
     }
 
-    protected function getSrcset(): string
+    protected function getSrcset($source): string
     {
+        $includeWidth = count($source['srcset']) > 1;
+
         $srcset = [];
 
-        foreach ($this->data['srcset'] as $source) {
-            $url = $source['image']->cached()->url();
-            $width = $source['width'];
+        foreach ($source['srcset'] as $item) {
+            $url = $item['image']->cached()->url();
+            $width = $item['width'];
 
-            $srcset[] = "{$url} {$width}w";
+            $srcset[] = "{$url}" . ($includeWidth ? " {$width}w" : '');
         }
 
         return implode(', ', $srcset);
+    }
+
+    protected function getSizes($source): string
+    {
+        return $source['sizes'] ?? ImageSet::DEFAULT_SIZES_VALUE;
     }
 }
