@@ -43,6 +43,10 @@ class ImageSetRender extends ImgRenderable
         foreach ($this->data['sources'] as $source) {
             $attrs = [];
 
+            if ($source['format'] ?? false) {
+                $attrs['type'] = ImageFormats::getType($source['format']);
+            }
+
             if ($source['media'] ?? false) {
                 $attrs['media'] = $source['media'];
             }

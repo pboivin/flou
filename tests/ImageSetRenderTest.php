@@ -177,6 +177,31 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_render_picture_formats()
+    {
+        [$imageSetRender, $src] = $this->prepareForPictureFormats();
+
+        $src->cached()
+            ->shouldReceive('ratio')
+            ->andReturn(1);
+
+        $output = $imageSetRender->picture([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<picture >' .
+                '<source type="image/webp" media="(max-width: 1023px)" data-sizes="66vw" data-srcset="cached1.jpg 400w, cached1.jpg 800w">' .
+                '<source type="image/jpeg" media="(max-width: 1023px)" data-sizes="66vw" data-srcset="cached1.jpg 400w, cached1.jpg 800w">' .
+                '<source type="image/webp" media="(min-width: 1024px)" data-sizes="66vw" data-srcset="cached2.jpg 1200w, cached2.jpg 1600w">' .
+                '<source type="image/jpeg" media="(min-width: 1024px)" data-sizes="66vw" data-srcset="cached2.jpg 1200w, cached2.jpg 1600w">' .
+                '<img class="lazyload test" alt="This is a test" src="lqip.jpg" data-src="cached2.jpg" width="1000" height="1000">' .
+                '</picture>',
+            $output
+        );
+    }
+
     public function test_can_render_picture_with_options()
     {
         [$imageSetRender, $src] = $this->prepareForPicture();
@@ -338,7 +363,7 @@ class ImageSetRenderTest extends TestCase
                     'srcset' => [['image' => $image1, 'width' => 500]],
                 ],
                 [
-                    'image' => 'source.jpg',
+                    'image' => '02.jpg',
                     'widths' => [1000],
                     'media' => '(min-width: 501px)',
                     'srcset' => [['image' => $image2, 'width' => 1000]],
@@ -389,10 +414,89 @@ class ImageSetRenderTest extends TestCase
                     ],
                 ],
                 [
-                    'image' => 'source.jpg',
+                    'image' => '02.jpg',
                     'widths' => [1200, 1600],
                     'media' => '(min-width: 1024px)',
                     'sizes' => '66vw',
+                    'srcset' => [
+                        ['image' => $image2, 'width' => 1200],
+                        ['image' => $image2, 'width' => 1600],
+                    ],
+                ],
+            ],
+            'lqip' => $lqip,
+        ]);
+
+        $imageSetRender = new ImageSetRender($set, $options);
+
+        return [$imageSetRender, $image2, $lqip];
+    }
+
+    protected function prepareForPictureFormats($options = [])
+    {
+        ($image1 = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached1.jpg');
+
+        ($image2 = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('cached2.jpg');
+
+        $image2
+            ->cached()
+            ->shouldReceive('width')
+            ->andReturn(1000)
+            ->shouldReceive('height')
+            ->andReturn(1000);
+
+        ($lqip = $this->getImage())
+            ->cached()
+            ->shouldReceive('url')
+            ->andReturn('lqip.jpg');
+
+        ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
+            'sources' => [
+                [
+                    'image' => '01.jpg',
+                    'widths' => [400, 800],
+                    'media' => '(max-width: 1023px)',
+                    'sizes' => '66vw',
+                    'format' => 'webp',
+                    'srcset' => [
+                        ['image' => $image1, 'width' => 400],
+                        ['image' => $image1, 'width' => 800],
+                    ],
+                ],
+                [
+                    'image' => '01.jpg',
+                    'widths' => [400, 800],
+                    'media' => '(max-width: 1023px)',
+                    'sizes' => '66vw',
+                    'format' => 'jpg',
+                    'srcset' => [
+                        ['image' => $image1, 'width' => 400],
+                        ['image' => $image1, 'width' => 800],
+                    ],
+                ],
+                [
+                    'image' => '02.jpg',
+                    'widths' => [1200, 1600],
+                    'media' => '(min-width: 1024px)',
+                    'sizes' => '66vw',
+                    'format' => 'webp',
+                    'srcset' => [
+                        ['image' => $image2, 'width' => 1200],
+                        ['image' => $image2, 'width' => 1600],
+                    ],
+                ],
+                [
+                    'image' => '02.jpg',
+                    'widths' => [1200, 1600],
+                    'media' => '(min-width: 1024px)',
+                    'sizes' => '66vw',
+                    'format' => 'jpg',
                     'srcset' => [
                         ['image' => $image2, 'width' => 1200],
                         ['image' => $image2, 'width' => 1600],
