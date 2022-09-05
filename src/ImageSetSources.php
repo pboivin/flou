@@ -20,10 +20,17 @@ class ImageSetSources
     protected function prepareSource(array $source): array
     {
         $srcset = [];
+        $glideParams = [];
+
+        if (isset($source['format'])) {
+            $glideParams['fm'] = $source['format'];
+        }
 
         foreach ($source['widths'] as $w) {
+            $glideParams['w'] = $w;
+
             $srcset[] = [
-                'image' => $this->factory->image($source['image'], ['w' => $w]),
+                'image' => $this->factory->image($source['image'], $glideParams),
                 'width' => $w,
             ];
         }
