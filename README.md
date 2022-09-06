@@ -547,6 +547,58 @@ echo $imageSet
 See also: [Art-directed `picture` element example](#art-directed-picture-element)
 
 
+#### Multiple formats (`picture` element)
+
+Similarly, `imageSet()` can also handle multiple image formats for each source:
+
+```php
+$imageSet = $flou->imageSet([
+    'image' => 'portrait.jpg',
+    'sizes' => '100vw',
+    'widths' => [400, 800, 1200, 1600],
+    'formats' => ['webp', 'jpg'],
+]);
+
+echo $imageSet
+        ->render()
+        ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
+```
+
+<details>
+<summary>See HTML Output</summary>
+
+```html
+<picture>
+  <source
+    type="image/webp"
+    data-srcset="/images/cache/01.jpg/7c7086baa60bb4b3876b14dd577fa9e8.webp 400w,
+                 /images/cache/01.jpg/49ada5db20e72d539b611e5d17640d2f.webp 800w,
+                 /images/cache/01.jpg/cb48c273b44bd0f00155d4932231fe28.webp 1200w,
+                 /images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.webp 1600w"
+    data-sizes="100vw"
+  >
+  <source
+    type="image/jpeg"
+    data-srcset="/images/cache/01.jpg/27e8a3f7fb4abe60654117a34f2007e1.jpg 400w,
+                 /images/cache/01.jpg/f319ea155d0009a7e842f50fcc020fe3.jpg 800w,
+                 /images/cache/01.jpg/cfdad3b69ae3a15ba479aa85868e75f3.jpg 1200w,
+                 /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.webp 1600w"
+    data-sizes="100vw"
+  >
+  <img
+    class="lazyload w-full"
+    alt="Lorem ipsum"
+    src="/images/cache/01.jpg/bd0dc309cfc3b71731b2e2df3d6e130b.gif"
+    data-src="/images/cache/01.jpg/cfdad3b69ae3a15ba479aa85868e75f3.jpg"
+    width="1600"
+    height="900"
+  >
+</picture>
+```
+</details>
+<br>
+
+
 ## Examples
 
 
