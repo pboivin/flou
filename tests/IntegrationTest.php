@@ -89,7 +89,7 @@ class IntegrationTest extends TestCase
         $output = $set->render()->picture();
 
         $this->assertEquals(
-            '<picture ><source media="(max-width: 1023px)" data-srcset="/images/cache/cached.jpg 400w, /images/cache/cached.jpg 800w"><source media="(min-width: 1024px)" data-srcset="/images/cache/cached.jpg 1200w, /images/cache/cached.jpg 1600w"><img class="lazyload" alt="" src="/images/cache/cached.jpg" data-src="/images/cache/cached.jpg" width="123" height="123"></picture>',
+            '<picture><source media="(max-width: 1023px)" data-srcset="/images/cache/cached.jpg 400w, /images/cache/cached.jpg 800w"><source media="(min-width: 1024px)" data-srcset="/images/cache/cached.jpg 1200w, /images/cache/cached.jpg 1600w"><img class="lazyload" alt="" src="/images/cache/cached.jpg" data-src="/images/cache/cached.jpg" width="123" height="123"></picture>',
             $output
         );
     }
