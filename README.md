@@ -552,7 +552,7 @@ Similarly, `imageSet()` can also handle multiple image formats for each source:
 
 ```php
 $imageSet = $flou->imageSet([
-    'image' => 'portrait.jpg',
+    'image' => '01.jpg',
     'sizes' => '100vw',
     'widths' => [400, 800, 1200, 1600],
     'formats' => ['webp', 'jpg'],
@@ -596,6 +596,26 @@ echo $imageSet
 ```
 </details>
 <br>
+
+
+#### Custom Glide parameters
+
+You can provide an array of base Glide parameters as a second argument to `imageSet()`:
+
+```php
+$imageSet = $flou->imageSet([
+    'image' => '01.jpg',
+    'sizes' => '100vw',
+    'widths' => [400, 800, 1200, 1600],
+    'formats' => ['webp', 'jpg'],
+], [
+    'q' => 80,
+]);
+```
+
+You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
+
+Note: You may use all parameters except `w` and `fm`, which are overriden according to the `widths` and `formats` configuration above.
 
 
 ## Examples
