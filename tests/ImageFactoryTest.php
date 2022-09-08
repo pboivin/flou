@@ -145,4 +145,35 @@ class ImageFactoryTest extends TestCase
 
         $this->assertTrue($set->render() instanceof ImageSetRender);
     }
+
+    public function test_generates_imageset_with_custom_glide_params()
+    {
+        $flou = $this->getFactory();
+
+        $flou
+            ->glideServer()
+            ->shouldReceive('makeImage')
+            ->with('source.jpg', ['filt' => 'greyscale', 'w' => 400])
+            ->andReturn('cached.jpg')
+            ->shouldReceive('makeImage')
+            ->with('source.jpg', ['filt' => 'greyscale', 'w' => 800])
+            ->andReturn('cached.jpg')
+            ->shouldReceive('makeImage')
+            ->with('source.jpg', ['h' => 10, 'fm' => 'gif'])
+            ->andReturn('cached.jpg');
+
+        $set = $flou->imageSet(
+            [
+                'image' => 'source.jpg',
+                'widths' => [400, 800],
+            ],
+            [
+                'filt' => 'greyscale',
+            ]
+        );
+
+        $this->assertTrue($set instanceof ImageSet);
+
+        $this->assertTrue($set->render() instanceof ImageSetRender);
+    }
 }
