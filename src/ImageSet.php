@@ -47,6 +47,6 @@ class ImageSet
 
     public function render(): ImageSetRender
     {
-        return new ($this->renderClass)($this, $this->renderOptions);
+        return new $this->renderClass($this, $this->renderOptions);
     }
 }
