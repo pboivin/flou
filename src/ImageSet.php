@@ -12,11 +12,14 @@ class ImageSet
 
     protected $sources;
 
-    public function __construct(protected array $config, protected ImageFactory $factory)
-    {
+    public function __construct(
+        protected array $config,
+        protected ImageFactory $factory,
+        protected ?array $glideParams = null
+    ) {
         $preparedConfig = (new ImageSetConfig($config))->get();
 
-        $this->sources = new ImageSetSources($preparedConfig, $factory);
+        $this->sources = new ImageSetSources($preparedConfig, $factory, $glideParams);
     }
 
     public function data(): array

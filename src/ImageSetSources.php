@@ -8,8 +8,11 @@ class ImageSetSources
 
     protected $preparedSources = [];
 
-    public function __construct(protected array $config, protected ImageFactory $factory)
-    {
+    public function __construct(
+        protected array $config,
+        protected ImageFactory $factory,
+        protected ?array $glideParams = null
+    ) {
         foreach ($config as $source) {
             $this->preparedSources[] = $this->prepareSource($source);
 
@@ -20,7 +23,7 @@ class ImageSetSources
     protected function prepareSource(array $source): array
     {
         $srcset = [];
-        $glideParams = [];
+        $glideParams = $this->glideParams ?: [];
 
         if (isset($source['format'])) {
             $glideParams['fm'] = $source['format'];
