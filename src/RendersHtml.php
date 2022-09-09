@@ -9,16 +9,20 @@ trait RendersHtml
         array $attributes = [],
         bool $selfClosing = false
     ): string {
-        if ($selfClosing === true) {
-            return "<{$tag} " . $this->collectHtmlAttributes($attributes) . ' />';
-        }
+        $finalAttributes = $this->collectHtmlAttributes($attributes);
+        $finalAttributes = $finalAttributes ? " $finalAttributes" : '';
 
-        return "<{$tag} " . $this->collectHtmlAttributes($attributes) . '>';
+        $end = $selfClosing ? ' /' : '';
+
+        return "<{$tag}{$finalAttributes}{$end}>";
     }
 
     protected function htmlWrap($tag, array $attributes = [], string $content = ''): string
     {
-        return "<{$tag} " . $this->collectHtmlAttributes($attributes) . ">{$content}</{$tag}>";
+        $finalAttributes = $this->collectHtmlAttributes($attributes);
+        $finalAttributes = $finalAttributes ? " $finalAttributes" : '';
+
+        return "<{$tag}{$finalAttributes}>{$content}</{$tag}>";
     }
 
     protected function collectHtmlAttributes(array $attributes = [])
