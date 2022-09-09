@@ -191,7 +191,7 @@ class ImageSetRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<picture >' .
+            '<picture>' .
                 '<source type="image/webp" media="(max-width: 1023px)" data-sizes="66vw" data-srcset="cached1.jpg 400w, cached1.jpg 800w">' .
                 '<source type="image/jpeg" media="(max-width: 1023px)" data-sizes="66vw" data-srcset="cached1.jpg 400w, cached1.jpg 800w">' .
                 '<source type="image/webp" media="(min-width: 1024px)" data-sizes="66vw" data-srcset="cached2.jpg 1200w, cached2.jpg 1600w">' .
