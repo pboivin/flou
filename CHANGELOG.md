@@ -1,5 +1,21 @@
 # Release Notes
 
+## [v1.4.0](https://github.com/pboivin/flou/compare/v1.3.0...v1.4.0) - 2022-09-09
+
+#### Added
+
+- Support image formats configuration (`ImageSet`)
+- Support custom Glide parameters (`ImageSet`)
+
+#### Changed
+
+- Cleanup HTML output of wrapper elements (`RendersHtml`)
+
+#### Chores
+
+- Update README examples
+
+
 ## [v1.3.0](https://github.com/pboivin/flou/compare/v1.2.0...v1.3.0) - 2022-09-01
 
 #### Added
