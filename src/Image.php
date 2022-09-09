@@ -34,7 +34,7 @@ class Image
 
     public function render(): ImageRender
     {
-        return new ($this->renderClass)($this, $this->renderOptions);
+        return new $this->renderClass($this, $this->renderOptions);
     }
 
     public function toArray(): array

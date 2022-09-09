@@ -198,9 +198,9 @@ class ImageFactory
         return $image;
     }
 
-    public function imageSet(array $config): ImageSet
+    public function imageSet(array $config, ?array $glideParams = null): ImageSet
     {
-        $set = new ImageSet($config, $this);
+        $set = new ImageSet($config, $this, $glideParams);
 
         if ($this->renderOptions) {
             $set->setRenderOptions($this->renderOptions);

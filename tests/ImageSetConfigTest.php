@@ -142,4 +142,77 @@ class ImageSetConfigTest extends TestCase
             $imageSetConfig->get()
         );
     }
+
+    public function test_converts_single_image_config_with_formats()
+    {
+        $imageSetConfig = new ImageSetConfig([
+            'image' => 'test.jpg',
+            'widths' => [400, 800, 1200],
+            'formats' => ['webp', 'jpg'],
+        ]);
+
+        $this->assertEquals(
+            [
+                [
+                    'image' => 'test.jpg',
+                    'widths' => [400, 800, 1200],
+                    'format' => 'webp',
+                ],
+                [
+                    'image' => 'test.jpg',
+                    'widths' => [400, 800, 1200],
+                    'format' => 'jpg',
+                ],
+            ],
+            $imageSetConfig->get()
+        );
+    }
+
+    public function test_converts_multi_image_config_with_formats()
+    {
+        $imageSetConfig = new ImageSetConfig([
+            [
+                'image' => '01.jpg',
+                'widths' => [400, 800],
+                'media' => '(max-width: 1023px)',
+                'formats' => ['webp', 'jpg'],
+            ],
+            [
+                'image' => '02.jpg',
+                'widths' => [1200, 1600],
+                'media' => '(min-width: 1024px)',
+                'formats' => ['webp', 'jpg'],
+            ],
+        ]);
+
+        $this->assertEquals(
+            [
+                [
+                    'image' => '01.jpg',
+                    'widths' => [400, 800],
+                    'media' => '(max-width: 1023px)',
+                    'format' => 'webp',
+                ],
+                [
+                    'image' => '01.jpg',
+                    'widths' => [400, 800],
+                    'media' => '(max-width: 1023px)',
+                    'format' => 'jpg',
+                ],
+                [
+                    'image' => '02.jpg',
+                    'widths' => [1200, 1600],
+                    'media' => '(min-width: 1024px)',
+                    'format' => 'webp',
+                ],
+                [
+                    'image' => '02.jpg',
+                    'widths' => [1200, 1600],
+                    'media' => '(min-width: 1024px)',
+                    'format' => 'jpg',
+                ],
+            ],
+            $imageSetConfig->get()
+        );
+    }
 }

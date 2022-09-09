@@ -52,6 +52,8 @@ class ImageSetConfig
 
     protected function validateItems(array $items): array
     {
+        $validItems = [];
+
         foreach ($items as $item) {
             if (!isset($item['widths'])) {
                 throw new InvalidArgumentException(
@@ -64,9 +66,26 @@ class ImageSetConfig
                     "Missing required 'media' argument for multiple images."
                 );
             }
+
+            $this->handleFormats($item, $validItems);
         }
 
-        return $items;
+        return $validItems;
+    }
+
+    protected function handleFormats(array $item, array &$validItems): void
+    {
+        if (isset($item['formats'])) {
+            foreach ($item['formats'] as $format) {
+                $i = $item;
+                $i['format'] = $format;
+                unset($i['formats']);
+
+                $validItems[] = $i;
+            }
+        } else {
+            $validItems[] = $item;
+        }
     }
 
     public function get(): array

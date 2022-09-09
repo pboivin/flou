@@ -146,7 +146,7 @@ $image = $flou->image('01.jpg', [
 
 You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
 
-As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to that. You may generate as many transformation as you need from the source image:
+As you can see, the default parameters are used to generate LQIP from source images, but you are not restricted to that. You may generate as many transformations as you need from the source image:
 
 ```php
 $phone = $flou->image('01.jpg', ['w' => 500]);
@@ -154,7 +154,7 @@ $tablet = $flou->image('01.jpg', ['w' => 900]);
 $desktop = $flou->image('01.jpg', ['w' => 1300]);
 ```
 
-If you're interested in responsive images with `srcset`, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
+If you're interested in responsive images using the `srcset` attribute, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
 
 
 #### Default Glide parameters
@@ -231,7 +231,7 @@ echo $image
 <img 
   class="lazyload w-full" 
   alt="Lorem ipsum" 
-  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
+  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.gif" 
   data-src="/images/source/01.jpg" 
   width="3840" 
   height="2160"
@@ -331,7 +331,7 @@ The `ImageRender` object can be configured to optimize the HTML output:
       >
       <img 
         class="lazyload-lqip" 
-        src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg"
+        src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.gif"
       >
     </div>
     ```
@@ -354,7 +354,7 @@ The `ImageRender` object can be configured to optimize the HTML output:
     <img 
       class="lazyload w-full" 
       alt="Lorem ipsum" 
-      src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA7Q1JFQ..." 
+      src="data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH+EUNyZWF0Z..."
       data-src="/images/source/01.jpg" 
       width="2932" 
       height="2000"
@@ -366,7 +366,7 @@ The `ImageRender` object can be configured to optimize the HTML output:
 
 #### Default render options
 
-You can customize the default render options for all images in the `ImageFactory` configuration:
+You can set the default render options for all images in the `ImageFactory` configuration:
 
 ```php
 $flou = new ImageFactory([
@@ -451,7 +451,6 @@ echo $imageSet
         ->img(['class' => 'w-full', 'alt' => 'Lorem ipsum']);
 ```
 
-
 <details>
 <summary>See HTML Output</summary>
 
@@ -460,7 +459,7 @@ echo $imageSet
   class="lazyload w-full" 
   alt="Lorem ipsum" 
   style="aspect-ratio: 1.77777778; object-fit: cover; object-position: center;" 
-  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.jpg" 
+  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.gif" 
   data-src="/images/cache/01.jpg/b8648e93b40b56d5c5a78acc7a23e3d9.jpg" 
   data-srcset="/images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg 500w, 
                /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg 900w, 
@@ -545,6 +544,78 @@ echo $imageSet
 <br>
 
 See also: [Art-directed `picture` element example](#art-directed-picture-element)
+
+
+#### Multiple formats (`picture` element)
+
+Similarly, `imageSet()` can also handle multiple image formats for each source:
+
+```php
+$imageSet = $flou->imageSet([
+    'image' => '01.jpg',
+    'sizes' => '100vw',
+    'widths' => [400, 800, 1200, 1600],
+    'formats' => ['webp', 'jpg'],
+]);
+
+echo $imageSet
+        ->render()
+        ->picture(['class' => 'my-image', 'alt' => 'Lorem ipsum']);
+```
+
+<details>
+<summary>See HTML Output</summary>
+
+```html
+<picture>
+  <source
+    type="image/webp"
+    data-srcset="/images/cache/01.jpg/7c7086baa60bb4b3876b14dd577fa9e8.webp 400w,
+                 /images/cache/01.jpg/49ada5db20e72d539b611e5d17640d2f.webp 800w,
+                 /images/cache/01.jpg/cb48c273b44bd0f00155d4932231fe28.webp 1200w,
+                 /images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.webp 1600w"
+    data-sizes="100vw"
+  >
+  <source
+    type="image/jpeg"
+    data-srcset="/images/cache/01.jpg/27e8a3f7fb4abe60654117a34f2007e1.jpg 400w,
+                 /images/cache/01.jpg/f319ea155d0009a7e842f50fcc020fe3.jpg 800w,
+                 /images/cache/01.jpg/cfdad3b69ae3a15ba479aa85868e75f3.jpg 1200w,
+                 /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.webp 1600w"
+    data-sizes="100vw"
+  >
+  <img
+    class="lazyload w-full"
+    alt="Lorem ipsum"
+    src="/images/cache/01.jpg/bd0dc309cfc3b71731b2e2df3d6e130b.gif"
+    data-src="/images/cache/01.jpg/cfdad3b69ae3a15ba479aa85868e75f3.jpg"
+    width="1600"
+    height="900"
+  >
+</picture>
+```
+</details>
+<br>
+
+
+#### Custom Glide parameters
+
+You can provide an array of base Glide parameters as a second argument to `imageSet()`:
+
+```php
+$imageSet = $flou->imageSet([
+    'image' => '01.jpg',
+    'sizes' => '100vw',
+    'widths' => [400, 800, 1200, 1600],
+    'formats' => ['webp', 'jpg'],
+], [
+    'q' => 80,
+]);
+```
+
+You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
+
+Note: You may use all parameters except `w` and `fm`, which are overriden according to the `widths` and `formats` configuration above.
 
 
 ## Examples

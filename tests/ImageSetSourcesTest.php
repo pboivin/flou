@@ -12,9 +12,12 @@ class ImageSetSourcesTest extends TestCase
 
     public function test_handle_single_image()
     {
-        ($image = $this->mockImage())->shouldReceive('toArray')->andReturn(['_image_array_']);
-
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        $this->expectWidths($factory = $this->mockFactory(), [
+            [
+                'image' => 'test.jpg',
+                'widths' => [400, 800, 1200],
+            ],
+        ]);
 
         $sources = new ImageSetSources(
             [
@@ -35,9 +38,16 @@ class ImageSetSourcesTest extends TestCase
 
     public function test_handle_multiple_images()
     {
-        ($image = $this->mockImage())->shouldReceive('toArray')->andReturn(['_image_array_']);
-
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        $this->expectWidths($factory = $this->mockFactory(), [
+            [
+                'image' => '01.jpg',
+                'widths' => [400, 800],
+            ],
+            [
+                'image' => '02.jpg',
+                'widths' => [1200, 1600],
+            ],
+        ]);
 
         $sources = new ImageSetSources(
             [
@@ -70,9 +80,12 @@ class ImageSetSourcesTest extends TestCase
 
     public function test_preserves_optional_sizes_property()
     {
-        ($image = $this->mockImage())->shouldReceive('toArray')->andReturn(['_image_array_']);
-
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        $this->expectWidths($factory = $this->mockFactory(), [
+            [
+                'image' => 'test.jpg',
+                'widths' => [400, 800, 1200],
+            ],
+        ]);
 
         $sources = new ImageSetSources(
             [
@@ -90,6 +103,49 @@ class ImageSetSourcesTest extends TestCase
         $this->assertEquals('66vw', $data['sizes']);
     }
 
+    public function test_handle_image_formats()
+    {
+        $this->expectFormats($factory = $this->mockFactory(), [
+            [
+                'image' => 'test.jpg',
+                'widths' => [400, 800, 1200],
+                'format' => 'webp',
+            ],
+            [
+                'image' => 'test.jpg',
+                'widths' => [400, 800, 1200],
+                'format' => 'jpg',
+            ],
+        ]);
+
+        $sources = new ImageSetSources(
+            [
+                [
+                    'image' => 'test.jpg',
+                    'widths' => [400, 800, 1200],
+                    'format' => 'webp',
+                ],
+                [
+                    'image' => 'test.jpg',
+                    'widths' => [400, 800, 1200],
+                    'format' => 'jpg',
+                ],
+            ],
+            $factory
+        );
+
+        $data = $sources->toArray();
+        $this->assertEquals(2, count($data));
+
+        $this->assertEquals('test.jpg', $data[0]['image']);
+        $this->assertEquals([400, 800, 1200], $data[0]['widths']);
+        $this->assertSrcSet([400, 800, 1200], $data[0]['srcset']);
+
+        $this->assertEquals('test.jpg', $data[1]['image']);
+        $this->assertEquals([400, 800, 1200], $data[1]['widths']);
+        $this->assertSrcSet([400, 800, 1200], $data[1]['srcset']);
+    }
+
     private function assertSrcSet($widths, $data)
     {
         $this->assertEquals(count($widths), count($data));
@@ -102,6 +158,39 @@ class ImageSetSourcesTest extends TestCase
                 ],
                 $data[$i]
             );
+        }
+    }
+
+    private function expectWidths($factory, $config)
+    {
+        ($image = $this->mockImage())->shouldReceive('toArray')->andReturn(['_image_array_']);
+
+        foreach ($config as $item) {
+            foreach ($item['widths'] as $width) {
+                $factory
+                    ->shouldReceive('image')
+                    ->with($item['image'], [
+                        'w' => $width,
+                    ])
+                    ->andReturn($image);
+            }
+        }
+    }
+
+    private function expectFormats($factory, $config)
+    {
+        ($image = $this->mockImage())->shouldReceive('toArray')->andReturn(['_image_array_']);
+
+        foreach ($config as $item) {
+            foreach ($item['widths'] as $width) {
+                $factory
+                    ->shouldReceive('image')
+                    ->with($item['image'], [
+                        'w' => $width,
+                        'fm' => $item['format'],
+                    ])
+                    ->andReturn($image);
+            }
         }
     }
 }
