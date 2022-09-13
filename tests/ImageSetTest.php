@@ -14,12 +14,13 @@ class ImageSetTest extends TestCase
 
     public function test_can_prepare_sources_with_single_image()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
 
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($prepared->image);
 
         $set = new ImageSet(
             [
@@ -52,30 +53,31 @@ class ImageSetTest extends TestCase
 
     public function test_can_prepare_sources_with_multiple_images()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg', 'cached4.jpg');
 
         ($factory = $this->mockFactory())
             ->shouldReceive('image')
             ->with('source1.jpg', ['w' => 400])
-            ->andReturn($image)
+            ->andReturn($prepared->image)
             ->shouldReceive('image')
             ->with('source1.jpg', ['w' => 800])
-            ->andReturn($image)
+            ->andReturn($prepared->image)
             ->shouldReceive('image')
             ->with('source2.jpg', ['w' => 1200])
-            ->andReturn($image)
+            ->andReturn($prepared->image)
             ->shouldReceive('image')
             ->with('source2.jpg', ['w' => 1600])
-            ->andReturn($image);
+            ->andReturn($prepared->image);
 
         // lqip
         $factory
             ->shouldReceive('image')
             ->with('source2.jpg')
-            ->andReturn($image);
+            ->andReturn($prepared->image);
 
         $set = new ImageSet(
             [
@@ -119,12 +121,13 @@ class ImageSetTest extends TestCase
 
     public function test_can_render_imageset()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
 
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($prepared->image);
 
         $set = new ImageSet(
             [
@@ -139,12 +142,13 @@ class ImageSetTest extends TestCase
 
     public function test_can_configure_render_class()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
 
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($prepared->image);
 
         $set = new ImageSet(
             [
@@ -161,22 +165,17 @@ class ImageSetTest extends TestCase
 
     public function test_can_export_to_array()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
 
-        $image
-            ->cached()
-            ->shouldReceive('toArray')
-            ->andReturn(['_cached' => true]);
+        $prepared->cachedMock->shouldReceive('toArray')->andReturn(['_cached' => true]);
 
-        $image
-            ->source()
-            ->shouldReceive('toArray')
-            ->andReturn(['_source' => true]);
+        $prepared->sourceMock->shouldReceive('toArray')->andReturn(['_source' => true]);
 
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($prepared->image);
 
         $set = new ImageSet(
             [
@@ -212,12 +211,13 @@ class ImageSetTest extends TestCase
 
     public function test_can_prepare_sources_with_single_image_legacy_configuration()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
 
-        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($image);
+        ($factory = $this->mockFactory())->shouldReceive('image')->andReturn($prepared->image);
 
         $set = new ImageSet(
             [
@@ -254,27 +254,28 @@ class ImageSetTest extends TestCase
 
     public function test_can_prepare_sources_with_multiple_images_legacy_configuration()
     {
-        ($image = $this->getImage())
-            ->cached()
+        $prepared = $this->prepareImage();
+
+        $prepared->cachedMock
             ->shouldReceive('url')
             ->andReturn('cached1.jpg', 'cached2.jpg', 'cached3.jpg');
 
         ($factory = $this->mockFactory())
             ->shouldReceive('image')
             ->with('source1.jpg', ['w' => 400])
-            ->andReturn($image)
+            ->andReturn($prepared->image)
             ->shouldReceive('image')
             ->with('source2.jpg', ['w' => 800])
-            ->andReturn($image)
+            ->andReturn($prepared->image)
             ->shouldReceive('image')
             ->with('source3.jpg', ['w' => 1200])
-            ->andReturn($image);
+            ->andReturn($prepared->image);
 
         // lqip
         $factory
             ->shouldReceive('image')
             ->with('source3.jpg')
-            ->andReturn($image);
+            ->andReturn($prepared->image);
 
         $set = new ImageSet(
             [

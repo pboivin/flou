@@ -91,15 +91,14 @@ class ImageFactoryTest extends TestCase
 
     public function test_generates_image_with_default_params()
     {
-        $flou = $this->getFactory();
+        $prepared = $this->prepareFactory();
 
-        $flou
-            ->glideServer()
+        $prepared->serverMock
             ->shouldReceive('makeImage')
             ->with('source.jpg', ImageFactory::DEFAULT_GLIDE_PARAMS)
             ->andReturn('cached.jpg');
 
-        $image = $flou->image('source.jpg');
+        $image = $prepared->factory->image('source.jpg');
 
         $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
         $this->assertEquals('/images/source/source.jpg', $image->source()->url());
@@ -109,15 +108,14 @@ class ImageFactoryTest extends TestCase
 
     public function test_generates_image_with_inline_glide_params()
     {
-        $flou = $this->getFactory();
+        $prepared = $this->prepareFactory();
 
-        $flou
-            ->glideServer()
+        $prepared->serverMock
             ->shouldReceive('makeImage')
             ->with('source.jpg', ['h' => 123])
             ->andReturn('cached.jpg');
 
-        $image = $flou->image('source.jpg', ['h' => 123]);
+        $image = $prepared->factory->image('source.jpg', ['h' => 123]);
 
         $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
         $this->assertEquals('/images/source/source.jpg', $image->source()->url());
@@ -125,14 +123,11 @@ class ImageFactoryTest extends TestCase
 
     public function test_generates_imageset()
     {
-        $flou = $this->getFactory();
+        $prepared = $this->prepareFactory();
 
-        $flou
-            ->glideServer()
-            ->shouldReceive('makeImage')
-            ->andReturn('cached.jpg');
+        $prepared->serverMock->shouldReceive('makeImage')->andReturn('cached.jpg');
 
-        $set = $flou->imageSet([
+        $set = $prepared->factory->imageSet([
             'image' => 'source.jpg',
             'sources' => [
                 'sm' => ['width' => 400],
@@ -148,10 +143,9 @@ class ImageFactoryTest extends TestCase
 
     public function test_generates_imageset_with_custom_glide_params()
     {
-        $flou = $this->getFactory();
+        $prepared = $this->prepareFactory();
 
-        $flou
-            ->glideServer()
+        $prepared->serverMock
             ->shouldReceive('makeImage')
             ->with('source.jpg', ['filt' => 'greyscale', 'w' => 400])
             ->andReturn('cached.jpg')
@@ -162,7 +156,7 @@ class ImageFactoryTest extends TestCase
             ->with('source.jpg', ['h' => 10, 'fm' => 'gif'])
             ->andReturn('cached.jpg');
 
-        $set = $flou->imageSet(
+        $set = $prepared->factory->imageSet(
             [
                 'image' => 'source.jpg',
                 'widths' => [400, 800],

@@ -13,9 +13,9 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_img()
     {
-        [$imageSetRender] = $this->prepareForImg();
+        $prepared = $this->prepareForImg();
 
-        $output = $imageSetRender->img([
+        $output = $prepared->imageSetRender->img([
             'class' => 'test',
             'alt' => 'This is a test',
             'data-custom' => 'custom',
@@ -29,13 +29,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_aspect_ratio()
     {
-        [$imageSetRender, $src] = $this->prepareForImg();
+        $prepared = $this->prepareForImg();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender->useAspectRatio()->img([
+        $output = $prepared->imageSetRender->useAspectRatio()->img([
             'class' => 'test',
             'alt' => 'This is a test',
             'data-custom' => 'custom',
@@ -49,13 +47,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_wrapper_element()
     {
-        [$imageSetRender, $src] = $this->prepareForImg();
+        $prepared = $this->prepareForImg();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender
+        $output = $prepared->imageSetRender
             ->useAspectRatio()
             ->useWrapper()
             ->img([
@@ -72,13 +68,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_padding_top_strategy()
     {
-        [$imageSetRender, $src] = $this->prepareForImg();
+        $prepared = $this->prepareForImg();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender
+        $output = $prepared->imageSetRender
             ->usePaddingTop()
             ->useWrapper()
             ->img([
@@ -95,13 +89,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_noscript_variation()
     {
-        [$imageSetRender, $src] = $this->prepareForImg();
+        $prepared = $this->prepareForImg();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender
+        $output = $prepared->imageSetRender
             ->usePaddingTop()
             ->useWrapper()
             ->noScript([
@@ -117,18 +109,15 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_using_base64_lqip()
     {
-        [$imageSetRender, $src, $lqip] = $this->prepareForImg();
+        $prepared = $this->prepareForImg();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $lqip
-            ->cached()
+        $prepared->_lqip->cachedMock
             ->shouldReceive('toBase64String')
             ->andReturn('_some_base64_encoded_string_');
 
-        $output = $imageSetRender->useBase64Lqip()->img([
+        $output = $prepared->imageSetRender->useBase64Lqip()->img([
             'class' => 'test',
             'alt' => 'This is a test',
         ]);
@@ -141,13 +130,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_picture()
     {
-        [$imageSetRender, $src] = $this->prepareForPicture();
+        $prepared = $this->prepareForPicture();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender->picture([
+        $output = $prepared->imageSetRender->picture([
             'class' => 'test',
             'alt' => 'This is a test',
         ]);
@@ -160,13 +147,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_picture_widths()
     {
-        [$imageSetRender, $src] = $this->prepareForPictureWidths();
+        $prepared = $this->prepareForPictureWidths();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender->picture([
+        $output = $prepared->imageSetRender->picture([
             'class' => 'test',
             'alt' => 'This is a test',
         ]);
@@ -179,13 +164,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_picture_formats()
     {
-        [$imageSetRender, $src] = $this->prepareForPictureFormats();
+        $prepared = $this->prepareForPictureFormats();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender->picture([
+        $output = $prepared->imageSetRender->picture([
             'class' => 'test',
             'alt' => 'This is a test',
         ]);
@@ -204,13 +187,11 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_render_picture_with_options()
     {
-        [$imageSetRender, $src] = $this->prepareForPicture();
+        $prepared = $this->prepareForPicture();
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageSetRender
+        $output = $prepared->imageSetRender
             ->useAspectRatio()
             ->usePaddingTop()
             ->useWrapper()
@@ -230,12 +211,12 @@ class ImageSetRenderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid option 'test'.");
 
-        [$imageSetRender] = $this->prepareForPicture(['test' => 'test']);
+        $this->prepareForPicture(['test' => 'test']);
     }
 
     public function test_accepts_valid_options()
     {
-        [$imageSetRender] = $this->prepareForPicture([
+        $prepared = $this->prepareForPicture([
             'baseClass' => 'base',
             'wrapperClass' => 'wrapper',
             'lqipClass' => 'lqip',
@@ -246,12 +227,12 @@ class ImageSetRenderTest extends TestCase
             'base64Lqip' => true,
         ]);
 
-        $this->assertTrue(!!$imageSetRender);
+        $this->assertTrue($prepared->imageSetRender instanceof ImageSetRender);
     }
 
     public function test_can_render_picture_using_options_array()
     {
-        [$imageSetRender, $src, $lqip] = $this->prepareForPicture([
+        $prepared = $this->prepareForPicture([
             'baseClass' => 'base',
             'wrapperClass' => 'wrapper',
             'lqipClass' => 'lqip',
@@ -262,16 +243,13 @@ class ImageSetRenderTest extends TestCase
             'base64Lqip' => true,
         ]);
 
-        $src->cached()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->_src->cachedMock->shouldReceive('ratio')->andReturn(1);
 
-        $lqip
-            ->cached()
+        $prepared->_lqip->cachedMock
             ->shouldReceive('toBase64String')
             ->andReturn('_some_base64_encoded_string_');
 
-        $output = $imageSetRender
+        $output = $prepared->imageSetRender
             ->useAspectRatio()
             ->usePaddingTop()
             ->useWrapper()
@@ -286,29 +264,28 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
-    protected function prepareForImg()
+    protected function prepareAllImages(): array
     {
-        ($image1 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached1.jpg');
+        $image1 = $this->prepareImage();
+        $image1->cachedMock->shouldReceive('url')->andReturn('cached1.jpg');
 
-        ($image2 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached2.jpg');
-
-        $image2
-            ->cached()
+        $image2 = $this->prepareImage();
+        $image2->cachedMock->shouldReceive('url')->andReturn('cached2.jpg');
+        $image2->cachedMock
             ->shouldReceive('width')
             ->andReturn(1000)
             ->shouldReceive('height')
             ->andReturn(1000);
 
-        ($lqip = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('lqip.jpg');
+        $lqip = $this->prepareImage();
+        $lqip->cachedMock->shouldReceive('url')->andReturn('lqip.jpg');
+
+        return [$image1, $image2, $lqip];
+    }
+
+    protected function prepareForImg(): object
+    {
+        [$image1, $image2, $lqip] = $this->prepareAllImages();
 
         ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
             'sources' => [
@@ -317,42 +294,27 @@ class ImageSetRenderTest extends TestCase
                     'widths' => [500, 1000],
                     'sizes' => '50vw',
                     'srcset' => [
-                        ['image' => $image1, 'width' => 500],
-                        ['image' => $image2, 'width' => 1000],
+                        ['image' => $image1->image, 'width' => 500],
+                        ['image' => $image2->image, 'width' => 1000],
                     ],
                 ],
             ],
-            'lqip' => $lqip,
+            'lqip' => $lqip->image,
         ]);
 
         $imageSetRender = new ImageSetRender($set);
 
-        return [$imageSetRender, $image2, $lqip];
+        return (object) [
+            'imageSetRender' => $imageSetRender,
+            '_image1' => $image1,
+            '_src' => $image2,
+            '_lqip' => $lqip,
+        ];
     }
 
-    protected function prepareForPicture($options = [])
+    protected function prepareForPicture($options = []): object
     {
-        ($image1 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached1.jpg');
-
-        ($image2 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached2.jpg');
-
-        $image2
-            ->cached()
-            ->shouldReceive('width')
-            ->andReturn(1000)
-            ->shouldReceive('height')
-            ->andReturn(1000);
-
-        ($lqip = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('lqip.jpg');
+        [$image1, $image2, $lqip] = $this->prepareAllImages();
 
         ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
             'sources' => [
@@ -360,46 +322,31 @@ class ImageSetRenderTest extends TestCase
                     'image' => '01.jpg',
                     'widths' => [500],
                     'media' => '(max-width: 500px)',
-                    'srcset' => [['image' => $image1, 'width' => 500]],
+                    'srcset' => [['image' => $image1->image, 'width' => 500]],
                 ],
                 [
                     'image' => '02.jpg',
                     'widths' => [1000],
                     'media' => '(min-width: 501px)',
-                    'srcset' => [['image' => $image2, 'width' => 1000]],
+                    'srcset' => [['image' => $image2->image, 'width' => 1000]],
                 ],
             ],
-            'lqip' => $lqip,
+            'lqip' => $lqip->image,
         ]);
 
         $imageSetRender = new ImageSetRender($set, $options);
 
-        return [$imageSetRender, $image2, $lqip];
+        return (object) [
+            'imageSetRender' => $imageSetRender,
+            '_image1' => $image1,
+            '_src' => $image2,
+            '_lqip' => $lqip,
+        ];
     }
 
-    protected function prepareForPictureWidths($options = [])
+    protected function prepareForPictureWidths($options = []): object
     {
-        ($image1 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached1.jpg');
-
-        ($image2 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached2.jpg');
-
-        $image2
-            ->cached()
-            ->shouldReceive('width')
-            ->andReturn(1000)
-            ->shouldReceive('height')
-            ->andReturn(1000);
-
-        ($lqip = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('lqip.jpg');
+        [$image1, $image2, $lqip] = $this->prepareAllImages();
 
         ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
             'sources' => [
@@ -409,8 +356,8 @@ class ImageSetRenderTest extends TestCase
                     'media' => '(max-width: 1023px)',
                     'sizes' => '66vw',
                     'srcset' => [
-                        ['image' => $image1, 'width' => 400],
-                        ['image' => $image1, 'width' => 800],
+                        ['image' => $image1->image, 'width' => 400],
+                        ['image' => $image1->image, 'width' => 800],
                     ],
                 ],
                 [
@@ -419,42 +366,27 @@ class ImageSetRenderTest extends TestCase
                     'media' => '(min-width: 1024px)',
                     'sizes' => '66vw',
                     'srcset' => [
-                        ['image' => $image2, 'width' => 1200],
-                        ['image' => $image2, 'width' => 1600],
+                        ['image' => $image2->image, 'width' => 1200],
+                        ['image' => $image2->image, 'width' => 1600],
                     ],
                 ],
             ],
-            'lqip' => $lqip,
+            'lqip' => $lqip->image,
         ]);
 
         $imageSetRender = new ImageSetRender($set, $options);
 
-        return [$imageSetRender, $image2, $lqip];
+        return (object) [
+            'imageSetRender' => $imageSetRender,
+            '_image1' => $image1,
+            '_src' => $image2,
+            '_lqip' => $lqip,
+        ];
     }
 
-    protected function prepareForPictureFormats($options = [])
+    protected function prepareForPictureFormats($options = []): object
     {
-        ($image1 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached1.jpg');
-
-        ($image2 = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('cached2.jpg');
-
-        $image2
-            ->cached()
-            ->shouldReceive('width')
-            ->andReturn(1000)
-            ->shouldReceive('height')
-            ->andReturn(1000);
-
-        ($lqip = $this->getImage())
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('lqip.jpg');
+        [$image1, $image2, $lqip] = $this->prepareAllImages();
 
         ($set = $this->mockImageSet())->shouldReceive('data')->andReturn([
             'sources' => [
@@ -465,8 +397,8 @@ class ImageSetRenderTest extends TestCase
                     'sizes' => '66vw',
                     'format' => 'webp',
                     'srcset' => [
-                        ['image' => $image1, 'width' => 400],
-                        ['image' => $image1, 'width' => 800],
+                        ['image' => $image1->image, 'width' => 400],
+                        ['image' => $image1->image, 'width' => 800],
                     ],
                 ],
                 [
@@ -476,8 +408,8 @@ class ImageSetRenderTest extends TestCase
                     'sizes' => '66vw',
                     'format' => 'jpg',
                     'srcset' => [
-                        ['image' => $image1, 'width' => 400],
-                        ['image' => $image1, 'width' => 800],
+                        ['image' => $image1->image, 'width' => 400],
+                        ['image' => $image1->image, 'width' => 800],
                     ],
                 ],
                 [
@@ -487,8 +419,8 @@ class ImageSetRenderTest extends TestCase
                     'sizes' => '66vw',
                     'format' => 'webp',
                     'srcset' => [
-                        ['image' => $image2, 'width' => 1200],
-                        ['image' => $image2, 'width' => 1600],
+                        ['image' => $image2->image, 'width' => 1200],
+                        ['image' => $image2->image, 'width' => 1600],
                     ],
                 ],
                 [
@@ -498,16 +430,20 @@ class ImageSetRenderTest extends TestCase
                     'sizes' => '66vw',
                     'format' => 'jpg',
                     'srcset' => [
-                        ['image' => $image2, 'width' => 1200],
-                        ['image' => $image2, 'width' => 1600],
+                        ['image' => $image2->image, 'width' => 1200],
+                        ['image' => $image2->image, 'width' => 1600],
                     ],
                 ],
             ],
-            'lqip' => $lqip,
+            'lqip' => $lqip->image,
         ]);
 
         $imageSetRender = new ImageSetRender($set, $options);
 
-        return [$imageSetRender, $image2, $lqip];
+        return (object) [
+            'imageSetRender' => $imageSetRender,
+            '_src' => $image2,
+            '_lqip' => $lqip,
+        ];
     }
 }

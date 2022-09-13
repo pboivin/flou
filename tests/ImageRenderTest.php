@@ -13,9 +13,9 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_img()
     {
-        [$imageRender] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $output = $imageRender->img([
+        $output = $prepared->imageRender->img([
             'class' => 'test',
             'alt' => 'This is a test',
             'data-custom' => 'custom',
@@ -29,14 +29,11 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_using_aspect_ratio()
     {
-        [$imageRender, $image] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageRender->useAspectRatio()->img([
+        $output = $prepared->imageRender->useAspectRatio()->img([
             'class' => 'test',
             'alt' => 'This is a test',
             'data-custom' => 'custom',
@@ -50,14 +47,11 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_preserving_existing_styles()
     {
-        [$imageRender, $image] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageRender->useAspectRatio()->img([
+        $output = $prepared->imageRender->useAspectRatio()->img([
             'class' => 'test',
             'alt' => 'This is a test',
             'data-custom' => 'custom',
@@ -72,14 +66,11 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_using_wrapper_element()
     {
-        [$imageRender, $image] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageRender
+        $output = $prepared->imageRender
             ->useAspectRatio()
             ->useWrapper()
             ->img([
@@ -96,14 +87,11 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_using_padding_top_strategy()
     {
-        [$imageRender, $image] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageRender
+        $output = $prepared->imageRender
             ->usePaddingTop()
             ->useWrapper()
             ->img([
@@ -120,14 +108,11 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_noscript_variation()
     {
-        [$imageRender, $image] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $output = $imageRender
+        $output = $prepared->imageRender
             ->usePaddingTop()
             ->useWrapper()
             ->noScript([
@@ -143,19 +128,15 @@ class ImageRenderTest extends TestCase
 
     public function test_can_render_using_base64_lqip()
     {
-        [$imageRender, $image] = $this->prepareImageRender();
+        $prepared = $this->prepareImageRender();
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $image
-            ->cached()
+        $prepared->cachedMock
             ->shouldReceive('toBase64String')
             ->andReturn('_some_base64_encoded_string_');
 
-        $output = $imageRender->useBase64Lqip()->img([
+        $output = $prepared->imageRender->useBase64Lqip()->img([
             'class' => 'test',
             'alt' => 'This is a test',
         ]);
@@ -171,12 +152,12 @@ class ImageRenderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid option 'test'.");
 
-        [$imageRender] = $this->prepareImageRender(['test' => 'test']);
+        $this->prepareImageRender(['test' => 'test']);
     }
 
     public function test_accepts_valid_options()
     {
-        [$imageRender] = $this->prepareImageRender([
+        $prepared = $this->prepareImageRender([
             'baseClass' => 'base',
             'wrapperClass' => 'wrapper',
             'lqipClass' => 'lqip',
@@ -187,12 +168,12 @@ class ImageRenderTest extends TestCase
             'base64Lqip' => true,
         ]);
 
-        $this->assertTrue(!!$imageRender);
+        $this->assertTrue(!!$prepared->imageRender);
     }
 
     public function test_can_render_using_options_array()
     {
-        [$imageRender, $image] = $this->prepareImageRender([
+        $prepared = $this->prepareImageRender([
             'baseClass' => 'base',
             'wrapperClass' => 'wrapper',
             'lqipClass' => 'lqip',
@@ -203,17 +184,13 @@ class ImageRenderTest extends TestCase
             'base64Lqip' => true,
         ]);
 
-        $image
-            ->source()
-            ->shouldReceive('ratio')
-            ->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
 
-        $image
-            ->cached()
+        $prepared->cachedMock
             ->shouldReceive('toBase64String')
             ->andReturn('_some_base64_encoded_string_');
 
-        $output = $imageRender->useBase64Lqip()->img([
+        $output = $prepared->imageRender->useBase64Lqip()->img([
             'class' => 'test',
             'alt' => 'This is a test',
         ]);
@@ -224,32 +201,20 @@ class ImageRenderTest extends TestCase
         );
     }
 
-    protected function prepareImageRender($options = [])
+    protected function prepareImageRender($options = []): object
     {
-        $image = $this->getImage();
+        $prepared = $this->prepareImage();
 
-        $imageRender = new ImageRender($image, $options);
+        $prepared->imageRender = new ImageRender($prepared->image, $options);
 
-        $image
-            ->source()
-            ->shouldReceive('url')
-            ->andReturn('/source.jpg');
+        $prepared->sourceMock->shouldReceive('url')->andReturn('/source.jpg');
 
-        $image
-            ->source()
-            ->shouldReceive('width')
-            ->andReturn(800);
+        $prepared->sourceMock->shouldReceive('width')->andReturn(800);
 
-        $image
-            ->source()
-            ->shouldReceive('height')
-            ->andReturn(600);
+        $prepared->sourceMock->shouldReceive('height')->andReturn(600);
 
-        $image
-            ->cached()
-            ->shouldReceive('url')
-            ->andReturn('/cached.jpg');
+        $prepared->cachedMock->shouldReceive('url')->andReturn('/cached.jpg');
 
-        return [$imageRender, $image];
+        return $prepared;
     }
 }
