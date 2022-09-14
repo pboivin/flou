@@ -31,7 +31,7 @@ class ImageRenderTest extends TestCase
     {
         $prepared = $this->prepareImageRender();
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $output = $prepared->imageRender->useAspectRatio()->img([
             'class' => 'test',
@@ -40,7 +40,7 @@ class ImageRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1.33; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
             $output
         );
     }
@@ -49,7 +49,7 @@ class ImageRenderTest extends TestCase
     {
         $prepared = $this->prepareImageRender();
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $output = $prepared->imageRender->useAspectRatio()->img([
             'class' => 'test',
@@ -59,7 +59,7 @@ class ImageRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover; object-position: center; border: 1px solid red;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
+            '<img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1.33; object-fit: cover; object-position: center; border: 1px solid red;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600">',
             $output
         );
     }
@@ -68,7 +68,7 @@ class ImageRenderTest extends TestCase
     {
         $prepared = $this->prepareImageRender();
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $output = $prepared->imageRender
             ->useAspectRatio()
@@ -80,7 +80,7 @@ class ImageRenderTest extends TestCase
             ]);
 
         $this->assertEquals(
-            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1.33; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
             $output
         );
     }
@@ -89,7 +89,7 @@ class ImageRenderTest extends TestCase
     {
         $prepared = $this->prepareImageRender();
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $output = $prepared->imageRender
             ->usePaddingTop()
@@ -101,7 +101,7 @@ class ImageRenderTest extends TestCase
             ]);
 
         $this->assertEquals(
-            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 100%;"><img class="lazyload test" alt="This is a test" data-custom="custom" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"></div><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 75.19%;"><img class="lazyload test" alt="This is a test" data-custom="custom" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"></div><img class="lazyload-lqip" src="/cached.jpg"></div>',
             $output
         );
     }
@@ -110,7 +110,7 @@ class ImageRenderTest extends TestCase
     {
         $prepared = $this->prepareImageRender();
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $output = $prepared->imageRender
             ->usePaddingTop()
@@ -121,7 +121,7 @@ class ImageRenderTest extends TestCase
             ]);
 
         $this->assertEquals(
-            '<div class="lazyload-wrapper-noscript"><div class="lazyload-padding-noscript" style="position: relative; padding-top: 100%;"><img class="lazyload-noscript test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/source.jpg" width="800" height="600"></div></div>',
+            '<div class="lazyload-wrapper-noscript"><div class="lazyload-padding-noscript" style="position: relative; padding-top: 75.19%;"><img class="lazyload-noscript test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/source.jpg" width="800" height="600"></div></div>',
             $output
         );
     }
@@ -130,7 +130,7 @@ class ImageRenderTest extends TestCase
     {
         $prepared = $this->prepareImageRender();
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $prepared->cachedMock
             ->shouldReceive('toBase64String')
@@ -184,7 +184,7 @@ class ImageRenderTest extends TestCase
             'base64Lqip' => true,
         ]);
 
-        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1);
+        $prepared->sourceMock->shouldReceive('ratio')->andReturn(1.33);
 
         $prepared->cachedMock
             ->shouldReceive('toBase64String')
