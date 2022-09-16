@@ -179,15 +179,13 @@ abstract class ImgRenderable implements Stringable
     protected function handlePaddingTop(string $input): string
     {
         if ($this->paddingTop && $this->aspectRatio) {
-            $padding = (1 / $this->aspectRatio) * 100;
-
             return $this->htmlWrap(
                 'div',
                 [
                     'class' => $this->paddingClass,
                     'style' => $this->collectStyles([
                         'position' => 'relative',
-                        'padding-top' => "{$padding}%",
+                        'padding-top' => $this->getPaddingTopValue((float) $this->aspectRatio),
                     ]),
                 ],
                 $input
@@ -218,5 +216,17 @@ abstract class ImgRenderable implements Stringable
         }
 
         return $input;
+    }
+
+    protected function getPaddingTopValue(float $aspectRatio): string
+    {
+        $padding = (1 / $aspectRatio) * 100;
+
+        $padding = number_format($padding, 2);
+
+        // remove decimals if number is not really a float
+        $padding = preg_replace('/\.0+$/', '', "$padding");
+
+        return "{$padding}%";
     }
 }

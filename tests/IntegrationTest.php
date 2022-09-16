@@ -13,19 +13,15 @@ class IntegrationTest extends TestCase
 
     protected function setUp(): void
     {
-        $flou = $this->getFactory();
+        $prepared = $this->prepareFactory();
 
-        $flou
-            ->inspector()
+        $prepared->serverMock->shouldReceive('makeImage')->andReturn('cached.jpg');
+
+        $prepared->inspectorMock
             ->shouldReceive('getSize')
             ->andReturn(['width' => 123, 'height' => 123]);
 
-        $flou
-            ->glideServer()
-            ->shouldReceive('makeImage')
-            ->andReturn('cached.jpg');
-
-        $this->factory = $flou;
+        $this->factory = $prepared->factory;
     }
 
     public function test_can_handle_single_image()

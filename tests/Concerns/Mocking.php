@@ -12,7 +12,7 @@ use Pboivin\Flou\ImageSet;
 
 trait Mocking
 {
-    public function getFactory($options = [])
+    public function prepareFactory($options = []): object
     {
         $factory = new ImageFactory(
             $options ?: [
@@ -23,63 +23,59 @@ trait Mocking
             ]
         );
 
-        $factory->setGlideServer($this->mockServer());
+        $factory->setGlideServer($server = $this->mockServer());
 
-        $factory->setInspector($this->mockInspector());
+        $factory->setInspector($inspector = $this->mockInspector());
 
-        return $factory;
+        return (object) [
+            'factory' => $factory,
+            'serverMock' => $server,
+            'inspectorMock' => $inspector,
+        ];
     }
 
-    public function getImage()
+    public function prepareImage(): object
     {
-        return new Image($this->mockImageFile(), $this->mockImageFile());
+        $source = $this->mockImageFile();
+
+        $cached = $this->mockImageFile();
+
+        $image = new Image($source, $cached);
+
+        return (object) [
+            'image' => $image,
+            'sourceMock' => $source,
+            'cachedMock' => $cached,
+        ];
     }
 
-    public function mockServer()
+    public function mockServer(): mixed
     {
-        /** @var Server */
-        $server = Mockery::mock(Server::class);
-
-        return $server;
+        return Mockery::mock(Server::class);
     }
 
-    public function mockInspector()
+    public function mockInspector(): mixed
     {
-        /** @var ImageFileInspector */
-        $inspector = Mockery::mock(ImageFileInspector::class);
-
-        return $inspector;
+        return Mockery::mock(ImageFileInspector::class);
     }
 
-    public function mockImageFile()
+    public function mockImageFile(): mixed
     {
-        /** @var ImageFile */
-        $file = Mockery::mock(ImageFile::class);
-
-        return $file;
+        return Mockery::mock(ImageFile::class);
     }
 
-    public function mockFactory()
+    public function mockFactory(): mixed
     {
-        /** @var ImageFactory */
-        $factory = Mockery::mock(ImageFactory::class);
-
-        return $factory;
+        return Mockery::mock(ImageFactory::class);
     }
 
-    public function mockImage()
+    public function mockImage(): mixed
     {
-        /** @var Image */
-        $image = Mockery::mock(Image::class);
-
-        return $image;
+        return Mockery::mock(Image::class);
     }
 
-    public function mockImageSet()
+    public function mockImageSet(): mixed
     {
-        /** @var ImageSet */
-        $set = Mockery::mock(ImageSet::class);
-
-        return $set;
+        return Mockery::mock(ImageSet::class);
     }
 }
