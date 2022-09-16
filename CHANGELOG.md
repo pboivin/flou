@@ -1,5 +1,16 @@
 # Release Notes
 
+## [v1.4.1](https://github.com/pboivin/flou/compare/v1.4.0...v1.4.1) - 2022-09-16
+
+#### Changed
+
+- Format float values for padding-top CSS (`ImgRenderable`)
+
+#### Chores
+
+- Refactor test helpers (`Mocking`)
+
+
 ## [v1.4.0](https://github.com/pboivin/flou/compare/v1.3.0...v1.4.0) - 2022-09-09
 
 #### Added
