@@ -1,5 +1,12 @@
 # Release Notes
 
+## [UNRELEASED](https://github.com/pboivin/flou/compare/v1.4.1...main) -
+
+#### Chores
+
+- Added PHP 8.2 to Github Actions
+
+
 ## [v1.4.1](https://github.com/pboivin/flou/compare/v1.4.0...v1.4.1) - 2022-09-16
 
 #### Changed
