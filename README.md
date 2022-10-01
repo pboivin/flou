@@ -581,14 +581,14 @@ echo $imageSet
     data-srcset="/images/cache/01.jpg/27e8a3f7fb4abe60654117a34f2007e1.jpg 400w,
                  /images/cache/01.jpg/f319ea155d0009a7e842f50fcc020fe3.jpg 800w,
                  /images/cache/01.jpg/cfdad3b69ae3a15ba479aa85868e75f3.jpg 1200w,
-                 /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.webp 1600w"
+                 /images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg 1600w"
     data-sizes="100vw"
   >
   <img
     class="lazyload w-full"
     alt="Lorem ipsum"
     src="/images/cache/01.jpg/bd0dc309cfc3b71731b2e2df3d6e130b.gif"
-    data-src="/images/cache/01.jpg/cfdad3b69ae3a15ba479aa85868e75f3.jpg"
+    data-src="/images/cache/01.jpg/1422c06dea2257858f6437b9675fba1c.jpg"
     width="1600"
     height="900"
   >
