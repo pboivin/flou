@@ -793,15 +793,15 @@ Note: You may use all parameters except `w` and `fm`, which are overriden accord
 *Usage:*
 
 ```php
-    <?php $image = $flou->image('01.jpg'); ?>
+<?php $image = $flou->image('01.jpg'); ?>
 
-    <div class="lazyload"
-         data-bg="<?= $image->source()->url() ?>"
-         style="background-image: url( <?= $image->cached()->url() ?> );
-                background-size: cover;"
-    >
-        <!-- ... -->
-    </div>
+<div class="lazyload"
+     data-bg="<?= $image->source()->url() ?>"
+     style="background-image: url( <?= $image->cached()->url() ?> );
+            background-size: cover;"
+>
+    <!-- ... -->
+</div>
 ```
 
 <hr>
