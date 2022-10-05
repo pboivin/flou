@@ -788,6 +788,24 @@ Note: You may use all parameters except `w` and `fm`, which are overriden accord
 
 <hr>
 
+#### Lazy loaded background image
+
+*Usage:*
+
+```php
+    <?php $image = $flou->image('01.jpg'); ?>
+
+    <div class="lazyload"
+         data-bg="<?= $image->source()->url() ?>"
+         style="background-image: url( <?= $image->cached()->url() ?> );
+                background-size: cover;"
+    >
+        <!-- ... -->
+    </div>
+```
+
+<hr>
+
 #### CLI script
 
 *Preprocess all images in a source directory and prepare a JSON inventory file:*
