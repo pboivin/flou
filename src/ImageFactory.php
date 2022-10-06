@@ -253,6 +253,11 @@ class ImageFactory
         return $this->resampler;
     }
 
+    public function setResampler(ImageFactory $resamplingFactory): void
+    {
+        $this->resampler = $resamplingFactory;
+    }
+
     public function resample(string $sourceFileName, array $glideParams): ResampledImage
     {
         $image = $this->image($sourceFileName, $glideParams);
