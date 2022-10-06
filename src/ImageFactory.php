@@ -10,6 +10,8 @@ class ImageFactory
 {
     public const DEFAULT_GLIDE_PARAMS = ['h' => 10, 'fm' => 'gif'];
 
+    public const DEFAULT_RESAMPLING_DIR = '_r';
+
     protected $sourcePath;
 
     protected $cachePath;
@@ -25,6 +27,8 @@ class ImageFactory
     protected $inspector;
 
     protected $renderOptions;
+
+    protected $resampler;
 
     final public function __construct(array $config = [])
     {
@@ -178,16 +182,20 @@ class ImageFactory
         $this->renderOptions = $options;
     }
 
-    public function image(string $sourceFileName, ?array $glideParams = null): Image
+    public function image(string|ResampledImage $source, ?array $glideParams = null): Image
     {
+        if ($source instanceof ResampledImage) {
+            return $source->make($glideParams);
+        }
+
         $glideParams ??= $this->glideParams();
 
         $server = $this->glideServer();
 
-        $cachedFileName = $server->makeImage($sourceFileName, $glideParams);
+        $cachedFileName = $server->makeImage($source, $glideParams);
 
         $image = new Image(
-            $this->sourceImageFile($sourceFileName),
+            $this->sourceImageFile($source),
             $this->cachedImageFile($cachedFileName)
         );
 
@@ -227,5 +235,28 @@ class ImageFactory
             $this->cacheUrlBase() . '/' . $fileName,
             $this->inspector()
         );
+    }
+
+    public function resampler(): ImageFactory
+    {
+        if (!$this->resampler) {
+            $this->resampler = new static([
+                'sourcePath' => $this->cachePath(),
+                'cachePath' => $this->cachePath() . '/' . static::DEFAULT_RESAMPLING_DIR,
+                'sourceUrlBase' => $this->cacheUrlBase(),
+                'cacheUrlBase' => $this->cacheUrlBase() . '/' . static::DEFAULT_RESAMPLING_DIR,
+                'glideParams' => $this->glideParams(),
+                'renderOptions' => $this->renderOptions ?: [],
+            ]);
+        }
+
+        return $this->resampler;
+    }
+
+    public function resample(string $sourceFileName, array $glideParams): ResampledImage
+    {
+        $image = $this->image($sourceFileName, $glideParams);
+
+        return new ResampledImage($image->cached(), $this->resampler());
     }
 }
