@@ -1,10 +1,16 @@
 # Release Notes
 
-## [UNRELEASED](https://github.com/pboivin/flou/compare/v1.4.1...main) -
+
+## [v1.5.0](https://github.com/pboivin/flou/compare/v1.4.1...v1.5.0) -
+
+#### Added
+
+- Add image resampling feature (`ImageFactory`)
 
 #### Chores
 
-- Added PHP 8.2 to Github Actions
+- Update README examples and presentation
+- Prepare for PHP 8.2
 
 
 ## [v1.4.1](https://github.com/pboivin/flou/compare/v1.4.0...v1.4.1) - 2022-09-16
