@@ -38,6 +38,8 @@ class ImageSetRender extends ImgRenderable
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
 
+        $attributes = $this->handleAttributeOverrides($attributes);
+
         $output = [];
 
         foreach ($this->data['sources'] as $source) {
@@ -80,6 +82,8 @@ class ImageSetRender extends ImgRenderable
         $attributes['data-srcset'] = $this->getSrcset($this->data['sources'][0]);
         $attributes['data-sizes'] = $this->getSizes($this->data['sources'][0]);
 
+        $attributes = $this->handleAttributeOverrides($attributes);
+
         return $this->renderImg($attributes);
     }
 
@@ -99,6 +103,8 @@ class ImageSetRender extends ImgRenderable
         $attributes['src'] = $noScript->main()->url();
         $attributes['srcset'] = $noScript->getSrcset($noScript->data['sources'][0]);
         $attributes['sizes'] = $noScript->getSizes($noScript->data['sources'][0]);
+
+        $attributes = $this->handleAttributeOverrides($attributes);
 
         return $noScript->renderImg($attributes);
     }

@@ -167,6 +167,29 @@ abstract class ImgRenderable implements Stringable
         return $attributes;
     }
 
+    protected function handleAttributeOverrides(array $attributes = []): array
+    {
+        // attribute overrides start with a '!' (e.g. `['!src' => false]`)
+        $attributeOverrides = array_filter(array_keys($attributes), fn ($key) => $key[0] === '!');
+
+        foreach ($attributeOverrides as $override) {
+            $name = substr($override, 1);
+            $value = $attributes[$override];
+
+            if ($value === false) {
+                unset($attributes[$name]);
+            } elseif ($value === true) {
+                $attributes[$name] = "";
+            } else {
+                $attributes[$name] = $value;
+            }
+
+            unset($attributes[$override]);
+        }
+
+        return $attributes;
+    }
+
     protected function renderImg(array $attributes = []): string
     {
         $img = $this->htmlTag('img', $attributes);
