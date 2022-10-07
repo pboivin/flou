@@ -264,6 +264,59 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_override_picture_attributes()
+    {
+        $prepared = $this->prepareForImg();
+
+        $output = $prepared->imageSetRender->picture([
+            'alt' => 'test',
+            '!data-src' => '/test.jpg',
+            '!src' => true,
+            '!width' => false,
+            '!height' => false,
+        ]);
+
+        $this->assertEquals(
+            '<picture><source data-sizes="50vw" data-srcset="cached1.jpg 500w, cached2.jpg 1000w"><img alt="test" class="lazyload" src="" data-src="/test.jpg"></picture>',
+            $output
+        );
+    }
+
+    public function test_can_override_img_attributes()
+    {
+        $prepared = $this->prepareForImg();
+
+        $output = $prepared->imageSetRender->img([
+            'alt' => 'test',
+            '!data-src' => '/test.jpg',
+            '!src' => true,
+            '!width' => false,
+            '!height' => false,
+        ]);
+
+        $this->assertEquals(
+            '<img alt="test" class="lazyload" src="" data-src="/test.jpg" data-srcset="cached1.jpg 500w, cached2.jpg 1000w" data-sizes="50vw">',
+            $output
+        );
+    }
+
+    public function test_can_override_noscript_attributes()
+    {
+        $prepared = $this->prepareForImg();
+
+        $output = $prepared->imageSetRender->noscript([
+            'alt' => 'test',
+            '!src' => '/test.jpg',
+            '!width' => false,
+            '!height' => false,
+        ]);
+
+        $this->assertEquals(
+            '<img alt="test" class="lazyload-noscript" src="/test.jpg" srcset="cached1.jpg 500w, cached2.jpg 1000w" sizes="50vw">',
+            $output
+        );
+    }
+
     protected function prepareAllImages(): array
     {
         $image1 = $this->prepareImage();
