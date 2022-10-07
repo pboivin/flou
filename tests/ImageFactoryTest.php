@@ -3,10 +3,12 @@
 namespace Pboivin\Flou\Tests;
 
 use InvalidArgumentException;
+use Pboivin\Flou\Image;
 use Pboivin\Flou\ImageFactory;
 use Pboivin\Flou\ImageRender;
 use Pboivin\Flou\ImageSet;
 use Pboivin\Flou\ImageSetRender;
+use Pboivin\Flou\ResampledImage;
 use Pboivin\Flou\Tests\Concerns\Mocking;
 use PHPUnit\Framework\TestCase;
 
@@ -100,6 +102,7 @@ class ImageFactoryTest extends TestCase
 
         $image = $prepared->factory->image('source.jpg');
 
+        $this->assertTrue($image instanceof Image);
         $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
         $this->assertEquals('/images/source/source.jpg', $image->source()->url());
 
@@ -117,6 +120,7 @@ class ImageFactoryTest extends TestCase
 
         $image = $prepared->factory->image('source.jpg', ['h' => 123]);
 
+        $this->assertTrue($image instanceof Image);
         $this->assertEquals('/images/cache/cached.jpg', $image->cached()->url());
         $this->assertEquals('/images/source/source.jpg', $image->source()->url());
     }
@@ -165,6 +169,93 @@ class ImageFactoryTest extends TestCase
                 'filt' => 'greyscale',
             ]
         );
+
+        $this->assertTrue($set instanceof ImageSet);
+
+        $this->assertTrue($set->render() instanceof ImageSetRender);
+    }
+
+    public function test_can_resample_source_image()
+    {
+        $preparedFactory = $this->prepareFactory();
+        $factory = $preparedFactory->factory;
+
+        $preparedFactory->serverMock
+            ->shouldReceive('makeImage')
+            ->with('test.jpg', ['w' => 2000])
+            ->andReturn('resampled-test.jpg');
+
+        $resampledImage = $factory->resample('test.jpg', ['w' => 2000]);
+
+        $this->assertTrue($resampledImage instanceof ResampledImage);
+    }
+
+    public function test_generates_image_from_resampled_image()
+    {
+        $preparedFactory = $this->prepareFactory();
+        $factory = $preparedFactory->factory;
+
+        $preparedResampler = $this->prepareFactory();
+        $resampler = $preparedResampler->factory;
+
+        $factory->setResampler($resampler);
+
+        $preparedFactory->serverMock
+            ->shouldReceive('makeImage')
+            ->with('test.jpg', ['w' => 2000])
+            ->andReturn('resampled-test.jpg');
+
+        $preparedResampler->serverMock
+            ->shouldReceive('makeImage')
+            ->with('resampled-test.jpg', ['w' => 10])
+            ->andReturn('cached-resampled-test.jpg');
+
+        $resampledImage = $factory->resample('test.jpg', ['w' => 2000]);
+
+        $image = $factory->image($resampledImage, ['w' => 10]);
+
+        $this->assertTrue($image instanceof Image);
+        $this->assertEquals('resampled-test.jpg', $image->source()->fileName());
+        $this->assertEquals('cached-resampled-test.jpg', $image->cached()->fileName());
+
+        $this->assertTrue($image->render() instanceof ImageRender);
+    }
+
+    public function test_generates_imageset_from_resampled_image()
+    {
+        $preparedFactory = $this->prepareFactory();
+        $factory = $preparedFactory->factory;
+
+        $preparedResampler = $this->prepareFactory();
+        $resampler = $preparedResampler->factory;
+
+        $factory->setResampler($resampler);
+
+        $preparedFactory->serverMock
+            ->shouldReceive('makeImage')
+            ->with('test.jpg', ['w' => 2000])
+            ->andReturn('resampled-test.jpg');
+
+        $preparedResampler->serverMock
+            ->shouldReceive('makeImage')
+            ->with('resampled-test.jpg', ['w' => 400])
+            ->andReturn('cached-400.jpg')
+            ->shouldReceive('makeImage')
+            ->with('resampled-test.jpg', ['w' => 800])
+            ->andReturn('cached-800.jpg')
+            ->shouldReceive('makeImage')
+            ->with('resampled-test.jpg', ['w' => 1200])
+            ->andReturn('cached-1200.jpg')
+            ->shouldReceive('makeImage')
+            ->with('resampled-test.jpg', ImageFactory::DEFAULT_GLIDE_PARAMS)
+            ->andReturn('cached-lqip.jpg');
+
+        $resampledImage = $factory->resample('test.jpg', ['w' => 2000]);
+
+        $set = $factory->imageSet([
+            'image' => $resampledImage,
+            'widths' => [400, 800, 1200],
+        ]);
 
         $this->assertTrue($set instanceof ImageSet);
 

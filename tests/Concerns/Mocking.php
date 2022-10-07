@@ -9,6 +9,7 @@ use Pboivin\Flou\ImageFactory;
 use Pboivin\Flou\ImageFile;
 use Pboivin\Flou\ImageFileInspector;
 use Pboivin\Flou\ImageSet;
+use Pboivin\Flou\ResampledImage;
 
 trait Mocking
 {
@@ -77,5 +78,10 @@ trait Mocking
     public function mockImageSet(): mixed
     {
         return Mockery::mock(ImageSet::class);
+    }
+
+    public function mockResampledImage(): mixed
+    {
+        return Mockery::mock(ResampledImage::class);
     }
 }

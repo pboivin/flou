@@ -212,6 +212,34 @@ $data = $image->toArray();
 ```
 
 
+#### Image resampling
+
+Image resampling is a simple way to reuse a transformed image as the source of another transformation. Use the `resample()` method to begin:
+
+```php
+$resized = $flou->resample('01.jpg', [
+    'filt' => 'greyscale',
+    'w' => 2000,
+]);
+```
+
+This is the same as calling `image()`, but returns an instance of `ResampledImage` instead. The resampled image can then be used again as a source for `image()`:
+
+```php
+$image = $flou->image($resized, ['w' => 50]);
+
+# Source image:
+echo $image->source()->url();       # /images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg
+echo $image->source()->width();     # 2000
+...
+
+# Transformed image data:
+echo $image->cached()->url();       # /images/cache/_r/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg/9a5bdd58bbc27a556121925569af7b0c.jpg
+echo $image->source()->width();     # 50
+...
+```
+
+
 #### Rendering single images
 
 The `render()` method on the image returns an [`ImageRender`](./src/ImageRender.php) object, which prepares HTML suitable for the vanilla-lazyload library. Then, `img()` is used to render an `img` element:
