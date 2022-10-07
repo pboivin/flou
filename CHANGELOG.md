@@ -1,7 +1,7 @@
 # Release Notes
 
 
-## [v1.5.0](https://github.com/pboivin/flou/compare/v1.4.1...v1.5.0) -
+## [v1.5.0](https://github.com/pboivin/flou/compare/v1.4.1...v1.5.0) - 2022-10-07
 
 #### Added
 
