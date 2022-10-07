@@ -24,8 +24,9 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 
 - [Installing](#installing)
 - [Getting Started](#getting-started)
-- [Working with Single Images](#working-with-single-images)
-- [Working with Image Sets (Responsive Images)](#working-with-image-sets-responsive-images)
+- [Image Transformations](#image-transformations)
+- [Image Rendering](#image-rendering)
+- [Image Sets (Responsive Images)](#image-sets-responsive-images)
 - [Examples](#examples)
 - [Development](#development)
 - [License](#license)
@@ -123,7 +124,7 @@ If you're using Laravel, have a look at the [flou-laravel](https://github.com/pb
 Some examples below require additional JS and CSS. You'll find a more complete sample in the [assets directory](./assets).
 
 
-## Working with Single Images
+## Image Transformations
 
 
 #### Transforming source images
@@ -154,7 +155,7 @@ $tablet = $flou->image('01.jpg', ['w' => 900]);
 $desktop = $flou->image('01.jpg', ['w' => 1300]);
 ```
 
-If you're interested in responsive images using the `srcset` attribute, have a look at the next section ([Working with Image Sets](#working-with-image-sets-responsive-images)).
+If you're interested in responsive images using the `srcset` attribute, have a look at the next section ([Image Sets](#image-sets-responsive-images)).
 
 
 #### Default Glide parameters
@@ -217,7 +218,7 @@ $data = $image->toArray();
 Image resampling is a simple way to reuse a transformed image as the source of another transformation. Use the `resample()` method to begin:
 
 ```php
-$resized = $flou->resample('01.jpg', [
+$greyscale = $flou->resample('01.jpg', [
     'filt' => 'greyscale',
     'w' => 2000,
 ]);
@@ -226,7 +227,7 @@ $resized = $flou->resample('01.jpg', [
 This is the same as calling `image()`, but returns an instance of `ResampledImage` instead. The resampled image can then be used again as a source for `image()`:
 
 ```php
-$image = $flou->image($resized, ['w' => 50]);
+$image = $flou->image($greyscale, ['w' => 50]);
 
 # Source image:
 echo $image->source()->url();       # /images/cache/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg
@@ -238,6 +239,9 @@ echo $image->cached()->url();       # /images/cache/_r/01.jpg/a50df0a8c8a84cfc6a
 echo $image->source()->width();     # 50
 ...
 ```
+
+
+## Image Rendering
 
 
 #### Rendering single images
@@ -267,6 +271,8 @@ echo $image
 ```
 </details>
 <br>
+
+<a name="image-render-configuration"></a>
 
 Options passed into `img()` are included as HTML attributes on the element.
 
@@ -455,7 +461,7 @@ This is used to add a `noscript` image fallback. ([See Noscript image fallback e
 It can also be used creatively to work on the source image with CSS classes and HTML attributes. ([See Browser native lazy loading example](#native-lazy-loading-example))
 
 
-## Working with Image Sets (Responsive Images)
+## Image Sets (Responsive Images)
 
 
 #### Single source (`img` element)
@@ -501,7 +507,7 @@ echo $imageSet
 </details>
 <br>
 
-Like `ImageRender`, you can optimize `ImageSetRender` with the same methods:
+Like `ImageRender`, you can optimize `ImageSetRender` with the [same methods](#image-render-configuration):
 
 - `useAspectRatio()`
 - `usePaddingTop()`
