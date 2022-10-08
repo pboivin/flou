@@ -272,9 +272,31 @@ echo $image
 </details>
 <br>
 
-<a name="image-render-configuration"></a>
+Options passed into `img()` are included as HTML attributes on the element. Some attributes are automatically generated (e.g. `src`, `width`, `height`, etc.). You can override them with a `!` prefix:
 
-Options passed into `img()` are included as HTML attributes on the element.
+```php
+echo $image
+        ->render()
+        ->img(['!width' => false, '!height' => false]);
+```
+
+<details>
+<summary>See HTML Output</summary>
+
+```html
+<img 
+  class="lazyload w-full" 
+  alt="Lorem ipsum" 
+  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.gif" 
+  data-src="/images/source/01.jpg" 
+>
+```
+</details>
+<br>
+
+
+<a name="image-render-configuration"></a>
+#### Render options
 
 The `ImageRender` object can be configured to optimize the HTML output:
 
