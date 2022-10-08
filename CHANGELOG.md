@@ -1,6 +1,14 @@
 # Release Notes
 
 
+## [v1.5.1](https://github.com/pboivin/flou/compare/v1.5.0...v1.5.1) - 2022-10-08
+
+#### Changed
+
+- Remove unnecessary LQIP src attribute with wrapper element
+- Handle HTML attribute overrides with `!` prefix
+
+
 ## [v1.5.0](https://github.com/pboivin/flou/compare/v1.4.1...v1.5.0) - 2022-10-07
 
 #### Added
