@@ -201,6 +201,41 @@ class ImageRenderTest extends TestCase
         );
     }
 
+    public function test_can_override_img_attributes()
+    {
+        $prepared = $this->prepareImageRender();
+
+        $output = $prepared->imageRender->img([
+            'alt' => 'test',
+            '!data-src' => '/test.jpg',
+            '!src' => true,
+            '!width' => false,
+            '!height' => false,
+        ]);
+
+        $this->assertEquals(
+            '<img alt="test" class="lazyload" src="" data-src="/test.jpg">',
+            $output
+        );
+    }
+
+    public function test_can_override_noscript_attributes()
+    {
+        $prepared = $this->prepareImageRender();
+
+        $output = $prepared->imageRender->noscript([
+            'alt' => 'test',
+            '!src' => '/test.jpg',
+            '!width' => false,
+            '!height' => false,
+        ]);
+
+        $this->assertEquals(
+            '<img alt="test" class="lazyload-noscript" src="/test.jpg">',
+            $output
+        );
+    }
+
     protected function prepareImageRender($options = []): object
     {
         $prepared = $this->prepareImage();

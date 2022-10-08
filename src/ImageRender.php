@@ -32,6 +32,8 @@ class ImageRender extends ImgRenderable
         $attributes['width'] = $this->main()->width();
         $attributes['height'] = $this->main()->height();
 
+        $attributes = $this->handleAttributeOverrides($attributes);
+
         return $this->renderImg($attributes);
     }
 
@@ -49,6 +51,8 @@ class ImageRender extends ImgRenderable
         $attributes['src'] = $noScript->main()->url();
         $attributes['width'] = $noScript->main()->width();
         $attributes['height'] = $noScript->main()->height();
+
+        $attributes = $this->handleAttributeOverrides($attributes);
 
         return $noScript->renderImg($attributes);
     }
