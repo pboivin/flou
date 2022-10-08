@@ -277,7 +277,11 @@ Options passed into `img()` are included as HTML attributes on the element. Some
 ```php
 echo $image
         ->render()
-        ->img(['!width' => false, '!height' => false]);
+        ->img([
+            'class' => 'w-full',
+            'alt' => 'Lorem ipsum',
+            '!src' => false,
+        ]);
 ```
 
 <details>
@@ -287,8 +291,9 @@ echo $image
 <img 
   class="lazyload w-full" 
   alt="Lorem ipsum" 
-  src="/images/cache/01.jpg/de828e8798017be816f79e131e41dcc9.gif" 
   data-src="/images/source/01.jpg" 
+  width="3840" 
+  height="2160" 
 >
 ```
 </details>
