@@ -25,7 +25,7 @@ trait RendersHtml
         return "<{$tag}{$finalAttributes}>{$content}</{$tag}>";
     }
 
-    protected function collectHtmlAttributes(array $attributes = [])
+    protected function collectHtmlAttributes(array $attributes = []): string
     {
         $output = [];
 
@@ -36,7 +36,7 @@ trait RendersHtml
         return implode(' ', array_filter($output));
     }
 
-    protected function collectStyles(array $styles = [])
+    protected function collectStyles(array $styles = []): string
     {
         $output = [];
 
@@ -47,7 +47,7 @@ trait RendersHtml
         return implode(' ', array_filter($output));
     }
 
-    protected function collectClasses(array $classes = [])
+    protected function collectClasses(array $classes = []): string
     {
         return implode(' ', array_filter($classes));
     }

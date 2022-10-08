@@ -80,7 +80,7 @@ class ImageRenderTest extends TestCase
             ]);
 
         $this->assertEquals(
-            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1.33; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            '<div class="lazyload-wrapper"><img class="lazyload test" alt="This is a test" data-custom="custom" style="aspect-ratio: 1.33; object-fit: cover; object-position: center;" data-src="/source.jpg" width="800" height="600"><img class="lazyload-lqip" src="/cached.jpg"></div>',
             $output
         );
     }
@@ -101,7 +101,7 @@ class ImageRenderTest extends TestCase
             ]);
 
         $this->assertEquals(
-            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 75.19%;"><img class="lazyload test" alt="This is a test" data-custom="custom" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="/cached.jpg" data-src="/source.jpg" width="800" height="600"></div><img class="lazyload-lqip" src="/cached.jpg"></div>',
+            '<div class="lazyload-wrapper"><div class="lazyload-padding" style="position: relative; padding-top: 75.19%;"><img class="lazyload test" alt="This is a test" data-custom="custom" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" data-src="/source.jpg" width="800" height="600"></div><img class="lazyload-lqip" src="/cached.jpg"></div>',
             $output
         );
     }
@@ -196,7 +196,7 @@ class ImageRenderTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '<div class="wrapper"><div class="padding" style="position: relative; padding-top: 56.25%;"><img class="base test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" src="_some_base64_encoded_string_" data-src="/source.jpg" width="800" height="600"></div><img class="lqip" src="_some_base64_encoded_string_"></div>',
+            '<div class="wrapper"><div class="padding" style="position: relative; padding-top: 56.25%;"><img class="base test" alt="This is a test" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" data-src="/source.jpg" width="800" height="600"></div><img class="lqip" src="_some_base64_encoded_string_"></div>',
             $output
         );
     }
