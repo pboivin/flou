@@ -930,3 +930,10 @@ composer run format
 ## License
 
 Flou is open-sourced software licensed under the [MIT license](LICENSE.md).
+
+
+===
+
+
+XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html __coverage__
+

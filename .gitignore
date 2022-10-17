@@ -9,3 +9,5 @@
 /.phpunit.result.cache
 /.prettierrc.yml
 /t
+/__coverage__
+
