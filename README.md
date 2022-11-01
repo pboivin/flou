@@ -234,9 +234,9 @@ echo $image->source()->url();       # /images/cache/01.jpg/a50df0a8c8a84cfc6a77c
 echo $image->source()->width();     # 2000
 ...
 
-# Transformed image data:
+# Transformed image:
 echo $image->cached()->url();       # /images/cache/_r/01.jpg/a50df0a8c8a84cfc6a77cf74b414d020.jpg/9a5bdd58bbc27a556121925569af7b0c.jpg
-echo $image->source()->width();     # 50
+echo $image->cached()->width();     # 50
 ...
 ```
 
