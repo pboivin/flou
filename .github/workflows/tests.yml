@@ -41,10 +41,4 @@ jobs:
         composer install --prefer-dist --no-interaction --no-plugins
 
     - name: Run test suite
-      run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-html tests/__coverage__
-
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: tests/__coverage__
+      run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text
