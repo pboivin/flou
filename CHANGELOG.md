@@ -1,6 +1,13 @@
 # Release Notes
 
 
+## Unreleased
+
+#### Chores
+
+- Add test coverage report to Github workflow
+
+
 ## [v1.5.1](https://github.com/pboivin/flou/compare/v1.5.0...v1.5.1) - 2022-10-08
 
 #### Changed
