@@ -38,6 +38,9 @@
         "test": [
             "@php vendor/bin/phpunit"
         ],
+        "test-coverage": [
+            "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html tests/__coverage__"
+        ],
         "analyse": [
             "@php vendor/bin/phpstan analyse"
         ],

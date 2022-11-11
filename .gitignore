@@ -3,11 +3,10 @@
 
 /__tmp__
 /tests/Fixtures/__cache__
+/tests/__coverage__
 /vendor
 /composer.lock
 /.php_cs.cache
 /.phpunit.result.cache
 /.prettierrc.yml
 /t
-/__coverage__
-
