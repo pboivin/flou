@@ -3,6 +3,7 @@
 
 /__tmp__
 /tests/Fixtures/__cache__
+/tests/__coverage__
 /vendor
 /composer.lock
 /.php_cs.cache
