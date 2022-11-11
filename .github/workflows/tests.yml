@@ -42,3 +42,9 @@ jobs:
 
     - name: Run test suite
       run: php vendor/bin/phpunit
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: tests/__coverage__
