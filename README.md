@@ -488,6 +488,8 @@ This is used to add a `noscript` image fallback. ([See Noscript image fallback e
 It can also be used creatively to work on the source image with CSS classes and HTML attributes. ([See Browser native lazy loading example](#native-lazy-loading-example))
 
 
+<span id="working-with-image-sets-responsive-images"></span>
+
 ## Image Sets (Responsive Images)
 
 
