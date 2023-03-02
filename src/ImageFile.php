@@ -6,12 +6,28 @@ class ImageFile
 {
     protected $size;
 
-    public function __construct(
+    final public function __construct(
         protected string $fileName,
         protected string $path,
         protected string $url,
-        protected ImageFileInspector $inspector
+        protected ?ImageFileInspector $inspector = null
     ) {
+    }
+
+    public static function fromArray(array $data): static
+    {
+        $obj = new static(
+            $data['fileName'] ?? '',
+            $data['path'] ?? '',
+            $data['url'] ?? '',
+        );
+
+        $obj->size = [
+            'width' => $data['width'] ?? 0,
+            'height' => $data['height'] ?? 0,
+        ];
+
+        return $obj;
     }
 
     public function fileName(): string
