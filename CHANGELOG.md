@@ -1,7 +1,11 @@
 # Release Notes
 
 
-## Unreleased
+## [v1.6.0](https://github.com/pboivin/flou/compare/v1.5.1...v1.6.0) - 2023-03-02
+
+#### Added
+
+- Initialize `ImageRender` and `ImageSetRender` from arrays
 
 #### Chores
 
