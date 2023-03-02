@@ -317,6 +317,64 @@ class ImageSetRenderTest extends TestCase
         );
     }
 
+    public function test_can_initialize_from_array()
+    {
+        $imageSetArray = array(
+            'sources' => array(
+                0 => array(
+                    'image' => '01.jpg',
+                    'widths' => array(0 => 500, 1 => 900, 2 => 1300, 3 => 1700),
+                    'srcset' => array(
+                        0 => array(
+                            'image' => array(
+                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
+                                'cached' => array('fileName' => '01.jpg/one.jpg', 'path' => '/path/to/images/cache/01.jpg/one.jpg', 'url' => '/images/cache/01.jpg/one.jpg', 'width' => 500, 'height' => 341, 'ratio' => 1.466275659824047,),
+                            ),
+                            'width' => 500,
+                        ),
+                        1 => array(
+                            'image' => array(
+                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
+                                'cached' => array('fileName' => '01.jpg/two.jpg', 'path' => '/path/to/images/cache/01.jpg/two.jpg', 'url' => '/images/cache/01.jpg/two.jpg', 'width' => 900, 'height' => 614, 'ratio' => 1.4657980456026058,),
+                            ),
+                            'width' => 900,
+                        ),
+                        2 => array(
+                            'image' => array(
+                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
+                                'cached' => array('fileName' => '01.jpg/three.jpg', 'path' => '/path/to/images/cache/01.jpg/three.jpg', 'url' => '/images/cache/01.jpg/three.jpg', 'width' => 1300, 'height' => 887, 'ratio' => 1.4656144306651635,),
+                            ),
+                            'width' => 1300,
+                        ),
+                        3 => array(
+                            'image' => array(
+                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
+                                'cached' => array('fileName' => '01.jpg/four.jpg', 'path' => '/path/to/images/cache/01.jpg/four.jpg', 'url' => '/images/cache/01.jpg/four.jpg', 'width' => 1700, 'height' => 1160, 'ratio' => 1.4655172413793103,),
+                            ),
+                            'width' => 1700,
+                        ),
+                    ),
+                ),
+            ),
+            'lqip' => array(
+                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
+                'cached' => array('fileName' => '01.jpg/lqip.gif', 'path' => '/path/to/images/cache/01.jpg/lqip.gif', 'url' => '/images/cache/01.jpg/lqip.gif', 'width' => 15, 'height' => 10, 'ratio' => 1.5,),
+            ),
+        );
+
+        $imageRender = ImageSetRender::fromArray($imageSetArray);
+
+        $output = $imageRender->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" src="/images/cache/01.jpg/lqip.gif" width="1700" height="1160" data-src="/images/cache/01.jpg/four.jpg" data-srcset="/images/cache/01.jpg/one.jpg 500w, /images/cache/01.jpg/two.jpg 900w, /images/cache/01.jpg/three.jpg 1300w, /images/cache/01.jpg/four.jpg 1700w" data-sizes="100vw">',
+            $output
+        );
+    }
+
     protected function prepareAllImages(): array
     {
         $image1 = $this->prepareImage();
@@ -500,3 +558,11 @@ class ImageSetRenderTest extends TestCase
         ];
     }
 }
+
+
+
+/*
+
+
+
+*/
