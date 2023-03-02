@@ -236,6 +236,40 @@ class ImageRenderTest extends TestCase
         );
     }
 
+    public function test_can_initialize_from_array()
+    {
+        $imageArray = [
+            "source" => [
+                "fileName" => "01.jpg",
+                "path" => "/path/to/images/source/01.jpg",
+                "url" => "/images/source/01.jpg",
+                "width" => 2932,
+                "height" => 2000,
+                "ratio" => 1.466,
+            ],
+            "cached" => [
+                "fileName" => "01.jpg/test.gif",
+                "path" => "/path/to/images/cache/01.jpg/test.gif",
+                "url" => "/images/cache/01.jpg/test.gif",
+                "width" => 15,
+                "height" => 10,
+                "ratio" => 1.5,
+            ],
+        ];
+
+        $imageRender = ImageRender::fromArray($imageArray);
+
+        $output = $imageRender->img([
+            'class' => 'test',
+            'alt' => 'This is a test',
+        ]);
+
+        $this->assertEquals(
+            '<img class="lazyload test" alt="This is a test" src="/images/cache/01.jpg/test.gif" data-src="/images/source/01.jpg" width="2932" height="2000">',
+            $output
+        );
+    }
+
     protected function prepareImageRender($options = []): object
     {
         $prepared = $this->prepareImage();

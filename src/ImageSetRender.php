@@ -6,13 +6,22 @@ class ImageSetRender extends ImgRenderable
 {
     protected $data;
 
-    public function __construct(protected ImageSet $imageSet, protected array $config = [])
+    final public function __construct(protected array|ImageSet $imageSet, protected array $config = [])
     {
-        $this->data = $this->imageSet->data();
+        if (is_array($imageSet)) {
+            $this->data = $imageSet;
+        } else {
+            $this->data = $this->imageSet->data();
+        }
 
         if ($config) {
             $this->acceptRenderConfig($config);
         }
+    }
+
+    public static function fromArray(array $imageSet, array $config = []): static
+    {
+        return new static($imageSet, $config);
     }
 
     public function main(): ImageFile
@@ -21,12 +30,12 @@ class ImageSetRender extends ImgRenderable
 
         $item = end($source['srcset']);
 
-        return $item['image']->cached();
+        return $this->resolveImageFile($item['image'], cached: true);
     }
 
     public function lqip(): ImageFile
     {
-        return $this->data['lqip']->cached();
+        return $this->resolveImageFile($this->data['lqip'], cached: true);
     }
 
     public function picture(array $attributes = []): string
@@ -120,7 +129,10 @@ class ImageSetRender extends ImgRenderable
         $srcset = [];
 
         foreach ($source['srcset'] as $item) {
-            $url = $item['image']->cached()->url();
+            $cached = $this->resolveImageFile($item['image'], cached: true);
+
+            $url = $cached->url();
+
             $width = $item['width'];
 
             $srcset[] = "{$url}" . ($includeWidth ? " {$width}w" : '');

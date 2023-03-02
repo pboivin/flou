@@ -4,21 +4,26 @@ namespace Pboivin\Flou;
 
 class ImageRender extends ImgRenderable
 {
-    public function __construct(protected Image $image, protected array $config = [])
+    final public function __construct(protected array|Image $image, protected array $config = [])
     {
         if ($config) {
             $this->acceptRenderConfig($config);
         }
     }
 
+    public static function fromArray(array $image, array $config = []): static
+    {
+        return new static($image, $config);
+    }
+
     public function main(): ImageFile
     {
-        return $this->image->source();
+        return $this->resolveImageFile($this->image);
     }
 
     public function lqip(): ImageFile
     {
-        return $this->image->cached();
+        return $this->resolveImageFile($this->image, cached: true);
     }
 
     public function img(array $attributes = []): string

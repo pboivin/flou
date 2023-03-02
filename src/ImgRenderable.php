@@ -252,4 +252,15 @@ abstract class ImgRenderable implements Stringable
 
         return "{$padding}%";
     }
+
+    protected function resolveImageFile(array|Image $item, bool $cached = false): ImageFile
+    {
+        $role = $cached ? 'cached' : 'source';
+
+        if (is_array($item)) {
+            return ImageFile::fromArray($item[$role]);
+        }
+
+        return $item->$role();
+    }
 }
