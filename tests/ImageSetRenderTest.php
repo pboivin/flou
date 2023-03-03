@@ -319,48 +319,31 @@ class ImageSetRenderTest extends TestCase
 
     public function test_can_initialize_from_array()
     {
-        $imageSetArray = array(
-            'sources' => array(
-                0 => array(
-                    'image' => '01.jpg',
-                    'widths' => array(0 => 500, 1 => 900, 2 => 1300, 3 => 1700),
-                    'srcset' => array(
-                        0 => array(
-                            'image' => array(
-                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
-                                'cached' => array('fileName' => '01.jpg/one.jpg', 'path' => '/path/to/images/cache/01.jpg/one.jpg', 'url' => '/images/cache/01.jpg/one.jpg', 'width' => 500, 'height' => 341, 'ratio' => 1.466275659824047,),
-                            ),
+        $imageSetArray = [
+            'sources' => [
+                [
+                    'srcset' => [
+                        [
+                            'image' => ['cached' => ['url' => '/images/cache/01.jpg/one.jpg']],
                             'width' => 500,
-                        ),
-                        1 => array(
-                            'image' => array(
-                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
-                                'cached' => array('fileName' => '01.jpg/two.jpg', 'path' => '/path/to/images/cache/01.jpg/two.jpg', 'url' => '/images/cache/01.jpg/two.jpg', 'width' => 900, 'height' => 614, 'ratio' => 1.4657980456026058,),
-                            ),
+                        ],
+                        [
+                            'image' => ['cached' => ['url' => '/images/cache/01.jpg/two.jpg']],
                             'width' => 900,
-                        ),
-                        2 => array(
-                            'image' => array(
-                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
-                                'cached' => array('fileName' => '01.jpg/three.jpg', 'path' => '/path/to/images/cache/01.jpg/three.jpg', 'url' => '/images/cache/01.jpg/three.jpg', 'width' => 1300, 'height' => 887, 'ratio' => 1.4656144306651635,),
-                            ),
+                        ],
+                        [
+                            'image' => ['cached' => ['url' => '/images/cache/01.jpg/three.jpg']],
                             'width' => 1300,
-                        ),
-                        3 => array(
-                            'image' => array(
-                                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
-                                'cached' => array('fileName' => '01.jpg/four.jpg', 'path' => '/path/to/images/cache/01.jpg/four.jpg', 'url' => '/images/cache/01.jpg/four.jpg', 'width' => 1700, 'height' => 1160, 'ratio' => 1.4655172413793103,),
-                            ),
+                        ],
+                        [
+                            'image' => ['cached' => ['url' => '/images/cache/01.jpg/four.jpg', 'width' => 1700, 'height' => 1160]],
                             'width' => 1700,
-                        ),
-                    ),
-                ),
-            ),
-            'lqip' => array(
-                'source' => array('fileName' => '01.jpg', 'path' => '/path/to/images/source/01.jpg', 'url' => '/images/source/01.jpg', 'width' => 2932, 'height' => 2000, 'ratio' => 1.466,),
-                'cached' => array('fileName' => '01.jpg/lqip.gif', 'path' => '/path/to/images/cache/01.jpg/lqip.gif', 'url' => '/images/cache/01.jpg/lqip.gif', 'width' => 15, 'height' => 10, 'ratio' => 1.5,),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+            'lqip' => ['cached' => ['url' => '/images/cache/01.jpg/lqip.gif']],
+        ];
 
         $imageRender = ImageSetRender::fromArray($imageSetArray);
 
@@ -558,11 +541,3 @@ class ImageSetRenderTest extends TestCase
         ];
     }
 }
-
-
-
-/*
-
-
-
-*/
