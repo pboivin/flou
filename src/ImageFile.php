@@ -91,6 +91,11 @@ class ImageFile
 
     public function toBase64String(): string
     {
-        return $this->inspector->base64Encode($this->path);
+        if ($this->inspector) {
+            return $this->inspector->base64Encode($this->path);
+        }
+
+        // transparent fallback
+        return 'data:image/gif;base64,R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=';
     }
 }
