@@ -57,16 +57,24 @@ class ImageFile
 
     public function ratio(): float
     {
-        return (float) $this->width() / $this->height();
+        if (!$width = $this->width()) {
+            return 0.0;
+        }
+
+        if (!$height = $this->height()) {
+            return 0.0;
+        }
+
+        return (float) $width / $height;
     }
 
     protected function size(string $param): int
     {
-        if (!$this->size) {
+        if (!$this->size && $this->inspector) {
             $this->size = $this->inspector->getSize($this->path);
         }
 
-        return $this->size[$param];
+        return $this->size[$param] ?? 0;
     }
 
     public function toArray(): array
