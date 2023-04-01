@@ -33,9 +33,10 @@ class ImageRender extends ImgRenderable
         if (!$this->wrapper) {
             $attributes['src'] = $this->lqipUrl();
         }
+
         $attributes['data-src'] = $this->main()->url();
-        $attributes['width'] = $this->main()->width();
-        $attributes['height'] = $this->main()->height();
+
+        $attributes = $this->handleSizes($attributes, $this->main());
 
         $attributes = $this->handleAttributeOverrides($attributes);
 
@@ -54,8 +55,8 @@ class ImageRender extends ImgRenderable
         $attributes = $noScript->prepareAttributes($attributes);
 
         $attributes['src'] = $noScript->main()->url();
-        $attributes['width'] = $noScript->main()->width();
-        $attributes['height'] = $noScript->main()->height();
+
+        $attributes = $noScript->handleSizes($attributes, $noScript->main());
 
         $attributes = $this->handleAttributeOverrides($attributes);
 
