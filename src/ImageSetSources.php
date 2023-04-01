@@ -2,7 +2,7 @@
 
 namespace Pboivin\Flou;
 
-use Pboivin\Flou\Contracts\ImageFactory as ImageContract;
+use Pboivin\Flou\Contracts\ImageMaker;
 
 class ImageSetSources
 {
@@ -12,7 +12,7 @@ class ImageSetSources
 
     public function __construct(
         protected array $config,
-        protected ImageContract $factory,
+        protected ImageMaker $factory,
         protected ?array $glideParams = null
     ) {
         foreach ($config as $source) {

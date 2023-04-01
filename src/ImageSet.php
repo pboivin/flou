@@ -2,7 +2,7 @@
 
 namespace Pboivin\Flou;
 
-use Pboivin\Flou\Contracts\ImageFactory as ImageContract;
+use Pboivin\Flou\Contracts\ImageMaker;
 
 class ImageSet
 {
@@ -16,7 +16,7 @@ class ImageSet
 
     public function __construct(
         protected array $config,
-        protected ImageContract $factory,
+        protected ImageMaker $factory,
         protected ?array $glideParams = null
     ) {
         $preparedConfig = (new ImageSetConfig($config))->get();

@@ -3,10 +3,10 @@
 namespace Pboivin\Flou;
 
 use InvalidArgumentException;
-use Pboivin\Flou\Contracts\ImageFactory as ImageContract;
-use Pboivin\Flou\Contracts\ImageSetFactory as ImageSetContract;
+use Pboivin\Flou\Contracts\ImageMaker;
+use Pboivin\Flou\Contracts\ImageSetMaker;
 
-class RemoteImageFactory implements ImageContract, ImageSetContract
+class RemoteImageFactory implements ImageMaker, ImageSetMaker
 {
     public const DEFAULT_GLIDE_PARAMS = ['h' => 10, 'fm' => 'gif'];
 

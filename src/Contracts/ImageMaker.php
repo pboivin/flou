@@ -4,7 +4,7 @@ namespace Pboivin\Flou\Contracts;
 
 use Pboivin\Flou\Image;
 
-interface ImageFactory
+interface ImageMaker
 {
     public function image(string $source, ?array $glideParams = null): Image;
 }
