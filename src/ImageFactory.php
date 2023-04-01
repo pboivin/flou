@@ -5,8 +5,10 @@ namespace Pboivin\Flou;
 use InvalidArgumentException;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
+use Pboivin\Flou\Contracts\ImageFactory as ImageContract;
+use Pboivin\Flou\Contracts\ImageSetFactory as ImageSetContract;
 
-class ImageFactory
+class ImageFactory implements ImageContract, ImageSetContract
 {
     public const DEFAULT_GLIDE_PARAMS = ['h' => 10, 'fm' => 'gif'];
 

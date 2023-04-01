@@ -2,6 +2,8 @@
 
 namespace Pboivin\Flou;
 
+use Pboivin\Flou\Contracts\ImageFactory as ImageContract;
+
 class ImageSetSources
 {
     protected $imageForLqip = '';
@@ -10,7 +12,7 @@ class ImageSetSources
 
     public function __construct(
         protected array $config,
-        protected ImageFactory $factory,
+        protected ImageContract $factory,
         protected ?array $glideParams = null
     ) {
         foreach ($config as $source) {
