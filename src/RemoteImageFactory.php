@@ -3,45 +3,21 @@
 namespace Pboivin\Flou;
 
 use InvalidArgumentException;
+use Pboivin\Flou\Concerns\AcceptsConfig;
+use Pboivin\Flou\Concerns\HasGlideParams;
+use Pboivin\Flou\Concerns\HasRenderOptions;
 use Pboivin\Flou\Contracts\ImageMaker;
 use Pboivin\Flou\Contracts\ImageSetMaker;
 
 class RemoteImageFactory implements ImageMaker, ImageSetMaker
 {
-    public const DEFAULT_GLIDE_PARAMS = ['h' => 10, 'fm' => 'gif'];
+    use AcceptsConfig;
+    use HasGlideParams;
+    use HasRenderOptions;
 
     protected $glideUrlBase;
 
     protected $sourceUrlBase;
-
-    protected $glideParams;
-
-    protected $inspector;
-
-    protected $renderOptions;
-
-    final public function __construct(array $config = [])
-    {
-        if ($config) {
-            $this->acceptConfig($config);
-        }
-    }
-
-    public static function create(array $config = [])
-    {
-        return new static($config);
-    }
-
-    protected function acceptConfig(array $config): void
-    {
-        foreach ($config as $key => $value) {
-            if (method_exists($this, $method = "set{$key}")) {
-                $this->$method($value);
-            } else {
-                throw new InvalidArgumentException("Invalid option '$key'.");
-            }
-        }
-    }
 
     public function glideUrlBase(): ?string
     {
@@ -73,27 +49,6 @@ class RemoteImageFactory implements ImageMaker, ImageSetMaker
         $this->sourceUrlBase = $path;
 
         return $this;
-    }
-
-    public function glideParams(): array
-    {
-        if (!$this->glideParams) {
-            return static::DEFAULT_GLIDE_PARAMS;
-        }
-
-        return $this->glideParams;
-    }
-
-    public function setGlideParams(array $params): self
-    {
-        $this->glideParams = $params;
-
-        return $this;
-    }
-
-    public function setRenderOptions(array $options): void
-    {
-        $this->renderOptions = $options;
     }
 
     public function image(string $source, ?array $glideParams = null): Image

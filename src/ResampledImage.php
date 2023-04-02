@@ -2,9 +2,11 @@
 
 namespace Pboivin\Flou;
 
+use Pboivin\Flou\Contracts\ImageMaker;
+
 class ResampledImage
 {
-    public function __construct(protected ImageFile $source, protected ImageFactory $resampler)
+    public function __construct(protected ImageFile $source, protected ImageMaker $resampler)
     {
     }
 
