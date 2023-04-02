@@ -4,6 +4,8 @@ namespace Pboivin\Flou;
 
 class ImageFile
 {
+    public const BASE64_IMAGE_FALLBACK = 'data:image/gif;base64,R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=';
+
     protected $size;
 
     final public function __construct(
@@ -95,7 +97,6 @@ class ImageFile
             return $this->inspector->base64Encode($this->path);
         }
 
-        // transparent fallback
-        return 'data:image/gif;base64,R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=';
+        return static::BASE64_IMAGE_FALLBACK;
     }
 }
