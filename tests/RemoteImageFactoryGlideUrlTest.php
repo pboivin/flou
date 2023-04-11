@@ -10,7 +10,7 @@ use Pboivin\Flou\ImageSetRender;
 use Pboivin\Flou\RemoteImageFactory;
 use PHPUnit\Framework\TestCase;
 
-class RemoteImageFactoryTest extends TestCase
+class RemoteImageFactoryGlideUrlTest extends TestCase
 {
     public function test_rejects_invalid_options()
     {
