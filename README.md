@@ -11,10 +11,11 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 
 **Features:**
 
-- Transforms images on initial page load — does not expose Glide URLs
-- Generates simple markup for `img` and `picture` HTML elements
+- Transforms images on initial page load (does not expose Glide URLs)
+- Alternatively, leverages custom Glide configurations (e.g. images stored on S3)
+- Generates responsive HTML for `img` and `picture` elements
 - Useable with static site generators and in CLI scripts
-- Framework agnostic — a set of plain PHP classes
+- Framework agnostic (a set of plain PHP classes)
 
 **Requirements:**
 
@@ -27,6 +28,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 - [Image Transformations](#image-transformations)
 - [Image Rendering](#image-rendering)
 - [Image Sets (Responsive Images)](#image-sets-responsive-images)
+- [Remote Images](#remote-images)
 - [Examples](#examples)
 - [Development](#development)
 - [License](#license)
@@ -679,6 +681,88 @@ $imageSet = $flou->imageSet([
 You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
 
 Note: You may use all parameters except `w` and `fm`, which are overriden according to the `widths` and `formats` configuration above.
+
+
+## Remote Images
+
+The base `ImageFactory` class is optimized for cases where both source and cached images exist on the local filesystem. v1.7 introduces a `RemoteImageFactory` to enable more use-cases:
+
+- Working with remote Glide endpoints
+- Integrating with an existing Glide Server configuration
+
+This enables configurations using images stored on remote filesystems, such as Amazon S3.
+
+
+#### Configuration
+
+The options for `RemoteImageFactory` are:
+
+| Name | Type | Description |
+|---|---|---|
+| `glideServer` | League\Glide\Server | A `Server` instance. |
+| `glideUrlBase` | string | Alternatively, the base URL for a remotely accessible Glide server. |
+| `glideUrlSignKey` | string | Private key used for Glide HTTP signatures. (optional) |
+
+
+#### Glide Endpoint
+
+If you already have a Glide instance setup and publicly accessible, you can hook into it with the following configuration:
+
+```php
+$flou = new Pboivin\Flou\RemoteImageFactory([
+    'glideUrlBase' => '/glide',
+    'glideUrlSignKey' => 'secret',
+]);
+
+$image = $flou->image('test.jpg');
+
+//...
+```
+
+
+#### Glide Server
+
+Alternatively, you can pass in a fully configured Glide `Server` object:
+
+```php
+// @see https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/
+
+$sourceFilesystem = new League\Flysystem\Filesystem(
+    new League\Flysystem\AwsS3V3\AwsS3V3Adapter(/* S3 Adapter configuration */);
+);
+
+$server = League\Glide\ServerFactory::create([
+    'source' => $sourceFilesystem,
+    'cache' => '/home/my-site.com/storage/glide-cache',
+    'base_url' => '/glide',
+]);
+
+$flou = new Pboivin\Flou\RemoteImageFactory([
+    'glideServer' => $server,
+    'glideUrlSignKey' => 'secret',
+]);
+
+$image = $flou->image('test.jpg');
+
+//...
+```
+
+If you're using Laravel, you can access the S3 filesystem driver from the `Storage` facade:
+
+```php
+$sourceFilesystem = Illuminate\Support\Facades\Storage::disk('s3')->getDriver(),
+
+//...
+```
+
+Of course, you'll need to set your S3 credentials in `.env`.
+
+
+#### Caveats
+
+When using `RemoteImageFactory`, it is too costly to fetch remote images to analyze their dimensions. Therefore, rendered images will not include `width` and `height` attributes. I recommend leveraging `useAspectRatio()` with a fixed aspect ratio value if possible.
+
+Similarly, `useBase64Lqip()` will return a blank placeholder instead of a Base64 encoded LQIP.
 
 
 ## Examples
