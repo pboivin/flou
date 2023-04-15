@@ -1,6 +1,18 @@
 # Release Notes
 
 
+## [v1.7.0](https://github.com/pboivin/flou/compare/v1.6.0...v1.7.0) - 2023-04-15
+
+#### Added
+
+- Add `RemoteImageFactory` class. Support for remote Glide endpoints and filesystems
+
+#### Changed
+
+- Extract traits and interfaces to share code between both image factory classes
+- Handle unknown image dimensions (`ImageRender`, `ImageFile`)
+
+
 ## [v1.6.0](https://github.com/pboivin/flou/compare/v1.5.1...v1.6.0) - 2023-03-02
 
 #### Added
