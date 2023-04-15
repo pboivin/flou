@@ -1,6 +1,6 @@
 {
     "name": "pboivin/flou",
-    "description": "PHP image lazy loading toolbox for prototypes and static sites.",
+    "description": "PHP responsive images and lazy loading toolbox.",
     "keywords": ["php", "images", "lazy", "loading", "lqip", "glide"],
     "homepage": "https://github.com/pboivin/flou",
     "license": "MIT",
