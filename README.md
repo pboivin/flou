@@ -69,7 +69,7 @@ Consult the [vanilla-lazyload documentation](https://github.com/verlok/vanilla-l
 
 ## Getting Started
 
-First, initialize the `LazyLoad` JS object. Add the following script in your page template:
+First, initialize the `LazyLoad` JS object. Add the following script to your page template:
 
 ```html
 <script>
@@ -272,7 +272,9 @@ echo $image
 </details>
 <br>
 
-Options passed into `img()` are included as HTML attributes on the element. Some attributes are automatically generated (e.g. `src`, `width`, `height`, etc.). You can override them with a `!` prefix:
+Options passed into `img()` are included as HTML attributes on the element. Attribute values are not escaped by default.
+
+Some attributes are automatically generated (e.g. `src`, `width`, `height`, etc.). You can override them with a `!` prefix:
 
 ```php
 echo $image
@@ -745,15 +747,15 @@ $image = $flou->image('test.jpg');
 //...
 ```
 
-If you're using Laravel, you can access the S3 filesystem driver from the `Storage` facade:
+If you're using Laravel, you can access the filesystem driver from the `Storage` facade:
 
 ```php
+// @see https://laravel.com/docs/filesystem
+
 $sourceFilesystem = Illuminate\Support\Facades\Storage::disk('s3')->getDriver(),
 
 //...
 ```
-
-Of course, you'll need to set your S3 credentials in `.env`.
 
 
 #### Caveats
