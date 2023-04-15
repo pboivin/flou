@@ -7,14 +7,15 @@
 </p>
 
 
-Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephpleague/glide) and the [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload) libraries. It is optimized to quickly implement image lazy loading on prototypes and static sites, using a local folder of source images.
+Flou is a PHP package integrating [Glide (PHP)](https://github.com/thephpleague/glide) and [vanilla-lazyload (JS)](https://github.com/verlok/vanilla-lazyload). It's optimized to quickly implement lazy loading and responsive images from a local folder of source images.
 
 **Features:**
 
-- Transforms images on initial page load — does not expose Glide URLs
-- Generates simple markup for `img` and `picture` HTML elements
+- Transform local images on initial page load (does not expose Glide URLs)
+- Can leverage custom Glide configurations (e.g. source images on S3)
+- Generate responsive HTML for `img` and `picture` elements
 - Useable with static site generators and in CLI scripts
-- Framework agnostic — a set of plain PHP classes
+- Framework agnostic (a set of plain PHP classes)
 
 **Requirements:**
 
@@ -27,6 +28,7 @@ Flou is a PHP package integrating the [Glide (PHP)](https://github.com/thephplea
 - [Image Transformations](#image-transformations)
 - [Image Rendering](#image-rendering)
 - [Image Sets (Responsive Images)](#image-sets-responsive-images)
+- [Remote Images](#remote-images)
 - [Examples](#examples)
 - [Development](#development)
 - [License](#license)
@@ -67,7 +69,7 @@ Consult the [vanilla-lazyload documentation](https://github.com/verlok/vanilla-l
 
 ## Getting Started
 
-First, initialize the `LazyLoad` JS object. Add the following script in your page template:
+First, initialize the `LazyLoad` JS object. Add the following script to your page template:
 
 ```html
 <script>
@@ -116,8 +118,6 @@ Other options:
 
 If you're using a framework with a Service Container, you can register the `$flou` instance as a singleton for your entire application. This will be your entry point to transform and render images.
 
-If you're using Laravel, have a look at the [flou-laravel](https://github.com/pboivin/flou-laravel) companion repository. It registers a singleton instance for you and provides a `Flou` facade class.
-
 
 #### Extra JS and CSS
 
@@ -155,7 +155,7 @@ $tablet = $flou->image('01.jpg', ['w' => 900]);
 $desktop = $flou->image('01.jpg', ['w' => 1300]);
 ```
 
-If you're interested in responsive images using the `srcset` attribute, have a look at the next section ([Image Sets](#image-sets-responsive-images)).
+If you're working with responsive images and the `srcset` attribute, have a look at the next section ([Image Sets](#image-sets-responsive-images)).
 
 
 #### Default Glide parameters
@@ -175,7 +175,7 @@ $flou = new ImageFactory([
 
 #### Image objects
 
-The `image()` method returns an [`Image`](./src/Image.php) object, from which you can conveniently access the source image file and the transformed (cached) image file:
+The `image()` method returns an `Image` object, from which you can conveniently access the source image file and the transformed (cached) image file:
 
 ```php 
 $image = $flou->image('01.jpg');
@@ -246,7 +246,7 @@ echo $image->cached()->width();     # 50
 
 #### Rendering single images
 
-The `render()` method on the image returns an [`ImageRender`](./src/ImageRender.php) object, which prepares HTML suitable for the vanilla-lazyload library. Then, `img()` is used to render an `img` element:
+The `render()` method on the image returns an `ImageRender` object, which prepares HTML suitable for the vanilla-lazyload library. Then, `img()` is used to render an `img` element:
 
 ```php
 $image = $flou->image('01.jpg');
@@ -272,7 +272,9 @@ echo $image
 </details>
 <br>
 
-Options passed into `img()` are included as HTML attributes on the element. Some attributes are automatically generated (e.g. `src`, `width`, `height`, etc.). You can override them with a `!` prefix:
+Options passed into `img()` are included as HTML attributes on the element. Attribute values are not escaped by default.
+
+Some attributes are automatically generated (e.g. `src`, `width`, `height`, etc.). You can override them with a `!` prefix:
 
 ```php
 echo $image
@@ -505,7 +507,7 @@ $imageSet = $flou->imageSet([
 ]);
 ```
 
-This returns an [`ImageSet`](./src/ImageSet.php) object, which prepares all variations of the source image. The `render()` method on the image set returns a [`ImageSetRender`](./src/ImageSetRender.php) instance, as seen before with single images:
+This returns an `ImageSet` object, which prepares all variations of the source image. The `render()` method on the image set returns an `ImageSetRender` instance, as seen before with single images:
 
 ```php
 echo $imageSet
@@ -547,7 +549,7 @@ Like `ImageRender`, you can optimize `ImageSetRender` with the [same methods](#i
 
 #### Multiple sources (`picture` element)
 
-With a tweak in configuration, `imageSet()` can handle multiple source images:
+With a similar configuration, `imageSet()` also handles multiple source images:
 
 ```php
 $imageSet = $flou->imageSet([
@@ -611,7 +613,7 @@ See also: [Art-directed `picture` element example](#art-directed-picture-element
 
 #### Multiple formats (`picture` element)
 
-Similarly, `imageSet()` can also handle multiple image formats for each source:
+The configuration allows multiple image formats for each source:
 
 ```php
 $imageSet = $flou->imageSet([
@@ -678,7 +680,91 @@ $imageSet = $flou->imageSet([
 
 You'll find all available parameters in the [Glide documentation](https://glide.thephpleague.com/2.0/api/quick-reference/).
 
-Note: You may use all parameters except `w` and `fm`, which are overriden according to the `widths` and `formats` configuration above.
+Note: You may use all parameters except `w` and `fm`, which are automatically generated from the `widths` and `formats` configuration above.
+
+
+## Remote Images
+
+The base `ImageFactory` class is optimized for cases where both source and cached images exist on the local filesystem. The `RemoteImageFactory` class was introduced to enable new use-cases:
+
+- Working with remote Glide endpoints
+- Integrating with existing Glide Server configurations
+
+This adds support for images stored on remote filesystems, such as Amazon S3.
+
+
+#### Configuration
+
+The options for `RemoteImageFactory` are:
+
+| Name | Type | Description |
+|---|---|---|
+| `glideServer` | League\Glide\Server | A `Server` instance. |
+| `glideUrlBase` | string | Alternatively, the base URL for a remotely accessible Glide server. |
+| `glideUrlSignKey` | string | Private key used for Glide HTTP signatures. (optional) |
+
+
+#### Glide Endpoint
+
+If you already have a Glide instance setup and publicly accessible, you can hook into it with the following configuration:
+
+```php
+$flou = new Pboivin\Flou\RemoteImageFactory([
+    'glideUrlBase' => '/glide',
+    'glideUrlSignKey' => 'secret',
+]);
+
+$image = $flou->image('test.jpg');
+
+//...
+```
+
+
+#### Glide Server
+
+Alternatively, you can pass in a fully configured Glide `Server` object:
+
+```php
+// @see https://flysystem.thephpleague.com/docs/adapter/aws-s3-v3/
+
+$sourceFilesystem = new League\Flysystem\Filesystem(
+    new League\Flysystem\AwsS3V3\AwsS3V3Adapter(/* S3 adapter configuration */);
+);
+
+$server = League\Glide\ServerFactory::create([
+    'source' => $sourceFilesystem,
+    'cache' => '/home/my-site.com/storage/glide-cache',
+    'base_url' => '/glide',
+]);
+
+$flou = new Pboivin\Flou\RemoteImageFactory([
+    'glideServer' => $server,
+    'glideUrlSignKey' => 'secret',
+]);
+
+$image = $flou->image('test.jpg');
+
+//...
+```
+
+If you're using Laravel, you can access the filesystem driver from the `Storage` facade:
+
+```php
+// @see https://laravel.com/docs/filesystem
+
+$sourceFilesystem = Illuminate\Support\Facades\Storage::disk('s3')->getDriver(),
+
+//...
+```
+
+
+#### Caveats
+
+When using `RemoteImageFactory`, it is too costly to fetch remote images to analyze their dimensions. Therefore, rendered images will not include `width` and `height` attributes. I recommend leveraging `useAspectRatio()` with a fixed aspect ratio value if possible.
+
+Similarly, `useBase64Lqip()` will return a blank placeholder instead of a Base64 encoded LQIP.
+
+[Image resampling](#image-resampling) is not available for remote images.
 
 
 ## Examples

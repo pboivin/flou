@@ -46,8 +46,8 @@ class ImageSetRender extends ImgRenderable
             $attributes['src'] = $this->lqipUrl();
         }
         $attributes['data-src'] = $this->main()->url();
-        $attributes['width'] = $this->main()->width();
-        $attributes['height'] = $this->main()->height();
+
+        $attributes = $this->handleSizes($attributes, $this->main());
 
         $attributes = $this->handleAttributeOverrides($attributes);
 
@@ -89,8 +89,9 @@ class ImageSetRender extends ImgRenderable
         if (!$this->wrapper) {
             $attributes['src'] = $this->lqipUrl();
         }
-        $attributes['width'] = $this->main()->width();
-        $attributes['height'] = $this->main()->height();
+
+        $attributes = $this->handleSizes($attributes, $this->main());
+
         $attributes['data-src'] = $this->main()->url();
         $attributes['data-srcset'] = $this->getSrcset($this->data['sources'][0]);
         $attributes['data-sizes'] = $this->getSizes($this->data['sources'][0]);
@@ -111,8 +112,8 @@ class ImageSetRender extends ImgRenderable
 
         $attributes = $noScript->prepareAttributes($attributes);
 
-        $attributes['width'] = $noScript->main()->width();
-        $attributes['height'] = $noScript->main()->height();
+        $attributes = $noScript->handleSizes($attributes, $noScript->main());
+
         $attributes['src'] = $noScript->main()->url();
         $attributes['srcset'] = $noScript->getSrcset($noScript->data['sources'][0]);
         $attributes['sizes'] = $noScript->getSizes($noScript->data['sources'][0]);

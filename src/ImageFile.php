@@ -4,6 +4,8 @@ namespace Pboivin\Flou;
 
 class ImageFile
 {
+    public const BASE64_IMAGE_FALLBACK = 'data:image/gif;base64,R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=';
+
     protected $size;
 
     final public function __construct(
@@ -57,16 +59,24 @@ class ImageFile
 
     public function ratio(): float
     {
-        return (float) $this->width() / $this->height();
+        if (!$width = $this->width()) {
+            return 0.0;
+        }
+
+        if (!$height = $this->height()) {
+            return 0.0;
+        }
+
+        return (float) $width / $height;
     }
 
     protected function size(string $param): int
     {
-        if (!$this->size) {
+        if (!$this->size && $this->inspector) {
             $this->size = $this->inspector->getSize($this->path);
         }
 
-        return $this->size[$param];
+        return $this->size[$param] ?? 0;
     }
 
     public function toArray(): array
@@ -83,6 +93,10 @@ class ImageFile
 
     public function toBase64String(): string
     {
-        return $this->inspector->base64Encode($this->path);
+        if ($this->inspector) {
+            return $this->inspector->base64Encode($this->path);
+        }
+
+        return static::BASE64_IMAGE_FALLBACK;
     }
 }

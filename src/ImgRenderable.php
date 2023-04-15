@@ -84,7 +84,7 @@ abstract class ImgRenderable implements Stringable
     public function useAspectRatio(mixed $value = true): self
     {
         if ($value === true) {
-            $this->aspectRatio = $this->main()->ratio();
+            $this->aspectRatio = $this->main()->ratio() ?: 1;
         } elseif ($value === false) {
             $this->aspectRatio = false;
         } else {
@@ -262,5 +262,18 @@ abstract class ImgRenderable implements Stringable
         }
 
         return $item->$role();
+    }
+
+    protected function handleSizes($attributes, ImageFile $imageFile): array
+    {
+        if ($width = $imageFile->width()) {
+            $attributes['width'] = $width;
+        }
+
+        if ($height = $imageFile->height()) {
+            $attributes['height'] = $height;
+        }
+
+        return $attributes;
     }
 }

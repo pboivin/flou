@@ -69,4 +69,21 @@ class ImageFileTest extends TestCase
             $imageFile->toBase64String()
         );
     }
+
+    public function test_can_create_image_file_without_inspector()
+    {
+        $imageFile = new ImageFile(
+            'my-image.jpg',
+            '/path/to/my-image.jpg',
+            '/url/to/my-image.jpg',
+        );
+
+        $this->assertEquals('my-image.jpg', $imageFile->fileName());
+        $this->assertEquals('/path/to/my-image.jpg', $imageFile->path());
+        $this->assertEquals('/url/to/my-image.jpg', $imageFile->url());
+        $this->assertEquals(0, $imageFile->width());
+        $this->assertEquals(0, $imageFile->height());
+        $this->assertEquals(0.0, $imageFile->ratio());
+        $this->assertEquals(ImageFile::BASE64_IMAGE_FALLBACK, $imageFile->toBase64String());
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Pboivin\Flou;
 
+use Pboivin\Flou\Contracts\ImageMaker;
+
 class ImageSet
 {
     public const DEFAULT_SIZES_VALUE = '100vw';
@@ -14,7 +16,7 @@ class ImageSet
 
     public function __construct(
         protected array $config,
-        protected ImageFactory $factory,
+        protected ImageMaker $factory,
         protected ?array $glideParams = null
     ) {
         $preparedConfig = (new ImageSetConfig($config))->get();
