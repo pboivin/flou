@@ -710,7 +710,7 @@ If you already have a Glide instance setup and publicly accessible, you can hook
 
 ```php
 $flou = new Pboivin\Flou\RemoteImageFactory([
-    'glideUrlBase' => '/glide',
+    'glideUrlBase' => '/glide', // or use a full URL: https://cdn.my-site.com/glide
     'glideUrlSignKey' => 'secret',
 ]);
 
