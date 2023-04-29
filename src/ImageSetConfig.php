@@ -10,29 +10,7 @@ class ImageSetConfig
 
     public function __construct(protected array $config)
     {
-        if (isset($config['sources'])) {
-            $this->preparedConfig = $this->acceptLegacyConfig($config);
-        } else {
-            $this->preparedConfig = $this->acceptConfig($config);
-        }
-    }
-
-    protected function acceptLegacyConfig(array $config): array
-    {
-        if (isset($config['image'])) {
-            return $this->acceptConfig([
-                'image' => $config['image'],
-                'widths' => array_map(fn ($i) => (int) $i['width'], $config['sources']),
-            ]);
-        }
-
-        return $this->acceptConfig(
-            array_map(function ($i) {
-                $i['widths'] = [$i['width']];
-                unset($i['width']);
-                return $i;
-            }, $config['sources'])
-        );
+        $this->preparedConfig = $this->acceptConfig($config);
     }
 
     protected function acceptConfig(array $config): array

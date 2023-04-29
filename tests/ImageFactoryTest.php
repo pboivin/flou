@@ -133,11 +133,7 @@ class ImageFactoryTest extends TestCase
 
         $set = $prepared->factory->imageSet([
             'image' => 'source.jpg',
-            'sources' => [
-                'sm' => ['width' => 400],
-                'md' => ['width' => 800],
-                'lg' => ['width' => 1200],
-            ],
+            'widths' => [400, 800, 1200],
         ]);
 
         $this->assertTrue($set instanceof ImageSet);

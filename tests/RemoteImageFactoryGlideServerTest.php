@@ -78,11 +78,7 @@ class RemoteImageFactoryGlideServerTest extends TestCase
 
         $set = $factory->imageSet([
             'image' => 'source.jpg',
-            'sources' => [
-                'sm' => ['width' => 400],
-                'md' => ['width' => 800],
-                'lg' => ['width' => 1200],
-            ],
+            'widths' => [400, 800],
         ]);
 
         $this->assertTrue($set instanceof ImageSet);
