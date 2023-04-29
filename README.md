@@ -817,6 +817,7 @@ Similarly, `useBase64Lqip()` will return a blank placeholder instead of a Base64
     .lazyload-wrapper.loaded .lazyload-lqip {
         opacity: 0;
         transition: opacity 0.5s;
+        transition-delay: 0.5s;
     }
 </style>
 ```

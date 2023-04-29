@@ -18,4 +18,5 @@
 .lazyload-wrapper.loaded .lazyload-lqip {
     opacity: 0;
     transition: opacity 0.5s;
+    transition-delay: 0.5s;
 }
