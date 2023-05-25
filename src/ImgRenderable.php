@@ -3,6 +3,7 @@
 namespace Pboivin\Flou;
 
 use InvalidArgumentException;
+use Pboivin\Flou\Concerns\RendersHtml;
 use Stringable;
 
 abstract class ImgRenderable implements Stringable

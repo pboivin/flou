@@ -1,6 +1,6 @@
 <?php
 
-namespace Pboivin\Flou;
+namespace Pboivin\Flou\Concerns;
 
 trait RendersHtml
 {

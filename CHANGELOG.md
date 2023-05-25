@@ -1,5 +1,15 @@
 # Release Notes
 
+## v2.0.0 - in progress
+
+#### Added
+
+#### Changed
+
+#### Chores
+
+- Remove legacy imageset configuration (breaking change)
+
 
 ## [v1.7.0](https://github.com/pboivin/flou/compare/v1.6.0...v1.7.0) - 2023-04-15
 
