@@ -37,11 +37,6 @@ Flou is a PHP package integrating [Glide (PHP)](https://github.com/thephpleague/
 
 See the [flou-jigsaw-demo](https://github.com/pboivin/flou-jigsaw-demo) repository for an example project integrating Flou with the [Jigsaw](https://github.com/tighten/jigsaw) PHP static site generator.
 
-**Laravel integration:**
-
-See the [flou-laravel](https://github.com/pboivin/flou-laravel) repository.
-
-
 ## Installing 
 
 The package can be installed via Composer:
