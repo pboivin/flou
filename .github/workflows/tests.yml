@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0', '8.1', '8.2']
+        php: ['8.0', '8.1', '8.2', '8.3']
         glide: ['1.*', '2.*']
 
     name: P${{ matrix.php }} G${{ matrix.glide }}
