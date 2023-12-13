@@ -50,7 +50,7 @@ class RemoteImageFactoryGlideServerTest extends TestCase
 
         $this->assertTrue($image instanceof Image);
         $this->assertEquals($this->signUrl('source.jpg', []), $image->source()->url());
-        $this->assertEquals($this->signUrl('source.jpg', ['h'=>10, 'fm'=>'gif']), $image->cached()->url());
+        $this->assertEquals($this->signUrl('source.jpg', ['h' => 10, 'fm' => 'gif']), $image->cached()->url());
 
         $this->assertTrue($image->render() instanceof ImageRender);
     }
@@ -66,7 +66,7 @@ class RemoteImageFactoryGlideServerTest extends TestCase
 
         $this->assertTrue($image instanceof Image);
         $this->assertEquals($this->signUrl('source.jpg', []), $image->source()->url());
-        $this->assertEquals($this->signUrl('source.jpg', ['h'=>123]), $image->cached()->url());
+        $this->assertEquals($this->signUrl('source.jpg', ['h' => 123]), $image->cached()->url());
     }
 
     public function test_generates_imageset()
