@@ -50,7 +50,7 @@ This also installs Glide as a Composer dependency.
 You can pull in the vanilla-lazyload library via a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.min.js"></script>
 ```
 
 or via NPM:
@@ -770,7 +770,7 @@ Similarly, `useBase64Lqip()` will return a blank placeholder instead of a Base64
 *Extra JS and CSS:*
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.min.js"></script>
 <script>
     /**
      * vanilla-lazyload API reference: 
